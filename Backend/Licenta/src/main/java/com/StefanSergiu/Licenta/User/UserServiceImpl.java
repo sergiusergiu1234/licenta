@@ -25,8 +25,8 @@ public class UserServiceImpl implements UserService{
         user.setPassword(encodedPassword);
         user.setRole(Role.USER);
         userRepository.save(user);
-
     }
+
 
     @Override
     public List<Object> isUserPresent(User user) {

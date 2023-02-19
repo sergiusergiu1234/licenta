@@ -18,17 +18,9 @@ import java.util.Collections;
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
-    @SequenceGenerator(
-            name = "users_sequence",
-            sequenceName = "users_sequence",
-            allocationSize = 1
-    )
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "users_sequence"
-    )
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
 
 
@@ -42,7 +34,7 @@ public class User implements UserDetails {
 
     @NotNull(message = "Email cannot be empty")
     @Email(message = "Please enter a valid email address")
-    @Column(name = "email")
+    @Column(name = "email",unique = true,length = 25)
     private String email;
 
     @NotNull(message = "Password cannot be empty")
@@ -50,17 +42,11 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "mobile")
+    @Column(name = "mobile",unique = true,length = 11)
     @Length(min = 10, message = "Password should be atleast 10 number long")
     private String mobile;
 
-  /*  @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
 
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;*/
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -84,6 +70,13 @@ public class User implements UserDetails {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+    }
+    public User(String firstName, String lastName, String email, String password,Role role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role=role;
     }
     @Override
 

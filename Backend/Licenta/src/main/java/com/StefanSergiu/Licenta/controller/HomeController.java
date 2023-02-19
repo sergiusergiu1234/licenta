@@ -28,6 +28,7 @@ public class HomeController {
     public ResponseEntity<String> sayGoodBye(){
         return ResponseEntity.ok("Good bye and se yoou latr");
     }
+
     @GetMapping("/user")
     public ResponseEntity<String> user(){
         return ResponseEntity.ok("Hi user man");

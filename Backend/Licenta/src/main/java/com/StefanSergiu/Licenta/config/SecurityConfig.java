@@ -77,7 +77,7 @@ public class SecurityConfig{
                 // logout
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/")
+                .logoutSuccessUrl("/say-good-bye").permitAll()
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/access-denied");
