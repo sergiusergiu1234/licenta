@@ -25,6 +25,7 @@ public class UserConfig {
                   Role.ADMIN
           );
 
+
           Optional<User> existingAdminEmail = repository.findUserByEmail(admin.getEmail());
           if(existingAdminEmail.isEmpty()){
               String encodedPassword = bCryptPasswordEncoder.encode(admin.getPassword());
