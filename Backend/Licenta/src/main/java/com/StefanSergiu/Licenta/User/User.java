@@ -1,19 +1,19 @@
 package com.StefanSergiu.Licenta.User;
 
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.validator.constraints.Length;
+import com.StefanSergiu.Licenta.Order.Order;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import org.hibernate.validator.constraints.*;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -22,7 +22,9 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    @OneToMany(mappedBy = "user", targetEntity = Order.class,cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER)
+    private Set<Order> ordersIssued;
 
   //  @NotNull(message = "First Name cannot be empty")
     @Column(name = "firstname")
