@@ -1,6 +1,5 @@
-package com.StefanSergiu.Licenta.Order;
+package com.StefanSergiu.Licenta.entity;
 
-import com.StefanSergiu.Licenta.User.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -13,9 +12,7 @@ public class Order {
     @Id
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+
 
     @OneToMany(mappedBy = "order")
     private Set<OrderDetail> orderDetails;
@@ -25,12 +22,7 @@ public class Order {
 
     @Column(name = "price")
     private Float price;
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(UserInfo user) {
     }
-
 }

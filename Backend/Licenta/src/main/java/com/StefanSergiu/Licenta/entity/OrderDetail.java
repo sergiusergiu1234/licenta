@@ -1,5 +1,6 @@
-package com.StefanSergiu.Licenta.Order;
+package com.StefanSergiu.Licenta.entity;
 
+import com.StefanSergiu.Licenta.entity.Order;
 import jakarta.persistence.*;
 
 
