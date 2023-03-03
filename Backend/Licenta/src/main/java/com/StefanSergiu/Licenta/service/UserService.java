@@ -21,11 +21,16 @@ public class UserService {
         Optional<UserInfo> existingUser = repository.findByEmail(userInfo.getEmail());
         if(existingUser.isEmpty()){
             userInfo.setPassword(passwordEncoder.encode(userInfo.getPassword()));
+            userInfo.setRoles("ROLE_USER");
             repository.save(userInfo);
             return "user added to system";
         }else{
             throw new RuntimeException("User email taken");
         }
 
+    }
+
+    public List <UserInfo> viewAllUsers() {
+        return repository.findAll();
     }
 }

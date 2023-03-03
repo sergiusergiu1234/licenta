@@ -3,6 +3,8 @@ package com.StefanSergiu.Licenta.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 public class UserInfo {
     @Id
@@ -13,6 +15,15 @@ public class UserInfo {
     private String email;
     private String password;
     private String roles;    //probabil trebuie sa am role si in constructor
+
+    @OneToMany(mappedBy = "user")
+    private Set<Order> IssuedOrders;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Favorites> favoriteItem;
+
+    @OneToMany(mappedBy = "user")
+    private Set<ShoppingCart> shoppingCarts;
 
     public String getRoles() {
         return roles;

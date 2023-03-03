@@ -5,14 +5,14 @@ import com.StefanSergiu.Licenta.entity.UserInfo;
 import com.StefanSergiu.Licenta.service.JwtService;
 import com.StefanSergiu.Licenta.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -30,6 +30,11 @@ public class UserController {
     public String addNewUser(@RequestBody UserInfo userInfo){
         return userService.addUser(userInfo);
     }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/allUsers")
+    public List<UserInfo> getAllUsers (){return userService.viewAllUsers();}
+
 
     @PostMapping("/authenticate")
     public String authenticateAndGetToken(@RequestBody AuthRequest authRequest){

@@ -23,13 +23,18 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PreAuthorize("hasAuthority('ROLE_USER')")
-    @PostMapping(path = "/user/orders/my")
-    public void postOrder(){}
+
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(path = "/admin/orders/all")
     public List<Order> getAllOrders(){return orderService.getAllOrders(); }
 
 
+/*
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @PostMapping(path="/user/orders/new")
+    public String postOrder(){
+
+    }
+*/
 }
