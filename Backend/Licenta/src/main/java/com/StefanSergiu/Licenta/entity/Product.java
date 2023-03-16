@@ -1,9 +1,10 @@
 package com.StefanSergiu.Licenta.entity;
 
+import com.StefanSergiu.Licenta.dto.product.ProductDto;
 import jakarta.persistence.*;
+import lombok.Data;
 
-import java.util.Set;
-
+@Data
 @Entity
 @Table(name = "product")
 public class Product {
@@ -12,68 +13,30 @@ public class Product {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "product", targetEntity = OrderDetail.class,cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER)
-    private Set<OrderDetail> orderDetails;
-
-    @OneToMany(mappedBy = "product")
-    private Set<ShoppingCart>shoppingCart;
-
-    @OneToMany(mappedBy = "product")
-    private Set<Favorites> favorites;
+    private Float price;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @ManyToOne
-    @JoinColumn(name = "gender_id")
-    private Gender gender;
-
-    @ManyToOne
-    @JoinColumn(name = "brand_id")
+    @JoinColumn(name = "brand_id",nullable = false)
     private Brand brand;
 
-//    @OneToMany(mappedBy = "product", targetEntity = Favorites.class, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-//    private Set<Favorites> favorites;
+    @ManyToOne
+    @JoinColumn(name = "gender_id",nullable = false)
+    private Gender gender;
 
-    public Product() {
-    }
+//    TODO:
+//    category_id ManyToOne
+//    String descripton
+//    product -> cart many to many
 
 
-    public Long getId() {
-        return id;
-    }
 
-    public Product(String name, Set<OrderDetail> orderDetails){
-        this.name = name;
-        this.orderDetails = orderDetails;
-     //   this.favorites = favorites;
-    }
-
-//    public Set<Favorites> getFavorites() {
-//        return favorites;
-//    }
-//
-//    public void setFavorites(Set<Favorites> favorites) {
-//        this.favorites = favorites;
-//    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Set<OrderDetail> getOrderDetails() {
-        return orderDetails;
-    }
-
-    public void setOrderDetails(Set<OrderDetail> orderDetails) {
-        this.orderDetails = orderDetails;
+    public static Product from(ProductDto productDto){
+        Product product = new Product();
+        product.setId(productDto.getId());
+        product.setPrice((productDto.getPrice()));
+        return product;
     }
 }

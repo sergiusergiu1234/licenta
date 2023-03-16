@@ -1,8 +1,11 @@
 package com.StefanSergiu.Licenta.service;
 
+import com.StefanSergiu.Licenta.dto.UserDto;
 import com.StefanSergiu.Licenta.entity.UserInfo;
 import com.StefanSergiu.Licenta.repository.UserInfoRepository;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +14,7 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+    
     @Autowired
     private UserInfoRepository repository;
 
@@ -32,5 +36,14 @@ public class UserService {
 
     public List <UserInfo> viewAllUsers() {
         return repository.findAll();
+    }
+
+
+    public UserDto getLoggedInUser(String email) {
+        Optional<UserInfo> user = repository.findByEmail(email) ;
+        if(user==null){
+            throw new RuntimeException("user not found");
+        }
+        return new UserDto(user.get().getName(), user.get().getEmail());
     }
 }

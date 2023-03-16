@@ -62,10 +62,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http.cors().and().csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/orders/welcome","/users/new","/users/authenticate").permitAll()
+                .requestMatchers("/orders/welcome",
+                        "/users/signup","/users/signin",
+                        "/brands/all","/types/all",
+                        "/categories/all","/brands/**","/products/**","/genders/**","/swagger-ui/**")
+                .permitAll()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/users/**")
-                .authenticated().and()
+                .authorizeHttpRequests().requestMatchers("/users/**",
+                        "/brands/admin/add/**","/brands/admin/delete/**",
+                        "/types/admin/**","/type/admin/delete/**",
+                        "/categories/admin/**","/products/admin/**","/genders/admin/**")
+                .authenticated()
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
