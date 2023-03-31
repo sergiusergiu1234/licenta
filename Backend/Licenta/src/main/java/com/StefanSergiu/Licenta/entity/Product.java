@@ -1,6 +1,7 @@
 package com.StefanSergiu.Licenta.entity;
 
 import com.StefanSergiu.Licenta.dto.product.ProductDto;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -26,10 +27,16 @@ public class Product {
     @JoinColumn(name = "gender_id",nullable = false)
     private Gender gender;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id",nullable = false)
+    private Category category;
+
 //    TODO:
-//    category_id ManyToOne
 //    String descripton
 //    product -> cart many to many
+//     product -> order_detail one to many
+//     Many to one favorite
+    // one to many product_attribute
 
 
 

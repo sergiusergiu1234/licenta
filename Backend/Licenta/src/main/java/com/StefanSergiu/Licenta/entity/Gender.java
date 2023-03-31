@@ -18,7 +18,7 @@ public class Gender {
     @Column(nullable = false,unique = true)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy ="gender",cascade = CascadeType.ALL)
     private List<Product> products = new ArrayList<>();
 
     public static Gender from(GenderDto genderDto){

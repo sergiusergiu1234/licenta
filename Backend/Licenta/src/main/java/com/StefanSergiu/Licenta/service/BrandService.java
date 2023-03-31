@@ -1,9 +1,13 @@
 package com.StefanSergiu.Licenta.service;
 
 import com.StefanSergiu.Licenta.entity.Brand;
+import com.StefanSergiu.Licenta.entity.Category;
+import com.StefanSergiu.Licenta.entity.Gender;
 import com.StefanSergiu.Licenta.entity.Product;
 import com.StefanSergiu.Licenta.exception.ProductIsAlreadyAssignedToBrandException;
 import com.StefanSergiu.Licenta.repository.BrandRepository;
+import com.StefanSergiu.Licenta.repository.GenderRepository;
+import com.StefanSergiu.Licenta.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +23,13 @@ public class BrandService {
 
     @Autowired
     BrandRepository brandRepository;
+    @Autowired
+    ProductRepository productRepository;
 
-
+    @Autowired
+    ProductService productService;
+    @Autowired
+    GenderRepository genderRepository;
 
     public Brand addBrand(Brand brand){return brandRepository.save(brand);}
 
@@ -37,6 +46,16 @@ public class BrandService {
     @Transactional
     public Brand deleteBrand(Long id){
         Brand brand = getBrand(id);
+        //for each product of the brand
+        List<Product> products = brand.getProducts();       //remove asociation between each product and its gender
+        for(Product product : products){
+           Gender gender = product.getGender();
+           gender.removeProduct(product);
+
+           Category category = product.getCategory();       //remove product --- category
+           category.removeProduct(product);
+        }
+
         brandRepository.delete(brand);
         return brand;
     }

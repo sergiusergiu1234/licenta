@@ -17,7 +17,7 @@ public class Brand {
     @Column(nullable = false,unique = true)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "brand",cascade = CascadeType.ALL)
     private List<Product> products = new ArrayList<>();
 
     public static Brand from(BrandDto brandDto){

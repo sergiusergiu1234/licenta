@@ -1,6 +1,7 @@
 package com.StefanSergiu.Licenta.dto.product;
 
 import com.StefanSergiu.Licenta.dto.brand.PlainBrandDto;
+import com.StefanSergiu.Licenta.dto.category.PlainCategoryDto;
 import com.StefanSergiu.Licenta.dto.gender.PlainGenderDto;
 import com.StefanSergiu.Licenta.entity.Product;
 import lombok.Data;
@@ -16,6 +17,7 @@ public class ProductDto {
     private Float price;
     private PlainBrandDto plainBrandDto;
     private PlainGenderDto plainGenderDto;
+    private PlainCategoryDto plainCategoryDto;
     public static ProductDto from(Product product) {
         ProductDto productDto = new ProductDto();
         productDto.setId(product.getId());
@@ -26,6 +28,9 @@ public class ProductDto {
         }
         if(Objects.nonNull(product.getGender())){
             productDto.setPlainGenderDto(PlainGenderDto.from(product.getGender()));
+        }
+        if(Objects.nonNull(product.getCategory())){
+            productDto.setPlainCategoryDto(PlainCategoryDto.from(product.getCategory()));
         }
         return productDto;
     }

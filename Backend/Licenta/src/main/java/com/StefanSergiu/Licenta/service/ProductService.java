@@ -2,9 +2,11 @@ package com.StefanSergiu.Licenta.service;
 
 import com.StefanSergiu.Licenta.dto.product.CreateNewProductModel;
 import com.StefanSergiu.Licenta.entity.Brand;
+import com.StefanSergiu.Licenta.entity.Category;
 import com.StefanSergiu.Licenta.entity.Gender;
 import com.StefanSergiu.Licenta.entity.Product;
 import com.StefanSergiu.Licenta.repository.BrandRepository;
+import com.StefanSergiu.Licenta.repository.CategoryRepository;
 import com.StefanSergiu.Licenta.repository.GenderRepository;
 import com.StefanSergiu.Licenta.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -26,6 +28,8 @@ public class ProductService {
 
    @Autowired
    GenderRepository genderRepository;
+    @Autowired
+     CategoryRepository categoryRepository;
 
     public Product getProduct(Long productId) {
         return productRepository.findById(productId).orElseThrow(()->new EntityNotFoundException("Product with id " + productId + " does not exist"));
@@ -45,12 +49,22 @@ public class ProductService {
             throw new EntityNotFoundException("Gender " + createNewProductModel.getGender_name() + " not found");
         }
 
+        Category category = categoryRepository.findByName(createNewProductModel.getCategory_name());
+        if(category == null){
+            throw new EntityNotFoundException("Category " + createNewProductModel.getCategory_name() + " not found");
+        }
+        //set every field of the product (from createNewProductModel)
         product.setGender(gender);
         product.setBrand(brand);
+        product.setCategory(category);
         product.setName(createNewProductModel.getName());
         product.setPrice(createNewProductModel.getPrice());
+
+        //add the product to the other side of every relationship
         brand.addProduct(product);
         gender.addProduct(product);
+        category.addProduct(product);
+
         return productRepository.save(product);
     }
 
@@ -66,11 +80,12 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-
+    @Transactional
     public Product deleteProduct(Long id){
         Product product = getProduct(id);
         product.getBrand().getProducts().remove(product);   //detach product from brand
         product.getGender().getProducts().remove(product);  //detach product from gender
+        product.getCategory().getProducts().remove(product); //detach product from category
         productRepository.delete(product);
         return product;
     }
