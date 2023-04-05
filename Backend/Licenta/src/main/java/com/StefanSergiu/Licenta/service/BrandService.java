@@ -46,16 +46,6 @@ public class BrandService {
     @Transactional
     public Brand deleteBrand(Long id){
         Brand brand = getBrand(id);
-        //for each product of the brand
-        List<Product> products = brand.getProducts();       //remove asociation between each product and its gender
-        for(Product product : products){
-           Gender gender = product.getGender();
-           gender.removeProduct(product);
-
-           Category category = product.getCategory();       //remove product --- category
-           category.removeProduct(product);
-        }
-
         brandRepository.delete(brand);
         return brand;
     }

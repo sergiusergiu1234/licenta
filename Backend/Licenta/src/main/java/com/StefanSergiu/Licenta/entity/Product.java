@@ -3,20 +3,29 @@ package com.StefanSergiu.Licenta.entity;
 import com.StefanSergiu.Licenta.dto.product.ProductDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-@Data
+//import java.io.Serial;
+import java.io.Serializable;
+import java.util.*;
+
+@Table
 @Entity
-@Table(name = "product")
-public class Product {
+@Data
+public class Product{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(unique = true)
     private String name;
 
+    @Column
     private Float price;
 
     @ManyToOne
@@ -30,20 +39,6 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id",nullable = false)
     private Category category;
-
-//    TODO:
-//    String descripton
-//    product -> cart many to many
-//     product -> order_detail one to many
-//     Many to one favorite
-    // one to many product_attribute
-
-
-
-    public static Product from(ProductDto productDto){
-        Product product = new Product();
-        product.setId(productDto.getId());
-        product.setPrice((productDto.getPrice()));
-        return product;
-    }
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
+    private List<ProductAttribute> productAttributes=new ArrayList<>();
 }

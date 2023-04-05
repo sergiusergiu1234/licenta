@@ -1,5 +1,6 @@
 package com.StefanSergiu.Licenta.dto.type;
 
+import com.StefanSergiu.Licenta.dto.attribute.PlainAttributeDto;
 import com.StefanSergiu.Licenta.dto.category.PlainCategoryDto;
 import com.StefanSergiu.Licenta.entity.Type;
 import lombok.Data;
@@ -14,13 +15,17 @@ public class TypeDto {
     private String name;
     private List<PlainCategoryDto> categoryDtoList = new ArrayList<>();
 
+    private List<PlainAttributeDto> attributeDtoList = new ArrayList<>();
     //TODO: attribute link
 
     public static TypeDto from(Type type){
         TypeDto typeDto = new TypeDto();
         typeDto.setId(type.getId());
         typeDto.setName(type.getName());
+        //get all categories linked to type and transform into plainDtos
         typeDto.setCategoryDtoList(type.getCategories().stream().map(PlainCategoryDto::from).collect(Collectors.toList()));
+        //get all types linked to type and transform into plainDtos
+        typeDto.setAttributeDtoList(type.getAttributes().stream().map(PlainAttributeDto::from).collect(Collectors.toList()));
         return typeDto;
     }
 }

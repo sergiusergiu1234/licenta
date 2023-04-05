@@ -65,13 +65,13 @@ public class SecurityConfig {
                 .requestMatchers("/orders/welcome",
                         "/users/signup","/users/signin",
                         "/brands/all","/types/all",
-                        "/categories/all","/brands/**","/products/**","/genders/**","/swagger-ui/**","/types/**")
+                        "/categories/all","/brands/**","/products/**","/genders/**","/swagger-ui/**","/types/**","/attributes/**","/productAttributes/**")
                 .permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/users/**",
                         "/brands/admin/add/**","/brands/admin/delete/**",
                         "/types/admin/**","/type/admin/delete/**",
-                        "/categories/admin/**","/products/admin/**","/genders/admin/**","/types/admin/**")
+                        "/categories/admin/**","/products/admin/**","/genders/admin/**","/types/admin/**","/attributes/admin/**","/productAttributes/admin/**")
                 .authenticated()
                 .and()
                 .sessionManagement()

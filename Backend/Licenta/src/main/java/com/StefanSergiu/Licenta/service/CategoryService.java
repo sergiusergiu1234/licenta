@@ -49,17 +49,6 @@ public class CategoryService {
     public Category deleteCategory(Long id){
         Category category = getCategory(id);
 
-        Type type = category.getType();
-        type.removeCategory(category);
-
-        List<Product> products = category.getProducts();
-        for(Product product:products){
-            Brand brand = product.getBrand();
-            brand.removeProduct(product);
-
-            Gender gender = product.getGender();
-            gender.removeProduct(product);
-        }
         categoryRepository.delete(category);
         return category;
     }

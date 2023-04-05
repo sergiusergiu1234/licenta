@@ -41,24 +41,6 @@ public class TypeService {
         Type type = typeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Type not found with id " + id));
 
-        List<Category> categories = new ArrayList<>(type.getCategories());
-        for (Category category : categories) {
-            List<Product> products = new ArrayList<>(category.getProducts());
-            for (Product product : products) {
-                category.removeProduct(product);
-
-                Brand brand = product.getBrand();
-                brand.removeProduct(product);
-
-
-                Gender gender =product.getGender();
-                gender.removeProduct(product);
-
-                productRepository.delete(product);
-            }
-           // type.removeCategory(category);
-            categoryRepository.delete(category);
-        }
 
         typeRepository.delete(type);
         return type;

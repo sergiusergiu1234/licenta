@@ -3,10 +3,15 @@ package com.StefanSergiu.Licenta.dto.product;
 import com.StefanSergiu.Licenta.dto.brand.PlainBrandDto;
 import com.StefanSergiu.Licenta.dto.category.PlainCategoryDto;
 import com.StefanSergiu.Licenta.dto.gender.PlainGenderDto;
+import com.StefanSergiu.Licenta.dto.productAttribute.PlainProductAttributeDto;
+import com.StefanSergiu.Licenta.dto.productAttribute.ProductAttributeDto;
 import com.StefanSergiu.Licenta.entity.Product;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Data
 public class ProductDto {
@@ -18,6 +23,8 @@ public class ProductDto {
     private PlainBrandDto plainBrandDto;
     private PlainGenderDto plainGenderDto;
     private PlainCategoryDto plainCategoryDto;
+    //**
+    private List<PlainProductAttributeDto> productAttributeDtoList = new ArrayList<>();
     public static ProductDto from(Product product) {
         ProductDto productDto = new ProductDto();
         productDto.setId(product.getId());
@@ -32,6 +39,8 @@ public class ProductDto {
         if(Objects.nonNull(product.getCategory())){
             productDto.setPlainCategoryDto(PlainCategoryDto.from(product.getCategory()));
         }
+        //**
+        productDto.setProductAttributeDtoList(product.getProductAttributes().stream().map(PlainProductAttributeDto::from).collect(Collectors.toList()));
         return productDto;
     }
 }
