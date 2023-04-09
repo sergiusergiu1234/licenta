@@ -1,28 +1,33 @@
 package com.StefanSergiu.Licenta.dto.product;
 
+import com.StefanSergiu.Licenta.config.BucketName;
 import com.StefanSergiu.Licenta.dto.brand.PlainBrandDto;
 import com.StefanSergiu.Licenta.dto.category.PlainCategoryDto;
 import com.StefanSergiu.Licenta.dto.gender.PlainGenderDto;
 import com.StefanSergiu.Licenta.dto.productAttribute.PlainProductAttributeDto;
 import com.StefanSergiu.Licenta.dto.productAttribute.ProductAttributeDto;
 import com.StefanSergiu.Licenta.entity.Product;
+import com.StefanSergiu.Licenta.service.FileStore;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
 public class ProductDto {
-
     private Long id;
     private String name;
-
     private Float price;
-    private PlainBrandDto plainBrandDto;
-    private PlainGenderDto plainGenderDto;
-    private PlainCategoryDto plainCategoryDto;
+    private PlainBrandDto brand;
+    private PlainGenderDto gender;
+    private PlainCategoryDto category;
+    private byte[] image;
     //**
     private List<PlainProductAttributeDto> productAttributeDtoList = new ArrayList<>();
     public static ProductDto from(Product product) {
@@ -30,17 +35,41 @@ public class ProductDto {
         productDto.setId(product.getId());
         productDto.setName(product.getName());
         productDto.setPrice(product.getPrice());
+
         if(Objects.nonNull(product.getBrand())){
-            productDto.setPlainBrandDto(PlainBrandDto.from(product.getBrand()));
+            productDto.setBrand(PlainBrandDto.from(product.getBrand()));
         }
         if(Objects.nonNull(product.getGender())){
-            productDto.setPlainGenderDto(PlainGenderDto.from(product.getGender()));
+            productDto.setGender(PlainGenderDto.from(product.getGender()));
         }
         if(Objects.nonNull(product.getCategory())){
-            productDto.setPlainCategoryDto(PlainCategoryDto.from(product.getCategory()));
+            productDto.setCategory(PlainCategoryDto.from(product.getCategory()));
         }
         //**
         productDto.setProductAttributeDtoList(product.getProductAttributes().stream().map(PlainProductAttributeDto::from).collect(Collectors.toList()));
+
+        return productDto;
+    }
+
+    public static ProductDto from(Product product, byte[] image) {
+        ProductDto productDto = new ProductDto();
+        productDto.setId(product.getId());
+        productDto.setName(product.getName());
+        productDto.setPrice(product.getPrice());
+
+        if(Objects.nonNull(product.getBrand())){
+            productDto.setBrand(PlainBrandDto.from(product.getBrand()));
+        }
+        if(Objects.nonNull(product.getGender())){
+            productDto.setGender(PlainGenderDto.from(product.getGender()));
+        }
+        if(Objects.nonNull(product.getCategory())){
+            productDto.setCategory(PlainCategoryDto.from(product.getCategory()));
+        }
+        //**
+        productDto.setProductAttributeDtoList(product.getProductAttributes().stream().map(PlainProductAttributeDto::from).collect(Collectors.toList()));
+
+        productDto.image=image;
         return productDto;
     }
 }

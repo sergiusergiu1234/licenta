@@ -1,25 +1,34 @@
 package com.StefanSergiu.Licenta.service;
 
 import com.StefanSergiu.Licenta.dto.product.CreateNewProductModel;
+import com.StefanSergiu.Licenta.dto.product.ProductDto;
+import com.StefanSergiu.Licenta.dto.product.ProductRequestModel;
 import com.StefanSergiu.Licenta.entity.Brand;
 import com.StefanSergiu.Licenta.entity.Category;
 import com.StefanSergiu.Licenta.entity.Gender;
 import com.StefanSergiu.Licenta.entity.Product;
+import com.StefanSergiu.Licenta.filter.ProductSpecification;
 import com.StefanSergiu.Licenta.repository.BrandRepository;
 import com.StefanSergiu.Licenta.repository.CategoryRepository;
 import com.StefanSergiu.Licenta.repository.GenderRepository;
 import com.StefanSergiu.Licenta.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
+@AllArgsConstructor
 public class ProductService {
+    @Autowired
+    FileStore fileStore;
+
    @Autowired
     ProductRepository productRepository;
 
@@ -30,6 +39,9 @@ public class ProductService {
    GenderRepository genderRepository;
     @Autowired
      CategoryRepository categoryRepository;
+
+    @Autowired
+    ProductSpecification productSpecification;
 
     public Product getProduct(Long productId) {
         return productRepository.findById(productId).orElseThrow(()->new EntityNotFoundException("Product with id " + productId + " does not exist"));
@@ -53,12 +65,16 @@ public class ProductService {
         if(category == null){
             throw new EntityNotFoundException("Category " + createNewProductModel.getCategory_name() + " not found");
         }
+
+
         //set every field of the product (from createNewProductModel)
         product.setGender(gender);
         product.setBrand(brand);
         product.setCategory(category);
         product.setName(createNewProductModel.getName());
         product.setPrice(createNewProductModel.getPrice());
+      //  product.setImageFileName(fileName);
+       // product.setImagePath(path);
 
         //add the product to the other side of every relationship
         brand.addProduct(product);
@@ -66,6 +82,12 @@ public class ProductService {
         category.addProduct(product);
 
         return productRepository.save(product);
+    }
+
+
+    public byte[] downloadProductImage(Long id) {
+        Product product = productRepository.findById(id).get();
+        return fileStore.download(product.getImagePath(), product.getImageFileName());
     }
 
     public List<Product> getProducts(){
@@ -97,5 +119,17 @@ public class ProductService {
         return productToEdit;          //changes will be persisted
     }
 
+    @Transactional
+    public void updateProductImage(Long productId, String imagePath, String imageFileName) {
+        Product product = getProduct(productId);
+        product.setImageFileName(imageFileName);
+        product.setImagePath(imagePath);
+        productRepository.save(product);
+    }
 
+    public List<Product> getAllProducts(ProductRequestModel request){
+        List<Product> list = null;
+        list = productRepository.findAll(productSpecification.getProducts(request));
+        return list;
+    }
 }

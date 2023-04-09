@@ -1,0 +1,19 @@
+.navbar{
+  
+    display:flex ;
+    flex-direction: row;
+    width:100%;
+    background-color: rgb(55, 173, 212);
+    margin-top: 0;
+    justify-content: flex-end;
+  }
+  .navbarIcons {
+    all: unset;
+    cursor: pointer;
+    width: 20%;
+    margin-left: 0.25rem;
+    margin-right: 5rem;
+  }
+  .navbarIcons:hover {
+    color: red;
+  }

@@ -4,18 +4,18 @@ import com.StefanSergiu.Licenta.dto.product.ProductDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 //import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
 @Table
+@Builder
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,4 +41,7 @@ public class Product{
     private Category category;
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
     private List<ProductAttribute> productAttributes=new ArrayList<>();
+
+    private String imagePath;
+    private String imageFileName;
 }
