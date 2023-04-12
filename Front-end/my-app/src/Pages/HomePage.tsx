@@ -17,6 +17,7 @@ const HomePage =()=>{
           .catch(error => console.error(error));
       }, []);
       
+
     return(<div className="homepage">
         <h1>Home page</h1>
         <div>

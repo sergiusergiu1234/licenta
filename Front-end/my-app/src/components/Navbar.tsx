@@ -12,7 +12,7 @@ const Navbar = ()=>{
     const navigate=useNavigate();
 
     const handleAccount =()=>{
-        navigate('/LoginPage')
+        navigate('/MyAccount')
     }
     const handleFavorites=()=>{
         navigate('/Favorites')

@@ -100,7 +100,7 @@ public class ProductController {
         metadata.put("Content-Type", file.getContentType());
         metadata.put("Content-Length", String.valueOf(file.getSize()));
         //Save Image in S3
-        String path = String.format("%s/images", BucketName.PRODUCT_IMAGE.getBucketName(), UUID.randomUUID());
+        String path = String.format("%s/images/%s", BucketName.PRODUCT_IMAGE.getBucketName(), UUID.randomUUID());
         String fileName = String.format("%s", file.getOriginalFilename());
         try {
             fileStore.upload(path, fileName, Optional.of(metadata), file.getInputStream());

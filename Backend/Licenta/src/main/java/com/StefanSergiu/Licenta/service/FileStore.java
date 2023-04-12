@@ -54,6 +54,6 @@ public class FileStore {
     public void deleteImage(String path, String key){
         String objectKey = path + "/" +key;
 
-        amazonS3.deleteObject(new DeleteObjectRequest("spring-amazon-image-storage",objectKey));
+        amazonS3.deleteObject(path,key);
     }
 }

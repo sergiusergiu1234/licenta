@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Entity
 @Getter
 @Setter
@@ -20,12 +18,19 @@ public class UserInfo {
     @Column(name = "id", nullable = false)
     private int id;
     @Column(nullable = false)
-    private String name;
+    private String username;
     @Column(unique = true,nullable = false)
     private String email;
+    @Column(nullable = false)
     private String password;
-    private String roles;    //probabil trebuie sa am role si in constructor
 
+    @Column(nullable = false)
+    private String firstName;
+    @Column(nullable = false)
+    private String lastName;
+    private String roles;
+    @Column(nullable = false)
+    private String phoneNumber;
 
 
 }

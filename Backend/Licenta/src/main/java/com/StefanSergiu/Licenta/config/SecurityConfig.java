@@ -65,7 +65,7 @@ public class SecurityConfig {
                         "/categories/all","/brands/**","/products/**","/genders/**","/types/**","/attributes/**","/productAttributes/**")
                 .permitAll()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/users/**",
+                .authorizeHttpRequests().requestMatchers("/users/**","/users/me/**",
                         "/brands/admin/add/**","/brands/admin/delete/**",
                         "/types/admin/**","/type/admin/delete/**",
                         "/categories/admin/**","/products/admin/**","/genders/admin/**","/types/admin/**","/attributes/admin/**","/productAttributes/admin/**")

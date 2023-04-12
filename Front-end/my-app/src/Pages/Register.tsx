@@ -7,6 +7,10 @@ const USER_REGEX = /^[a-zA-Z][a-zA-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/
 const REGISTER_URL = 'users/signup';
+const NAME_REGEX= /^[A-Za-z]+(?:\s+[A-Za-z]+)*$/ 
+const MOBILE_REGEX = /^0\d{9}$/
+
+
 const Register = () => {
     const userRef = useRef<HTMLInputElement>(null);
     const errRef = useRef<HTMLInputElement>(null);
@@ -28,6 +32,17 @@ const Register = () => {
     const [validMatch, setValidMatch] = useState(false);
     const [matchFocus, setMatchFocus] = useState(false);
 
+    const [firstName, setFirstName] = useState('');
+    const [validFirstName, setValidFirstName] = useState(false);
+    const [firstNameFOcus,setFirstNameFocus]=useState(false);
+
+    const [lastName, setLastName] = useState('');
+    const [validLastName, setValidLastName] = useState(false);
+    const [lastNameFOcus,setLastNameFocus]=useState(false);
+
+    const [phoneNumber,setPhoneNumber] = useState('');
+    const [validPhoneNumber,setValidPhoneNumber] = useState(false);
+    const [phoneNumberFocus, setPhoneNumberFocus] = useState(false);
 
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
@@ -51,6 +66,28 @@ const Register = () => {
         setValidEmail(result);
     }, [email])
 
+    useEffect(()=>{
+        const result = NAME_REGEX.test(firstName);
+        console.log(result)
+        console.log(firstName)
+        setValidFirstName(result);
+    },[firstName])
+
+    useEffect(()=>{
+        const result = NAME_REGEX.test(lastName);
+        console.log(result)
+        console.log(lastName)
+        setValidLastName(result);
+    },[firstName])
+
+    useEffect(()=>{
+        const result = MOBILE_REGEX.test(phoneNumber);
+        console.log(result)
+        console.log(phoneNumber)
+        setValidPhoneNumber(result);
+    },[lastName])
+
+
     useEffect(() => {
         const result = PWD_REGEX.test(pwd);
         console.log(result);
@@ -68,7 +105,7 @@ const Register = () => {
         e.preventDefault();
         try{
             const response = await axios.post(REGISTER_URL,
-                JSON.stringify({name: user, password: pwd, email: email}),{
+                JSON.stringify({username: user, password: pwd, email: email,firstName,lastName,phoneNumber}),{
                     headers : { 'Content-Type': 'application/json'}
                 }
             );
@@ -149,6 +186,46 @@ const Register = () => {
                         >
                             Invalid email!
                         </p>
+
+
+                        <label htmlFor="firstName">First Name:</label>
+                        <input
+                            type="text"
+                            id="firstName"
+                            onChange={(e) => setFirstName(e.target.value)}
+                            required
+                            onFocus={() => {
+                                setFirstNameFocus(true);
+                            }}
+                            onBlur={() => setFirstNameFocus(false)}
+                        />
+                        
+
+                        <label htmlFor="lastName">Last Name:</label>
+                        <input
+                            type="text"
+                            id="lastName"
+                            onChange={(e) => setLastName(e.target.value)}
+                            required
+                            onFocus={() => {
+                                setLastNameFocus(true);
+                            }}
+                            onBlur={() => setLastNameFocus(false)}
+                        />
+                      
+                      <label htmlFor="phoneNumber">Phone number:</label>
+                        <input
+                            type="text"
+                            id="phoneNumber"
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                            required
+                            onFocus={() => {
+                                setPhoneNumberFocus(true);
+                            }}
+                            onBlur={() => setPhoneNumberFocus(false)}
+                        />
+                      
+
                         <label htmlFor="password">Password:</label>
                         <input
                             type="password"
