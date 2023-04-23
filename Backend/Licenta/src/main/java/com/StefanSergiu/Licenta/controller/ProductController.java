@@ -13,6 +13,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
@@ -23,12 +24,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.apache.http.entity.ContentType.*;
 
 @RestController
 @RequestMapping("/products")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProductController {
     @Autowired
     ProductService productService;
@@ -43,7 +46,6 @@ public class ProductController {
     }
 
     @GetMapping
-    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<List<ProductDto>> getproducts(@RequestParam(name = "name", required = false) String name,
                                                         @RequestParam(name = "brand_name",required = false)String brand_name,
                                                         @RequestParam(name = "gender", required = false)String gender,
@@ -58,16 +60,19 @@ public class ProductController {
             //construct the dto with product info and image
             productsDto.add(ProductDto.from(product,imageData));
         }
-        return new ResponseEntity<>(productsDto, HttpStatus.OK);
+
+        //cache the products list
+        CacheControl cacheControl = CacheControl.maxAge(30, TimeUnit.SECONDS);
+        return ResponseEntity.ok()
+                .cacheControl(cacheControl)
+                .body(productsDto);
     }
 
-    @GetMapping("/{brand_name}")
-    public ResponseEntity<List<ProductDto>> getProductsByBrand(@PathVariable final String brand_name){
-        List<Product> products = productService.getProductsByBrandName(brand_name);
-        List<ProductDto>productsDto = products.stream().map(ProductDto::from).collect(Collectors.toList());
-        return new ResponseEntity<>(productsDto,HttpStatus.OK);
+    @GetMapping("/{productId}")
+    public ResponseEntity<ProductDto> getProduct(@PathVariable final Long productId){
+        Product product = productService.getProduct(productId);
+        return new ResponseEntity<>(new ProductDto().from(product),HttpStatus.OK);
     }
-
     @DeleteMapping(value ="/admin/{id}")
     public ResponseEntity<ProductDto> deleteProduct(@PathVariable final Long id){
         Product product = productService.deleteProduct(id);

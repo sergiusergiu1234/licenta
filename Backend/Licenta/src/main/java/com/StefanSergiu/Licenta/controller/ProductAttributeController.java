@@ -8,6 +8,7 @@ import com.StefanSergiu.Licenta.service.ProductAttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,9 +34,10 @@ public class ProductAttributeController {
         return new ResponseEntity<>(ProductAttributeDto.from(productAttribute),HttpStatus.OK);
     }
 
-    @DeleteMapping("admin/delete/{id}")
-    public ResponseEntity<ProductAttributeDto> deleteProductAttribute(@PathVariable final Long id){
-        ProductAttribute productAttribute = productAttributeService.deleteProductAttribute(id);
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @DeleteMapping("admin/delete/{productId}&{attributeId}")
+    public ResponseEntity<ProductAttributeDto> deleteProductAttribute(@PathVariable final Long productId, @PathVariable final Long attributeId){
+        ProductAttribute productAttribute = productAttributeService.deleteProductAttribute(productId,attributeId);
         return new ResponseEntity<>(ProductAttributeDto.from(productAttribute),HttpStatus.OK);
     }
 }

@@ -65,10 +65,11 @@ public class SecurityConfig {
                         "/categories/all","/brands/**","/products/**","/genders/**","/types/**","/attributes/**","/productAttributes/**")
                 .permitAll()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/users/**","/users/me/**",
+                .authorizeHttpRequests().requestMatchers("/users/**","/users/me/**","/favorites/**",
                         "/brands/admin/add/**","/brands/admin/delete/**",
                         "/types/admin/**","/type/admin/delete/**",
-                        "/categories/admin/**","/products/admin/**","/genders/admin/**","/types/admin/**","/attributes/admin/**","/productAttributes/admin/**")
+                        "/categories/admin/**","/products/admin/**","/genders/admin/**","/types/admin/**","/attributes/admin/**","/productAttributes/admin/**","/favorites/**",
+                        "/favorites/delete/**")
                 .authenticated()
                 .and()
                 .logout()

@@ -6,6 +6,7 @@ import com.StefanSergiu.Licenta.entity.Type;
 import com.StefanSergiu.Licenta.repository.AttributeRepository;
 import com.StefanSergiu.Licenta.repository.TypeRepository;
 import jakarta.persistence.EntityNotFoundException;
+
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,6 @@ public class AttributeService {
             throw new EntityNotFoundException("Type with name "+ createNewAttributeDto.getType_name() + " doesn't exist!");
         }
         attribute.setType(type);
-
         attribute.setName(createNewAttributeDto.getName());
 
         //add attribute to the other side of the relationship
@@ -48,6 +48,7 @@ public class AttributeService {
     @Transactional
     public Attribute deleteAttribute(Long id){
         Attribute attribute = getAttribute(id);
+        attribute.getType().getCategories().remove(attribute); //detach from type
         attributeRepository.delete(attribute);
         return attribute;
     }

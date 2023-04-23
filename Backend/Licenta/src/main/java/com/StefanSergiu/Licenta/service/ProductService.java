@@ -73,9 +73,7 @@ public class ProductService {
         product.setCategory(category);
         product.setName(createNewProductModel.getName());
         product.setPrice(createNewProductModel.getPrice());
-      //  product.setImageFileName(fileName);
-       // product.setImagePath(path);
-
+        product.setDescription(createNewProductModel.getDescription());
         //add the product to the other side of every relationship
         brand.addProduct(product);
         gender.addProduct(product);

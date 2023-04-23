@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -31,6 +34,9 @@ public class UserInfo {
     private String roles;
     @Column(nullable = false)
     private String phoneNumber;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Favorite> favorites = new ArrayList<>();
 
 
 }

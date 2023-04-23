@@ -16,10 +16,10 @@ public class Type {
     @Column(nullable = false,unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "type",cascade =CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "type",cascade =CascadeType.ALL,fetch = FetchType.EAGER,orphanRemoval = true)
     private List<Category> categories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "type",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "type",cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
     private List<Attribute> attributes = new ArrayList<>();
 
     public static Type from(TypeDto typeDto){

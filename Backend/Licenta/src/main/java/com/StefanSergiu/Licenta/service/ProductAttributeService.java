@@ -34,9 +34,16 @@ public class ProductAttributeService {
     private AttributeRepository attributeRepository;
 
     @Transactional
-    public ProductAttribute getProductAttribute(Long id){
-        return productAttributeRepository.findById(id)
-                .orElseThrow(()->new EntityNotFoundException("ProductAttribute with id "+ id+ " not found!"));
+    public ProductAttribute getProductAttribute(Long productId,Long attributeId){
+        Product product = productRepository.findById(productId).orElseThrow(()->new EntityNotFoundException());
+        Attribute attribute = attributeRepository.findById(attributeId).orElseThrow(()->new EntityNotFoundException());
+        ProductAttributeKey productAttributeKey = new ProductAttributeKey();
+        productAttributeKey.setAttributeId(attributeId);
+        productAttributeKey.setProductId(productId);
+
+        return productAttributeRepository.findById(productAttributeKey)
+                .orElseThrow(()->new EntityNotFoundException("ProductAttribute with id "+ productAttributeKey+ " not found!"));
+
     }
     @Transactional
     public ProductAttribute createProductAttribute(CreateProductAttributeModel createProductAttributeModel) {
@@ -72,8 +79,8 @@ public class ProductAttributeService {
     }
 
     @Transactional
-    public ProductAttribute deleteProductAttribute(Long id){
-        ProductAttribute productAttribute = getProductAttribute(id);
+    public ProductAttribute deleteProductAttribute(Long product_id, Long attribute_id){
+        ProductAttribute productAttribute = getProductAttribute(product_id,attribute_id);
         //may need to detach but try this first
         productAttributeRepository.delete(productAttribute);
         return productAttribute;

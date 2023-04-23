@@ -48,7 +48,7 @@ public class CategoryService {
     @Transactional
     public Category deleteCategory(Long id){
         Category category = getCategory(id);
-
+        category.getType().getCategories().remove(category);    //detach category from type
         categoryRepository.delete(category);
         return category;
     }

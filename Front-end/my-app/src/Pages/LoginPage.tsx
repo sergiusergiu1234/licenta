@@ -6,6 +6,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 const LOGIN_URL = '/users/signin';
 
 const LoginPage = () => {
+
     const { setAuth } = useAuth();
 
     const navigate = useNavigate();
@@ -55,6 +56,18 @@ const LoginPage = () => {
             setUser('');
             setPwd('');
             navigate(from, {replace: true});
+
+            const token = window.localStorage.getItem('accessToken');
+            fetch('http://localhost:8080/favorites',{
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => localStorage.setItem("favorites",JSON.stringify(data)))
+            .catch(error => console.log(error));
+
         } catch (err:any) {
             if (!err?.response) {
                 setErrMsg('No Server Response');

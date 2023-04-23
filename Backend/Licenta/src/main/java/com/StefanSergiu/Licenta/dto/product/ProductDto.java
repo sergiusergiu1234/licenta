@@ -6,7 +6,9 @@ import com.StefanSergiu.Licenta.dto.category.PlainCategoryDto;
 import com.StefanSergiu.Licenta.dto.gender.PlainGenderDto;
 import com.StefanSergiu.Licenta.dto.productAttribute.PlainProductAttributeDto;
 import com.StefanSergiu.Licenta.dto.productAttribute.ProductAttributeDto;
+import com.StefanSergiu.Licenta.entity.Attribute;
 import com.StefanSergiu.Licenta.entity.Product;
+import com.StefanSergiu.Licenta.entity.ProductAttribute;
 import com.StefanSergiu.Licenta.service.FileStore;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
@@ -27,6 +29,7 @@ public class ProductDto {
     private PlainBrandDto brand;
     private PlainGenderDto gender;
     private PlainCategoryDto category;
+    private String description;
     private byte[] image;
     //**
     private List<PlainProductAttributeDto> productAttributeDtoList = new ArrayList<>();
@@ -35,6 +38,11 @@ public class ProductDto {
         productDto.setId(product.getId());
         productDto.setName(product.getName());
         productDto.setPrice(product.getPrice());
+        productDto.setDescription(product.getDescription());
+
+
+
+
 
         if(Objects.nonNull(product.getBrand())){
             productDto.setBrand(PlainBrandDto.from(product.getBrand()));
@@ -48,6 +56,7 @@ public class ProductDto {
         //**
         productDto.setProductAttributeDtoList(product.getProductAttributes().stream().map(PlainProductAttributeDto::from).collect(Collectors.toList()));
 
+
         return productDto;
     }
 
@@ -56,6 +65,7 @@ public class ProductDto {
         productDto.setId(product.getId());
         productDto.setName(product.getName());
         productDto.setPrice(product.getPrice());
+        productDto.setDescription(product.getDescription());
 
         if(Objects.nonNull(product.getBrand())){
             productDto.setBrand(PlainBrandDto.from(product.getBrand()));

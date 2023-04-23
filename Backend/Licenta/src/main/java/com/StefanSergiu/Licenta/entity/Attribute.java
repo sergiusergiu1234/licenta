@@ -17,12 +17,11 @@ import java.util.List;
 import java.util.Set;
 
 
-@Table
-@Entity
 @Data
+@Entity
 public class Attribute{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id",nullable = false)
     private Long id;
     @Column(nullable = false)
@@ -30,9 +29,9 @@ public class Attribute{
 
     @ManyToOne
     @JoinColumn(name = "type_id",nullable = false)
-    @JsonIgnoreProperties("attributes")
+ //   @JsonIgnoreProperties("attributes")
     private Type type;
 
-    @OneToMany(mappedBy = "attribute")
+    @OneToMany(mappedBy = "attribute",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<ProductAttribute> productAttributes;
 }

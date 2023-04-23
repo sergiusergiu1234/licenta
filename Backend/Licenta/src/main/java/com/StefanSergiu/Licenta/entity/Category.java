@@ -22,7 +22,7 @@ public class Category {
     @JsonIgnoreProperties("categories")
     private Type type;
 
-    @OneToMany(mappedBy = "category",orphanRemoval = true)
+    @OneToMany(mappedBy = "category",cascade =CascadeType.ALL, orphanRemoval = true)
     private List<Product>products = new ArrayList<>();
 
     public static Category from(CategoryDto categoryDto){

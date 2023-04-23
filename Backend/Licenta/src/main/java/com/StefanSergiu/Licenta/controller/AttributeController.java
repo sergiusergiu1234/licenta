@@ -43,7 +43,7 @@ public class AttributeController {
     }
 
     //delete attribute by id
-    @DeleteMapping("/admin/{id}")
+    @DeleteMapping("/admin/delete/{id}")
     public ResponseEntity<AttributeDto> deleteAttribute(@PathVariable final Long id){
         Attribute attribute = attributeService.deleteAttribute(id);
         return new ResponseEntity<>(AttributeDto.from(attribute),HttpStatus.OK);

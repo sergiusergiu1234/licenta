@@ -12,6 +12,7 @@ const MOBILE_REGEX = /^0\d{9}$/
 
 
 const Register = () => {
+ 
     const userRef = useRef<HTMLInputElement>(null);
     const errRef = useRef<HTMLInputElement>(null);
 

@@ -41,7 +41,6 @@ public class TypeService {
         Type type = typeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Type not found with id " + id));
 
-
         typeRepository.delete(type);
         return type;
     }

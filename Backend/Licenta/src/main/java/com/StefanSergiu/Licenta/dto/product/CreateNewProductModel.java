@@ -10,5 +10,6 @@ public class CreateNewProductModel {
     private String gender_name;
     private String category_name;
     private Float price;
+    private String description;
 
 }
