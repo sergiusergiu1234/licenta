@@ -21,12 +21,14 @@ const Navbar = ()=>{
         navigate('/ShoppingCart')
     }
     const handleGoHome=()=>{
-        navigate("/Home")
+        navigate("/")
     }
     return(
     <div className='navbar'>
+        <img src="/logo.png" className='navbarIcon'></img>
         <div>
-            <IconContext.Provider value={{size: '40px'}}>
+            <IconContext.Provider value={{size: '60px'}}>
+            
             <div className='navbarIcons' onClick={handleGoHome}> <AiOutlineHome/></div> 
             <div className='navbarIcons' onClick={handleAccount}><IoPersonOutline/></div>
             <div className='navbarIcons' onClick={handleFavorites}><AiOutlineHeart /></div>

@@ -5,7 +5,7 @@ export type AuthContent ={
     auth: {
         user: string | null,
         roles: string[],
-        accessToken: string | null;
+        accessToken: string | null,
     }
     setAuth: React.Dispatch<React.SetStateAction<{ user: string;  roles: string[]; accessToken: string; }>>
 }

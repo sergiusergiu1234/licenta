@@ -3,9 +3,11 @@
     display:flex ;
     flex-direction: row;
     width:100%;
-    background-color: rgb(55, 173, 212);
+    background-color: rgb(163, 221, 255);
     margin-top: 0;
     justify-content: flex-end;
+    border-bottom-style:ridge;
+    border-bottom-color: black
   }
   .navbarIcons {
     all: unset;
@@ -16,4 +18,9 @@
   }
   .navbarIcons:hover {
     color: red;
+  }
+  .navbarIcon{
+    width: 120px;
+    height: 70px; 
+    margin-right: 35%;
   }

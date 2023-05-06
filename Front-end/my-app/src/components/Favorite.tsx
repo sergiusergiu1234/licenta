@@ -6,6 +6,7 @@ import { AiFillDelete, AiFillPlusCircle, AiOutlineDelete } from "react-icons/ai"
 import '../Styles/Favorite.css';
 import { useNavigate } from "react-router";
 import { IoTrashOutline } from "react-icons/io5";
+import { useEffect } from "react";
 interface Props{
     favorite:FavoriteType
 }
@@ -44,6 +45,11 @@ const Favorite =({favorite}:Props)=>{
         .catch(error => console.log(error));
         window.location.reload()
     }
+
+
+    useEffect(()=>{
+        
+    },[]);
     return (
     <div className="favorite-item">
         <div className="favorite-image" onClick={goToProductDetails}>

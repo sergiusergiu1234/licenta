@@ -30,6 +30,7 @@ public class ProductDto {
     private PlainGenderDto gender;
     private PlainCategoryDto category;
     private String description;
+    private Boolean isFavorite;
     private byte[] image;
     //**
     private List<PlainProductAttributeDto> productAttributeDtoList = new ArrayList<>();
@@ -39,11 +40,6 @@ public class ProductDto {
         productDto.setName(product.getName());
         productDto.setPrice(product.getPrice());
         productDto.setDescription(product.getDescription());
-
-
-
-
-
         if(Objects.nonNull(product.getBrand())){
             productDto.setBrand(PlainBrandDto.from(product.getBrand()));
         }

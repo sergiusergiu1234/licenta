@@ -20,7 +20,8 @@ const ProductPage =()=>{
         category:{id:0,
                 name:""},
         image:"",
-        description:""
+        description:"",
+        isFavorite:false
     });
     //convert image data 
     const base64String = window.localStorage.getItem("imageUrl");

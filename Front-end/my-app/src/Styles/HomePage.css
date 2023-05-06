@@ -5,43 +5,38 @@
   }
   
   .filter-container {
-    width: 100px;
-    margin-left: 20px;
+    width: 300px;
+    height: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: rgb(163, 221, 255);
+    border-right-style: solid;
   }
   
   .product-list{
-    margin-left: 120px;
+    background-image: url("https://spring-amazon-image-storage.s3.eu-north-1.amazonaws.com/backgrounds/pexels-arti-kh-11938977.jpg");
+    background-size: cover;
   }
 
   .product{
     position: relative;
-    height: 200px;
-    width: 200px;
-    border: solid ;
-    border-radius: 10px;
-    margin: 10px;
-    background-color: white;
-    text-align: center;
     float:left;
-  
+    margin: 20px;
   }
 
-  .product-image{
-    position: relative;
-    height: 150px;
-    width: 200px;
+  .hoverable{
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   }
-  .product-image img{
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
+
+  .hoverable :hover{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
   }
   
   .not-favorited{
     display: none;
     position: absolute;
-    bottom: 120px;
-    right: 30px;
+    bottom: 20px;
+    right: 20px;
   }
 
   .product:hover .not-favorited {
@@ -52,13 +47,11 @@
   .favorited{
     display: block;
     position: absolute;
-    bottom: 120px;
-    right: 30px;
+    bottom: 20px;
+    right: 20px;
     color: red;
   }
 
   .favorited:hover{
     color:black;
   }
-
-  

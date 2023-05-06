@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/brands")
+@CrossOrigin(origins = "http://localhost:3000")
 public class BrandController {
     @Autowired
     BrandService brandService;

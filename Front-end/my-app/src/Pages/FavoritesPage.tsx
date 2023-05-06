@@ -25,8 +25,6 @@ const FavoritesPage =()=>{
     return (<div>
         <h1>Favorite products</h1>
         <div className="favorites">
-
-        
         {favoriteList.map((favorite:FavoriteType)=>(
             <Favorite key={favorite.productId} favorite={favorite} />
         ))}

@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/types")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TypeController {
 
     @Autowired
@@ -30,7 +31,6 @@ public class TypeController {
     ResponseEntity<List<TypeDto>> getTypes(){
         List<Type> Types = typeService.getTypes();
         List<TypeDto> TypeDtos = Types.stream().map(TypeDto::from).collect(Collectors.toList());
-        //  System.out.println(TypeDtos.stream().map(TypeDto::getName).collect(Collectors.toList()));
         return new ResponseEntity<>(TypeDtos,HttpStatus.OK);
     }
 

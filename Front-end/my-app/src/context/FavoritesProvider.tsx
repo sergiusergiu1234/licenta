@@ -1,35 +1,30 @@
 import { createContext, useState } from "react";
+import { FavoriteType } from "../Types/FavoriteType.types";
 
-type FavoritesContextType = {
-    favorites: number[];
-    addToFavorites: (id: number) => void;
-    removeFromFavorites: (id: number) => void;
-  };
-  
-  export const FavoritesContext = createContext<FavoritesContextType>({
-    favorites: [],
-    addToFavorites: () => {},
-    removeFromFavorites: () => {},
-  });
-  
-  export const FavoritesProvider: React.FC = ({ children}:any) => {
-    const [favorites, setFavorites] = useState<number[]>([]);
-  
-    const addToFavorites = (id: number) => {
-      if (!favorites.includes(id)) {
-        setFavorites([...favorites, id]);
-        localStorage.setItem('favorites', JSON.stringify([...favorites, id]));
-      }
-    };
-  
-    const removeFromFavorites = (id: number) => {
-      setFavorites(favorites.filter((favId) => favId !== id));
-      localStorage.setItem('favorites', JSON.stringify(favorites.filter((favId) => favId !== id)));
-    };
-  
+export type FavoriteContent ={
+    favorite:{
+        productId: number
+    }[],
+    setFavorite: React.Dispatch<React.SetStateAction<{productId: number}[]>>
+}
+
+export const FavoriteContext = createContext<FavoriteContent>({
+   favorite:[{
+       productId: 0
+   }],
+   setFavorite: ()=>{}
+})
+
+type AuthProviderProps={
+    children: React.ReactNode;
+}
+
+export const FavoriteProvider =({children}:AuthProviderProps)=>{
+    const [favorite, setFavorite] = useState([{ productId: 0 }]);
+
     return (
-      <FavoritesContext.Provider value={{ favorites, addToFavorites, removeFromFavorites }}>
-        {children}
-      </FavoritesContext.Provider>
-    );
-  };
+        <FavoriteContext.Provider value={{ favorite, setFavorite }}>
+            {children}
+        </FavoriteContext.Provider>
+    )
+}

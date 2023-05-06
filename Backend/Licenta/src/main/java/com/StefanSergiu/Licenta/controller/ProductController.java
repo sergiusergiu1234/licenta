@@ -5,17 +5,32 @@ import com.StefanSergiu.Licenta.dto.product.CreateNewProductModel;
 import com.StefanSergiu.Licenta.dto.product.PlainProductDto;
 import com.StefanSergiu.Licenta.dto.product.ProductDto;
 import com.StefanSergiu.Licenta.dto.product.ProductRequestModel;
+import com.StefanSergiu.Licenta.entity.Favorite;
 import com.StefanSergiu.Licenta.entity.Product;
+import com.StefanSergiu.Licenta.entity.UserInfo;
+import com.StefanSergiu.Licenta.repository.FavoriteRepository;
+import com.StefanSergiu.Licenta.service.FavoriteService;
 import com.StefanSergiu.Licenta.service.FileStore;
 import com.StefanSergiu.Licenta.service.ProductService;
+import com.StefanSergiu.Licenta.service.UserService;
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -39,33 +54,93 @@ public class ProductController {
     AmazonS3 s3Client;
     @Autowired
     FileStore fileStore;
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    FavoriteService favoriteService;
+
     @PostMapping("/admin/add")
     public ResponseEntity<ProductDto> addProduct(@RequestBody final CreateNewProductModel createNewProductModel){
         Product product = productService.addProduct(createNewProductModel);
         return new ResponseEntity<>(ProductDto.from(product), HttpStatus.OK);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping
-    public ResponseEntity<List<ProductDto>> getproducts(@RequestParam(name = "name", required = false) String name,
-                                                        @RequestParam(name = "brand_name",required = false)String brand_name,
-                                                        @RequestParam(name = "gender", required = false)String gender,
+    public ResponseEntity<Page<ProductDto>> getproducts(@RequestParam(name = "name", required = false) String name,
+                                                        @RequestParam(name = "brands",required = false)String brands,
+                                                        @RequestParam(name = "genders", required = false)String genders,
                                                         @RequestParam(name = "category_name",required = false)String category_name,
-                                                        @RequestParam(name = "price",required = false)Float price){
-        ProductRequestModel request = new ProductRequestModel(name,brand_name,category_name,gender,price);
-        List<Product> products = productService.getAllProducts(request);
-        List<ProductDto>productsDto = new ArrayList<>();
-        for(Product product:products){
-            // download the image for every fetched product
-            byte[] imageData = fileStore.download(product.getImagePath(), product.getImageFileName());
-            //construct the dto with product info and image
-            productsDto.add(ProductDto.from(product,imageData));
+                                                        @RequestParam(name = "price",required = false)Float price,
+                                                        @RequestParam(name ="minPrice", required = false) Float minPrice,
+                                                        @RequestParam(name = "maxPrice", required = false) Float maxPrice,
+                                                        @RequestParam(name = "type_name", required = false) String type_name,
+                                                        @RequestParam(name = "attributes", required = false) String attributesParam,
+                                                        @RequestParam(name="pageNumber", defaultValue = "0") int pageNumber,
+                                                        @RequestParam(name = "size", defaultValue = "9") int size){
+
+        // Parse attributes parameter into a Map<String, String>
+        Map<String, String> attributes = new HashMap<>();
+        if (attributesParam != null) {
+            String[] pairs = attributesParam.split("_");
+            for (String pair : pairs) {
+                String[] parts = pair.split(":");
+                if (parts.length == 2) {
+                    attributes.put(parts[0], parts[1]);
+                }
+            }
         }
 
-        //cache the products list
-        CacheControl cacheControl = CacheControl.maxAge(30, TimeUnit.SECONDS);
-        return ResponseEntity.ok()
-                .cacheControl(cacheControl)
-                .body(productsDto);
+        ProductRequestModel request = new ProductRequestModel(name,brands,category_name,genders,price, minPrice, maxPrice, type_name,attributes);
+        //get logged in user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username= authentication.getName();
+        UserInfo user = userService.getLoggedInUser(username);
+        //---
+        Integer userId = null;
+        if (user != null) {
+            userId = user.getId();
+        }
+        //---
+        //favorite list by logged user. If user is null, then all productDto's are false on favorite
+        List<Favorite> favorites;
+        if(userId != null){
+            favorites = favoriteService.getFavoriteByUser(userId);
+        } else {
+            favorites = null;
+        }
+
+
+        Pageable pageable = PageRequest.of(pageNumber, size, Sort.Direction.ASC,"name");
+
+        Page<ProductDto> productsPage = productService.getAllProducts(request, pageable)
+                .map(product -> {
+                    ProductDto productDto = ProductDto.from(product);
+
+//            // download the image for every fetched product
+//            byte[] imageData = fileStore.download(product.getImagePath(), product.getImageFileName());
+//            //set the image to the dto
+//            productDto.setImage(imageData);
+                    //placeholder for image downloading
+                    byte[] placeholderByteArray = new byte[16992];
+                    productDto.setImage(placeholderByteArray);
+
+                    //set isFavorite to false by default
+                    productDto.setIsFavorite(false);
+                    //for every favorite entry in favorites list, set the isFavorite flag in Dto
+                    if(favorites != null){
+                        for(Favorite favorite: favorites) {
+                            if (favorite.getProduct().getId() == product.getId()) {
+                                productDto.setIsFavorite(true);
+                                break;
+                            }
+                        }
+                    }
+                    return productDto;
+                });
+
+        return ResponseEntity.ok(productsPage);
     }
 
     @GetMapping("/{productId}")

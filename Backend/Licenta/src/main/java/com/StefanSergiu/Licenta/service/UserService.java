@@ -39,7 +39,10 @@ public class UserService {
 
 
     public UserInfo getLoggedInUser(String username) {
-        UserInfo user = repository.findByUsername(username).orElseThrow(()->new EntityNotFoundException("User not found. Username:"+ username));
+        if (username.equals("anonymousUser")) {
+            return null; // or return a default UserInfo object
+        }
+        UserInfo user = repository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("User not found. Username:"+ username));
         return user;
     }
 }

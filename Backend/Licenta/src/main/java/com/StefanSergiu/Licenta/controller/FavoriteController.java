@@ -65,6 +65,7 @@ public class FavoriteController {
         String username = authentication.getName();
         UserInfo user = userService.getLoggedInUser(username);
         Integer userId = user.getId();
+        System.out.println(authentication);
         ////
         List<Favorite> favorites = favoriteService.getFavoriteByUser(userId);
         List<FavoriteDto> favoriteDtoList = new ArrayList<>();

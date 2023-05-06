@@ -1,15 +1,73 @@
-.filter-bar {
-    position: sticky;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 200px;
-    background-color: rgb(55, 173, 212);
-    padding: 8px;
-    z-index: 100;
-  }
+
+
 input{
     width: 180px;
-    margin-left: 10px;
-    margin-right: 10px;
+}
+
+
+.type-category-buttons{
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.type-button{
+  all: unset;
+  width: 100%;
+  display: flex;
+  border-radius: 5px;
+  padding: 2px;
+  margin-bottom: 5px;
+  background-color: lightblue;
+  text-align: center;
+}
+
+.category-button {
+all: unset;
+border:solid;
+padding: 2px;
+background-color: lightblue;
+}
+.not-selected{
+background-color: white;
+border: 0ch;
+}
+.selected {
+background-color: lightblue;
+border: 0ch;
+margin: 5px;
+}
+.dropdown-head{
+border: 0ch;
+background-color: lightblue;
+}
+.dropdown-head :hover{
+box-shadow: 2px;
+}
+
+.dropdown {
+position: relative;
+display: inline-block;
+}
+
+.dropdown-content {
+display: none;
+position: absolute;
+background-color: #e5e5e5;
+min-width: 160px;
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+padding: 12px 16px;
+z-index: 1;
+}
+.dropdown-content button:hover{
+background-color: rgba(255, 255, 255, 0.692)
+}
+
+.dropdown:hover .dropdown-content {
+display: block;
+}
+.hr{
+width: 100%;
+
 }

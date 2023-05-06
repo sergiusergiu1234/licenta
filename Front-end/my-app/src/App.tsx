@@ -32,7 +32,8 @@ function App() {
 
 
         <Route element={<PersistLogin />} >
-          <Route path="Home" element={<HomePage/>} />
+          
+          <Route path="" element={<HomePage/>} />
     
             <Route path="ProductPage/:id" element={<ProductPage/>} />
 

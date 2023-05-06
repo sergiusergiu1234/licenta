@@ -3,80 +3,118 @@ import { ProductType } from "../Types/ProductType.types";
 import Product from "../components/Product";
 import '../Styles/HomePage.css';
 import FilterBar from "../components/FilterBar";
-import useSWR from 'swr';
-import qs from 'qs';
-import useAuth from "../hooks/useAuth";
+import Pagination from 'react-bootstrap/Pagination';
+
 
 
 
 const HomePage = () => {
-  const [searchParams, setSearchParams] = useState({ name: '', brand_name: '' }); //parametrii de filtrare
-  const [filteredProducts, setFilteredProducts] = useState([]);   //produse filtrate
-  
-  //onCLick search for product
-  const handleSearch = (productName:string, brandName:string) => {  
+  const [activePage, setActivePage] = useState(1);
+  const [totalPages,setTotalPages] = useState(2);
+  const [products, setProducts] = useState<ProductType[]>([]);
+  const [filter,setFilter] = useState({
+    name: '',
+    brands:'',
+    gender: '',
+    category_name: '',
+    minPrice:'',
+    maxPrice:'',
+    type_name:""
+  })
 
-    const newSearchParams ={ ...searchParams, name: productName, brand_name: brandName}  
-      setSearchParams(newSearchParams);
-
-      let filteredProducts = products.filter((product:ProductType) =>{
-        if(productName && !product.name.toLowerCase().includes(productName.toLowerCase())) {
-          return false;
+  const fetchProducts = async ()=>{
+    const {name, brands, gender, category_name, minPrice, maxPrice,type_name} = filter;
+    let params ='';
+    params += `&pageNumber=${activePage-1}`
+    if(name) params += `&name=${name}`;
+    if(brands) params += `&brands=${brands}`
+    if(gender) params += `&gender=${gender}`;
+    if(category_name) params += `&category_name=${category_name}`;
+    if(minPrice) params += `&minPrice=${minPrice}`;
+    if(maxPrice) params += `&maxPrice=${maxPrice}`;
+    if(type_name) params += `&type_name=${type_name}`
+    const token = window.localStorage.getItem('accessToken');
+    const url = `http://localhost:8080/products?${params.slice(1)}`;
+    console.log(url)
+    let response;
+    if(token != null){
+      response = await fetch(url,{
+        method: 'GET',
+        headers:{
+          'Authorization': `Bearer ${token}`
         }
-        if (brandName && !product.brand.name.toLowerCase().includes(brandName.toLowerCase())) {
-          return false;
-        }
-        return true;
       });
-      setFilteredProducts(filteredProducts);
+    }else{
+      response = await fetch(url);
+    }
+    const data = await response.json();
+    setProducts(data.content);
+    setTotalPages(data.totalPages)
+    console.log(data)
   };
 
-  const queryParams = qs.stringify(searchParams);
-  const url = `http://localhost:8080/products?${queryParams}`;
+  useEffect(()=>{
+    fetchProducts();
+  },[filter,activePage]);
 
-  async function fetchProducts(url: string) {
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
+  const handleSearch =(productName:string,
+                       brands:string[], 
+                       genderName:string,
+                       categoryName:string,
+                       minPrice:string,
+                       maxPrice:string,
+                       typeName:string
+                       ) =>{
+    setFilter({ name:productName,
+                brands:brands.join(","),
+                gender:genderName,
+                category_name:categoryName,
+                minPrice:minPrice,
+                maxPrice:maxPrice,
+                type_name:typeName
+              });
   }
 
-  const { data: products, error } = useSWR(url, fetchProducts, {
-    revalidateOnFocus: false,
-    shouldRetryOnError: false,
-  });
-  if (error) return <div>Error loading products</div>;
-  if (!products) return <div>Loading products...</div>;
-
-  const productsList = filteredProducts.length ? filteredProducts : products;
-
-  const favorites= JSON.parse(localStorage.getItem('favorites') || '[]');
-  const handleFav =( id:number)=>{
-
-    return favorites.some((favorite: {productId: number}) => favorite.productId === id);
+  const handlePageChange = (pageNumber:number) => {
+    setActivePage(pageNumber);
   }
-  
+
+  const paginationItems = [];
+  for (let number = 1; number <= totalPages; number++) {
+    paginationItems.push(
+      <Pagination.Item
+        key={number}
+        active={number === activePage}
+        onClick={() => handlePageChange(number)}
+      >
+        {number}
+      </Pagination.Item>
+    );
+  }
+
   return (
     <div className="homepage">
+
       <div className="filter-container">
-         <FilterBar onSearch={handleSearch} />
+      <FilterBar  onSearch={handleSearch}/>
+      <br/>
+      <Pagination>{paginationItems}</Pagination>
       </div>
+   
       <div className="product-list">
-          {productsList.length ? (
+          
             <div>
-              {productsList.map((product: ProductType) => (
+              {products.map((product: ProductType) => (
                 <div className="product" key={product.id}> 
                 <Product  product={product} 
-                           isFavorite={handleFav(product.id)} />
+                           isFavorite={product.isFavorite} />     
                 </div>
+                
               ))}
             </div>
-          ) : (
-            <div className="no-result">There are no products with the specified criteria.</div>
-          )}
-      </div>
-    </div>
-  );
-};
+     </div>
+   </div>
+  )
+}
+
 export default HomePage;
-
-

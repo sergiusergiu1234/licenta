@@ -26,12 +26,9 @@ public class Attribute{
     private Long id;
     @Column(nullable = false)
     private String name;
-
     @ManyToOne
     @JoinColumn(name = "type_id",nullable = false)
- //   @JsonIgnoreProperties("attributes")
     private Type type;
-
     @OneToMany(mappedBy = "attribute",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<ProductAttribute> productAttributes;
 }

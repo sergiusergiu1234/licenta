@@ -11,4 +11,5 @@ export  type ProductType = {
     category: Category;
     image: string;
     description: string;
+    isFavorite: boolean;
   };

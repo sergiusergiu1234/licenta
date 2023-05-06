@@ -1,14 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { FavoriteContext } from "../context/FavoritesProvider";
+import '../Styles/Login.css';
 
 const LOGIN_URL = '/users/signin';
 
 const LoginPage = () => {
 
     const { setAuth } = useAuth();
-
+    const {favorite, setFavorite} = useContext(FavoriteContext);
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
@@ -65,7 +67,7 @@ const LoginPage = () => {
                 }
             })
             .then(response => response.json())
-            .then(data => localStorage.setItem("favorites",JSON.stringify(data)))
+            .then(data => setFavorite(data))
             .catch(error => console.log(error));
 
         } catch (err:any) {
@@ -84,7 +86,7 @@ const LoginPage = () => {
 
     return (
        
-                <section>
+                <section className="login-container">
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"}>
                         {errMsg}
                     </p>
