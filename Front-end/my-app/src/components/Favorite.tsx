@@ -30,7 +30,14 @@ const Favorite =({favorite}:Props)=>{
     }
 
     const addToCart =()=>{
-        console.log("added to cart")
+        const token = window.localStorage.getItem('accessToken')
+        fetch(`http://localhost:8080/shoppingCart/add/${favorite.productId}`,{
+            method: 'POST',
+            headers: {
+                'Authorization' : `Bearer ${token}`
+            }
+        })
+        .then(response => response.json())
     }
     const deleteFavorite =()=>{
         const token = window.localStorage.getItem('accessToken')
@@ -46,10 +53,6 @@ const Favorite =({favorite}:Props)=>{
         window.location.reload()
     }
 
-
-    useEffect(()=>{
-        
-    },[]);
     return (
     <div className="favorite-item">
         <div className="favorite-image" onClick={goToProductDetails}>

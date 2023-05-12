@@ -10,7 +10,7 @@ import { fetchBrands, fetchGenders, fetchTypes } from "../api/api";
 
 const FilterBar = ({ onSearch }: any) => {
   const [productName, setProductName] = useState("");
-  const [selectedBrands,setSelectedBrands] = useState<string[]>([]);
+
   const [genderName, setGenderName] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
@@ -27,23 +27,28 @@ const FilterBar = ({ onSearch }: any) => {
   const [selectedCategory, setSelectedCategory] = useState('');
 
   const [brands, setBrands] = useState<Brand[]>([]);
+  const [selectedBrands,setSelectedBrands] = useState<string[]>([]);
 
   const [genders,setGenders] = useState<Gender[]>([]);
   const [selectedGender, setSelectedGender] = useState("");
 
   const [attributes,setAttributes] = useState<Attribute[]>([]);
-  const [completedAttributes, setCompletedAttributes] = useState("");
+  const [attributeValues, setAttributeValues] = useState({});
 
 
   const handleSearch = () => {
+    const attributeString = Object.entries(attributeValues)
+      .map(([attributeName, attributeValue]) => `${attributeName}:${attributeValue}`).join("_");
+     
     onSearch(
       productName,
       selectedBrands,
       genderName,
-      categoryName,
+      selectedCategory,
       minPrice,
       maxPrice,
-      typeName
+      typeName,
+      attributeString
     );
   };
   const handleReset = () => {
@@ -73,6 +78,7 @@ const FilterBar = ({ onSearch }: any) => {
 
   useEffect(()=>{
       setSelectedCategory('');
+      setAttributeValues({});
   },[selectedType]);
 
   const handleBrandChange = (event: React.ChangeEvent<HTMLInputElement>) =>{
@@ -82,6 +88,13 @@ const FilterBar = ({ onSearch }: any) => {
       } else {
         setSelectedBrands(prevSelected => prevSelected.filter(val=> val !== value))
       }
+  }
+  const handleInputChange =(event:any, attributeName:string) => {
+    setAttributeValues({
+      ...attributeValues,
+        [attributeName]: event.target.value
+    })
+    console.log(attributeValues)
   }
 
   return (
@@ -182,10 +195,12 @@ const FilterBar = ({ onSearch }: any) => {
         attributes.length ? 
       <>
       {attributes.map((attribute) => (
-        <InputGroup className="mb-3">
-          <Form.Control aria-label="Text input with checkbox"
+        <InputGroup key={attribute.id} className="mb-3">
+          <Form.Control 
+                        aria-label="Text input with checkbox"
                         placeholder={attribute.name} 
-                        value={}/>
+                        onChange={(event)=>handleInputChange(event, attribute.name)}
+                        />
         </InputGroup>
       ))}
       </>

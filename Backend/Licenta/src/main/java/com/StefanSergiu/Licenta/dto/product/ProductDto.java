@@ -33,7 +33,7 @@ public class ProductDto {
     private Boolean isFavorite;
     private byte[] image;
     //**
-    private List<PlainProductAttributeDto> productAttributeDtoList = new ArrayList<>();
+    private List<PlainProductAttributeDto> attributes = new ArrayList<>();
     public static ProductDto from(Product product) {
         ProductDto productDto = new ProductDto();
         productDto.setId(product.getId());
@@ -50,7 +50,7 @@ public class ProductDto {
             productDto.setCategory(PlainCategoryDto.from(product.getCategory()));
         }
         //**
-        productDto.setProductAttributeDtoList(product.getProductAttributes().stream().map(PlainProductAttributeDto::from).collect(Collectors.toList()));
+        productDto.setAttributes(product.getProductAttributes().stream().map(PlainProductAttributeDto::from).collect(Collectors.toList()));
 
 
         return productDto;
@@ -73,7 +73,7 @@ public class ProductDto {
             productDto.setCategory(PlainCategoryDto.from(product.getCategory()));
         }
         //**
-        productDto.setProductAttributeDtoList(product.getProductAttributes().stream().map(PlainProductAttributeDto::from).collect(Collectors.toList()));
+        productDto.setAttributes(product.getProductAttributes().stream().map(PlainProductAttributeDto::from).collect(Collectors.toList()));
 
         productDto.image=image;
         return productDto;

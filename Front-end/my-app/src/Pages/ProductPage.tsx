@@ -21,7 +21,9 @@ const ProductPage =()=>{
                 name:""},
         image:"",
         description:"",
-        isFavorite:false
+        isFavorite:false,
+        attributes:[{attribute_name:"",
+                    value:""}]
     });
     //convert image data 
     const base64String = window.localStorage.getItem("imageUrl");
@@ -61,7 +63,15 @@ const ProductPage =()=>{
      }
 
      const addToCart=()=>{
-
+        const token = window.localStorage.getItem('accessToken')
+        fetch(`http://localhost:8080/shoppingCart/add${id}`,{
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => response.json())
+        .then(data =>console.log(data))
      }
 
 
@@ -89,9 +99,8 @@ const ProductPage =()=>{
             </div>
         </div>
         <div className="product-buttons">
-
                     <table>
-                    <IconContext.Provider value={{size: '60px'}}>
+                    <IconContext.Provider value={{size: '50px'}}>
                         <tr>
                             <div className="favorite-button2" onClick={addToFavorite}>
                                 <td> <AiOutlineHeart /></td>

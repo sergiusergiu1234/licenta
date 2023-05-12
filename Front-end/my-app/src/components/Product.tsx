@@ -5,6 +5,7 @@ import useAuth from "../hooks/useAuth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Button, Card } from "react-bootstrap";
+import { MdAddShoppingCart } from "react-icons/md";
 
 
 interface Props {
@@ -26,9 +27,6 @@ const Product =({product, isFavorite}:Props)=>{
     const byteArray =new Uint8Array(byteNumbers);
     const image= new Blob([byteArray], {type:'image/jpeg'});
     const imageUrl = URL.createObjectURL(image);
-    useEffect(()=>{
-        console.log(isFavorite)
-    },[])
 
 const toggleFavorite =()=>{
    //verify if authenticated
@@ -66,9 +64,22 @@ const toggleFavorite =()=>{
         navigate(`/ProductPage/${product.id}`)
         window.localStorage.setItem("imageUrl",base64String)
     }
+
+
+        const addToCart =()=>{
+            const token = window.localStorage.getItem('accessToken')
+            fetch(`http://localhost:8080/shoppingCart/add/${product.id}`,{
+                method: 'POST',
+                headers: {
+                    'Authorization' : `Bearer ${token}`
+                }
+            })
+            .then(response => response.json())
+        }
+    
     return(
 
-    <Card style={{ width: '18rem' }}>
+    <Card style={{ width: '300px' }}>
            <div className="hoverable">
     <Card.Img variant="top" src={"/snwb1.jpg"}
                  onClick={goToProductDetails}
@@ -82,11 +93,18 @@ const toggleFavorite =()=>{
         Price: {product.price} RON
       </Card.Text>
                  <IconContext.Provider value={{size: '50px'}}>
-                     <div className={`${favorited ? 'favorited' : 'not-favorited'}`}
+                 <div className={`${favorited ? 'favorited' : 'not-favorited'}`}
                               onClick={toggleFavorite}>
                                  {favorited ? <AiFillHeart />  : <AiOutlineHeart />  }
                                  </div> 
-                 </IconContext.Provider>
+                                 <div>       
+                <button className="addToCart2" onClick={addToCart}>
+                    <MdAddShoppingCart />
+                    Add to cart
+                </button>
+                </div>
+                </IconContext.Provider>
+
     </Card.Body>
   </Card>
     )

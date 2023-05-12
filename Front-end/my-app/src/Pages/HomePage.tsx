@@ -19,11 +19,12 @@ const HomePage = () => {
     category_name: '',
     minPrice:'',
     maxPrice:'',
-    type_name:""
+    type_name:"",
+    attributes:""
   })
 
   const fetchProducts = async ()=>{
-    const {name, brands, gender, category_name, minPrice, maxPrice,type_name} = filter;
+    const {name, brands, gender, category_name, minPrice, maxPrice,type_name,attributes} = filter;
     let params ='';
     params += `&pageNumber=${activePage-1}`
     if(name) params += `&name=${name}`;
@@ -32,10 +33,11 @@ const HomePage = () => {
     if(category_name) params += `&category_name=${category_name}`;
     if(minPrice) params += `&minPrice=${minPrice}`;
     if(maxPrice) params += `&maxPrice=${maxPrice}`;
-    if(type_name) params += `&type_name=${type_name}`
+    if(type_name) params += `&type_name=${type_name}`;
+    if(attributes) params +=`&attributes=${attributes}`
     const token = window.localStorage.getItem('accessToken');
     const url = `http://localhost:8080/products?${params.slice(1)}`;
-    console.log(url)
+    console.log(params)
     let response;
     if(token != null){
       response = await fetch(url,{
@@ -63,7 +65,8 @@ const HomePage = () => {
                        categoryName:string,
                        minPrice:string,
                        maxPrice:string,
-                       typeName:string
+                       typeName:string,
+                       attributeString:string
                        ) =>{
     setFilter({ name:productName,
                 brands:brands.join(","),
@@ -71,8 +74,10 @@ const HomePage = () => {
                 category_name:categoryName,
                 minPrice:minPrice,
                 maxPrice:maxPrice,
-                type_name:typeName
+                type_name:typeName,
+                attributes:attributeString
               });
+
   }
 
   const handlePageChange = (pageNumber:number) => {
@@ -102,12 +107,13 @@ const HomePage = () => {
       </div>
    
       <div className="product-list">
-          
-            <div>
+            <div className="product-grid">
               {products.map((product: ProductType) => (
-                <div className="product" key={product.id}> 
+                <div className="product-column" key={product.id}> 
+                <div className="product">
                 <Product  product={product} 
-                           isFavorite={product.isFavorite} />     
+                           isFavorite={product.isFavorite} />  
+                           </div>   
                 </div>
                 
               ))}

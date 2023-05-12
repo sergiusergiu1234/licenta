@@ -69,7 +69,7 @@ public class SecurityConfig {
                         "/brands/admin/add/**","/brands/admin/delete/**",
                         "/types/admin/**","/type/admin/delete/**",
                         "/categories/admin/**","/products/admin/**","/genders/admin/**","/types/admin/**","/attributes/admin/**","/productAttributes/admin/**","/favorites/**",
-                        "/favorites/delete/**")
+                        "/favorites/delete/**","/shoppingCart/**")
                 .authenticated()
                 .and()
                 .logout()

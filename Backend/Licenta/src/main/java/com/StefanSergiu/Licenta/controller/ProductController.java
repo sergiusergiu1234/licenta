@@ -78,7 +78,7 @@ public class ProductController {
                                                         @RequestParam(name = "type_name", required = false) String type_name,
                                                         @RequestParam(name = "attributes", required = false) String attributesParam,
                                                         @RequestParam(name="pageNumber", defaultValue = "0") int pageNumber,
-                                                        @RequestParam(name = "size", defaultValue = "9") int size){
+                                                        @RequestParam(name = "size", defaultValue = "12") int size){
 
         // Parse attributes parameter into a Map<String, String>
         Map<String, String> attributes = new HashMap<>();
