@@ -6,6 +6,8 @@ import { IconContext } from "react-icons";
 import { AiFillPlusCircle, AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import '../Styles/ProductPage.css';
 import { error } from "console";
+import { Card } from "react-bootstrap";
+import CardHeader from "react-bootstrap/esm/CardHeader";
 const ProductPage =()=>{
    
     const {id} = useParams();
@@ -76,28 +78,35 @@ const ProductPage =()=>{
 
 
 
-    return (<div><br></br>
+    return (
+        <Card>
+            <CardHeader>
+                <h4>{product.name}</h4>
+            </CardHeader>
+            <Card.Body className="product-page-container">
+                <div className="image-container">
+                <Card.Img variant="top" src="/snwb1.jpg"/>
+                </div>
+                <div>
+                    <label>Category:</label>
+                    <label>{product.category.name}</label>
+                    <label>-{product.gender.name}</label>
+                    <br/>
+                    <label>Product description:</label>
+                    <label>{product.description}</label>
+                    <br/>
+                    <label>Brand:</label>
+                    <label>{product.brand.name}</label>
+                    <br/>
+                    <label>Attributes:</label>
+                    <br/>
+                    {product.attributes.map((product)=>(<><label>{product.attribute_name}:{product.value}</label><br/></>))}
+                    
 
-<hr/>
-    <div className="product">
-        <div className="product-image" >
-                <img src={imageUrl} alt={product.name} />
-        </div>
 
-        <div className="product-details-container">
-            <div>
-                <label className="bold">Name:  </label><label>{product.name}</label><br/>
-                
-                <label className="bold">Brand:  </label><label>{product.brand.name}</label><br/>
-                <label className="bold">Category:  </label><label>{product.category.name}</label><br/>
-                <label className="bold">Gender:  </label><label>{product.gender.name}</label><br/>
-                <hr/>
-                <label className="bold">Description: </label>{product.description}<label></label><br/>
-                <hr/>
-                <label className="bold">Price:  </label><label>{product.price} RON</label><br/>
-                
+
             </div>
-        </div>
+            </Card.Body>
         <div className="product-buttons">
                     <table>
                     <IconContext.Provider value={{size: '50px'}}>
@@ -115,11 +124,8 @@ const ProductPage =()=>{
                         </tr>
                         </IconContext.Provider>
                     </table>    
-                <hr/> 
             </div>
-           
-         </div>
-    </div>)
+            </Card>)
 }
 
 export default ProductPage;

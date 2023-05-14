@@ -5,7 +5,7 @@ import { CartItemType } from "../Types/CartItemType.types";
 import SumarComanda from "../components/SumarComanda";
 import { Card } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
-
+import "../Styles/CartPage.css"
 const ShoppingCartPage =()=>{
     const [cartItems,setCartItems]=useState<CartItemType[]>([]);
     const token = window.localStorage.getItem('accessToken');
@@ -78,14 +78,16 @@ const ShoppingCartPage =()=>{
         <CardHeader>
          <h1>Shopping cart</h1>
          </CardHeader>
+         <div className="cartPage">
             <div className="cartList">
             {cartItems.map((cart:CartItemType)=>(
                 <CartItem key={cart.productId} item={cart} addToCart={handleAddToCart}
                 removeFromCart={handleRemoveFromCart}/>
             ))}
             </div>
-            <div className="sumar-conanda">
+            <div className="sumar-comanda">
                 <SumarComanda total={totalPrice}/>
+            </div>
             </div>
         </Card>)
 }

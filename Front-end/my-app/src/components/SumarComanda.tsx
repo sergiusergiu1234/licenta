@@ -9,15 +9,17 @@ interface Props {
 const SumarComanda = ({total}:Props) =>{
 
     return (<Card className="sumar-container">
-        <CardHeader>
+        <div className="sumar-header">
         <h5>Summary</h5>
-        </CardHeader>
+        </div>
+        <Card.Body className="sumar-body">
         <label className="detail">Products:</label>
         <label></label>
         <label className="detail">Delivery:</label>
         <label></label>
         <label className="total">Total:</label>
         <label className="total">{total}</label>
+        </Card.Body>
         <IconContext.Provider value={{ size: "30px" }}>
             <button className="continue-button">
             <VscDebugStart />

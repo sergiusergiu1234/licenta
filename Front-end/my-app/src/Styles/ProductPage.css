@@ -1,4 +1,10 @@
-
+.product-page-container{
+    display: flex;
+    flex-direction: row;
+}
+.image-container{
+    width: 40%;
+}
 .favorite-button2{
     padding: 2px;
     margin-bottom: 2px;

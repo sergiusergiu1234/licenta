@@ -1,0 +1,15 @@
+.cartPage{
+    display:flex;
+    flex-direction: row;
+    
+}
+.cartList{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+  }
+  .sumar-comanda{
+    width: 100%;
+  }

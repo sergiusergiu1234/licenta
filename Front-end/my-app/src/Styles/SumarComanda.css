@@ -1,8 +1,9 @@
 .sumar-container{
-    width: 20%;
+    width: 40%;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 20px;
 }
 .continue-button{
     all: unset;
@@ -24,4 +25,8 @@
 .total{
     font-weight: bolder;
     font-size: x-large;
+}
+.sumar-body{
+    display: flex;
+    flex-direction: column;
 }
