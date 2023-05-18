@@ -50,9 +50,14 @@ public class OrderService {
         newOrder.setUser(user);
         newOrder.setGenerationDateTime(LocalDateTime.now());
         newOrder.setStatus("pending");
+
+        newOrder.setBillingName(createNewOrderModel.getBillingName());
+        newOrder.setPaymentMethod(createNewOrderModel.getPaymentMethod());
+        newOrder.setDeliveryAddress(createNewOrderModel.getDeliveryAddress());
+        newOrder.setContactPhone(createNewOrderModel.getContactPhone());
+
         newOrder.setTotal((float) 0);
         Float total = newOrder.getTotal();
-
         //TODO: get  all order details and add their costs and save it to price field
         //get empty orderDetails list
         List<OrderDetail> orderDetails = (List<OrderDetail>) orderDetailRepository.findByOrderId(newOrder.getId());
@@ -70,6 +75,7 @@ public class OrderService {
             orderDetailRepository.save(newOrderDetail);
             //add it to Order's orderDetails list
             orderDetails.add(newOrderDetail);
+            shoppingCartRepository.delete(shoppingCart);
         }
 
         return orderRepository.save(newOrder);

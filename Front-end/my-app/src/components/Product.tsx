@@ -97,6 +97,8 @@ const toggleFavorite =()=>{
                               onClick={toggleFavorite}>
                                  {favorited ? <AiFillHeart />  : <AiOutlineHeart />  }
                                  </div> 
+                 </IconContext.Provider>
+                 <IconContext.Provider value={{size:'20px'}}>
                                  <div>       
                 <button className="addToCart2" onClick={addToCart}>
                     <MdAddShoppingCart />
@@ -104,6 +106,7 @@ const toggleFavorite =()=>{
                 </button>
                 </div>
                 </IconContext.Provider>
+
 
     </Card.Body>
   </Card>

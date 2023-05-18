@@ -13,6 +13,7 @@
     padding-right: 20px;
     background-color: rgb(163, 221, 255);
     border-right-style: solid;
+    border-bottom-style: solid;
   }
 
 
@@ -20,25 +21,23 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 20px;
+    margin-bottom: 50px;
   }
   
   .product-column {
-    width: 100%;
+    margin-left: 10%;
+    width: 90%;
   }
   
   .product {
     width: 100%;
   }
-  @media screen and (max-width: 768px) {
-    .product-list {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
+
   .hoverable{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   }
 
-  .hoverable :hover{
+  .hoverable:hover{
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
   }
   

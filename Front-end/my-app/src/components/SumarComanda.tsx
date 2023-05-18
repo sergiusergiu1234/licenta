@@ -3,10 +3,17 @@ import {VscDebugStart} from "react-icons/vsc"
 import "../Styles/SumarComanda.css"
 import { Card } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
+import { handleCheckout } from "../api/api";
+import { useNavigate } from "react-router";
+import useAuth from "../hooks/useAuth";
 interface Props {
     total:number;
 }
+
+
+
 const SumarComanda = ({total}:Props) =>{
+
 
     return (<Card className="sumar-container">
         <div className="sumar-header">
@@ -20,12 +27,6 @@ const SumarComanda = ({total}:Props) =>{
         <label className="total">Total:</label>
         <label className="total">{total}</label>
         </Card.Body>
-        <IconContext.Provider value={{ size: "30px" }}>
-            <button className="continue-button">
-            <VscDebugStart />
-            Checkout
-            </button>
-        </IconContext.Provider>
         </Card>)
 }
 

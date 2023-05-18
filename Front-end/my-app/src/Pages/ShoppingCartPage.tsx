@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import CartItem from "../components/CartItem";
 
 import { CartItemType } from "../Types/CartItemType.types";
@@ -6,10 +6,16 @@ import SumarComanda from "../components/SumarComanda";
 import { Card } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 import "../Styles/CartPage.css"
+import OrderContext from "../context/OrderDetailsProvider";
+import { useNavigate } from "react-router-dom";
+import { IconContext } from "react-icons";
+import { VscDebugStart } from "react-icons/vsc";
 const ShoppingCartPage =()=>{
     const [cartItems,setCartItems]=useState<CartItemType[]>([]);
     const token = window.localStorage.getItem('accessToken');
     const [totalPrice,setTotalPrice]= useState(0);
+    const {order, setOrder} = useContext(OrderContext);
+
 
     useEffect(()=>{
         
@@ -74,6 +80,16 @@ const ShoppingCartPage =()=>{
             });
     };
 
+    const navigate = useNavigate();
+    const goToCheckout =()=>{
+        //update order context
+        const updatedOrder = {...order,items:cartItems,total:totalPrice};
+
+        setOrder(updatedOrder);
+        console.log(order)
+        navigate("/OrderDetails");
+    }
+
     return(<Card>
         <CardHeader>
          <h1>Shopping cart</h1>
@@ -87,6 +103,13 @@ const ShoppingCartPage =()=>{
             </div>
             <div className="sumar-comanda">
                 <SumarComanda total={totalPrice}/>
+                <IconContext.Provider value={{ size: "30px" }}>
+            <button className="continue-button"
+                    onClick={goToCheckout}>
+            <VscDebugStart />
+            Continue
+            </button>
+        </IconContext.Provider>
             </div>
             </div>
         </Card>)

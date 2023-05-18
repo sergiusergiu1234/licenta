@@ -23,6 +23,7 @@ public class OrderDto {
     private List<OrderDetailDto> orderDetails;
     //TODO: orderDetail + shipping address + payment method
 
+
     public static OrderDto from(Orders order){
         OrderDto orderDto = new OrderDto();
         orderDto.setId(order.getId());

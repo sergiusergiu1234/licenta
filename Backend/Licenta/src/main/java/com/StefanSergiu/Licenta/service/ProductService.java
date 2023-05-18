@@ -104,6 +104,7 @@ public class ProductService {
             product.getBrand().getProducts().remove(product);   //detach product from brand
             product.getGender().getProducts().remove(product);  //detach product from gender
             product.getCategory().getProducts().remove(product); //detach product from category
+
             productRepository.delete(product);
             return product;
         }

@@ -19,3 +19,18 @@ export const fetchTypes = async () => {
     return data;
   };
   
+  export const handleCheckout = async (checkoutData:any) =>{
+    const url ="http://localhost:8080/order/create";
+    const token = localStorage.getItem("accessToken")
+    const response = await fetch(url,{
+      method: 'POST',
+      headers:{
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(checkoutData)
+    });
+    const data = await response.json();
+    return data
+  }
+  
