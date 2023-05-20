@@ -34,3 +34,16 @@ export const fetchTypes = async () => {
     return data
   }
   
+export const fetchOrders =async () => {
+  const url = "http://localhost:8080/order";
+  const token = localStorage.getItem("accessToken")
+  const response = await fetch(url,{
+    method: 'GET',
+    headers:{
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+  });
+  const data = await response.json();
+  return data;
+}

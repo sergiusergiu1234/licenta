@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth"
 import axios from "../api/axios";
+import { fetchOrders } from "../api/api";
+import { OrderType } from "../Types/Order.types";
+import Order from "../components/Order";
+import { OrderDetail } from "../Types/OrderDetail.types";
+import "../Styles/AccountPage.css"
+import { Button } from "react-bootstrap";
+
+
 
 const ACCOUNT_URL = "/me";
 
 const AccountPage =() =>{
     const { setAuth } = useAuth();
-    const {auth} = useAuth();
     const [customer, setCustomer] = useState({
         username:"",
         email: "",
@@ -14,6 +21,8 @@ const AccountPage =() =>{
         lastName: "",
         phoneNumber: ""
     });
+    const [orders,setOrders]= useState<OrderType[]>([]);
+
     useEffect(() => {
         const token = window.localStorage.getItem('accessToken')
        
@@ -26,8 +35,10 @@ const AccountPage =() =>{
           .then(response => response.json())
           .then(data => setCustomer(data))
           .catch(error => console.error(error));
+
+          fetchOrders().then(data=>setOrders(data));
+        
       }, []);
-    
 
     const handleLogout =()=>{
         window.localStorage.clear();
@@ -38,23 +49,23 @@ const AccountPage =() =>{
         });
     }
     
-    return(<div>
-        <h1>Account Page</h1>
+    return(<div className="account-page">
         <h3>Personal data:</h3>
         <p>
              <label>Email:</label> <label>{customer.email}</label> <br/>
              <label>Name:</label> <label>{customer.firstName} {customer.lastName}</label> <br/>
              <label>Phone number:</label> <label>{customer.phoneNumber}</label> <br/>
-             <label>Address:</label> <label>address TODO</label> <br/>
         </p>
         <hr />
         <h3>Issued orders:</h3>
-            <label>1.fetch orders
-                    2.Map through orders
-                    3.Display orders
-            </label>
-            
-        <button onClick={handleLogout}>Log Out</button>
+            {orders.length > 0 ? (
+        orders.map((order: OrderType) => (
+          <Order key={order.id} order={order} />
+        ))
+      ) : (
+        <p>No orders found.</p>
+      )}
+        <Button variant="danger" onClick={handleLogout}>Log Out</Button>
     </div>)
 }
 export default AccountPage;

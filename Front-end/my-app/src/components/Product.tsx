@@ -85,7 +85,7 @@ const toggleFavorite =()=>{
                  onClick={goToProductDetails}
                 />
  </div>
-    <Card.Body >
+    <Card.Body className="card-details">
       <Card.Title>{product.name}</Card.Title>
       <Card.Text>
         Brand: {product.brand.name}
@@ -106,8 +106,6 @@ const toggleFavorite =()=>{
                 </button>
                 </div>
                 </IconContext.Provider>
-
-
     </Card.Body>
   </Card>
     )
