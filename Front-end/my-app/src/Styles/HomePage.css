@@ -1,97 +1,123 @@
 .homepage {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    background-image: url("https://spring-amazon-image-storage.s3.eu-north-1.amazonaws.com/backgrounds/pexels-arti-kh-11938977.jpg");
-    background-size: cover;
-  }
-  
-  .filter-container {
-    width: 20%;
-    height: 100%;
-    padding-left: 20px;
-    padding-right: 10px;
-    background-color: rgb(0, 96, 152);
-    border-right-style: solid;
-    border-bottom-style: solid;
-  }
+  display: flex;
+  flex-direction: row;
+  background-image: url("/public/unif2.jpg");
+  background-size: cover;
+}
+
+.filter-container {
+  width: 20%;
+  height: 100%;
+  padding-left: 2%;
+  padding-right: 2%;
+  background-color: rgb(43, 43, 43);
+  border-right-style: solid;
+  border-bottom-style: solid;
+}
 
 
-  .product-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-bottom: 50px;
-    margin-right: 20px;
-  }
-  
-  .product-column {
-    
-    width: 25%;
-  }
-  
-  .product {
-    width: 100%;
-    position: relative;
-  }
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 10%;
+  margin-right: 10%;
+  margin-top: 2%;
+}
 
-  .hoverable{
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    transition: box-shadow 0.3s ease;
-  }
+.product-column {
+  margin-left: 10%;
+  width: 90%;
+}
 
-  .hoverable:hover{
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
-  }
-  
-  .not-favorited{
-    display: none;
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-  }
+.product{
+  margin-bottom: 10%;
+}
 
-  .product:hover .not-favorited{
-    display: block;
-    color: red;
-  }
-  .product:hover .card-details{
-    display: block;
-    position: absolute;
-    bottom: 100%;
-    left: 0;
-    right: 0;
-    padding: 10px;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    z-index: 1;
-  }
+.hoverable{
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
 
-  .favorited{
-    display: block;
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    color: red;
-    transition: color 0.3s ease;
-  }
+.hoverable:hover{
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+}
 
-  .addToCart2{
-    display:flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    background-color: #5eb2f7;
-    color: #000000;
-    border: none;
-    border-radius:5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  .addToCart2:hover{
-    color: rgb(255, 255, 255);
-    background-color: rgb(0, 0, 204);
-  }
-  .card-details{
-    display: none;
-  }
+.not-favorited{
+  display: none;
+  position: absolute;
+  bottom: 85%;
+  right: 10%;
+}
+
+
+.product:hover .not-favorited {
+  display: block;
+  color: red;
+}
+
+.product:hover .admin-product-delete {
+  display: block;
+  color: red;
+}
+
+.favorited{
+  display: block;
+  position: absolute;
+  bottom: 85%;
+  right: 10%;
+  color: red;
+  transition: color 0.3s ease;
+}
+
+
+
+.product-name{
+  font-weight: bold;
+}
+.product-price{
+  font-weight: bolder;
+}
+.card-details{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 0%;
+}
+
+.product-buttons{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-details{
+  width: 100%;
+}
+.product-details label{
+  color: black;
+}
+.addToCart-h{
+  background-color: white;
+  color: blue;
+  border-color: white;
+  position: absolute;
+  bottom: 3%;
+  right: 10%;
+}
+.addToCart-h:hover{
+  background: radial-gradient(at 50% 30px,rgb(255, 158, 13),white,white);
+  border-color: white;
+  color: rgb(22, 0, 145);
+}
+
+.admin-product-delete{
+  display: none;
+  position: absolute;
+  bottom: 85%;
+  right: 80%;
+  color: red;
+  transition: color 0.3s ease;
+}
+.user-product-delete{
+  display: none;
+}

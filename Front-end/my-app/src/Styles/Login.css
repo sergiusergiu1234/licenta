@@ -1,12 +1,40 @@
 .login-container{
+    height: 800px;
+    background-image: url("/public/back.jpg");
+    background-size: 120%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    height: 300px;
-    padding-bottom: 1rem;
-    background-image: url("https://spring-amazon-image-storage.s3.eu-north-1.amazonaws.com/backgrounds/pexels-mikhael-mayim-10843099.jpg");
-    background-size:contain;
+    justify-content: center;
 }
 
+.inputs{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2%;
+    width: 30%;
+}
 
+Button{
+    margin: 2%;
+}
+
+p{
+    font-size: larger;
+}
+.login-container p,
+.login-container label,
+
+.login-container h2,
+.login-container h3,
+.login-container h4,
+.login-container h5,
+.login-container h6{
+  color: black;
+  font-size: large;
+}
+.login-container h1{
+    color: black;
+}

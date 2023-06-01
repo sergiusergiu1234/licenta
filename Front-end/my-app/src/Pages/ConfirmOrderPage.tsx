@@ -26,7 +26,7 @@ const ConfirmOrderPage = () =>{
         <div className="details-container">
             <Card className="order-section">
                 <CardHeader as="h5">
-                    Billing address
+                    Shipping address
                 </CardHeader>
                 <Card.Body>
                    <label>{order.address.province}, {order.address.city}, {order.address.street}, {order.address.zipcode}</label> 
@@ -34,7 +34,7 @@ const ConfirmOrderPage = () =>{
             </Card>
             <Card className="order-section">
                 <CardHeader as="h5">
-                    Billing data
+                    Contact data
                 </CardHeader>
                 <Card.Body>
                 <label>{order.personal.name} - {order.personal.phone}</label>
@@ -51,6 +51,7 @@ const ConfirmOrderPage = () =>{
         </div>
         <Card className="items-summary">
                 <CardHeader>
+                    Ordered items
                 </CardHeader>
                 <Card.Body>
                     {order.items.map((item)=>(<label>{item.productName} ({item.quantity}) - {item.price} RON</label>))}

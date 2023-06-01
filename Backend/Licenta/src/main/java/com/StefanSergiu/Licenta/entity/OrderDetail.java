@@ -18,7 +18,7 @@ public class OrderDetail {
     private Orders order;
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Product product;
+    private OrderItem orderItem;
 
     private Long quantity;
     private Float price;

@@ -90,11 +90,9 @@ const ShoppingCartPage =()=>{
         navigate("/OrderDetails");
     }
 
-    return(<Card>
-        <CardHeader>
-         <h1>Shopping cart</h1>
-         </CardHeader>
-         <div className="cartPage">
+    return(<div className="cartPage">
+            <h1>Shopping cart</h1>
+         <div className="cartContent">
             <div className="cartList">
             {cartItems.map((cart:CartItemType)=>(
                 <CartItem key={cart.productId} item={cart} addToCart={handleAddToCart}
@@ -112,6 +110,6 @@ const ShoppingCartPage =()=>{
         </IconContext.Provider>
             </div>
             </div>
-        </Card>)
+        </div>)
 }
 export default ShoppingCartPage;

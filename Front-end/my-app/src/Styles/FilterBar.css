@@ -1,12 +1,11 @@
 
-
 input{
-    width: 180px;
+    width: 90%;
 }
 
 
 .type-category-buttons{
-  margin-left: 10px;
+  margin-left: 5%;
   display: flex;
   flex-direction: column;
 
@@ -26,7 +25,7 @@ input{
 .category-button {
 all: unset;
 border:solid;
-padding: 2px;
+padding: 1%;
 background-color: lightblue;
 }
 .not-selected{
@@ -36,7 +35,7 @@ border: 0ch;
 .selected {
 background-color: lightblue;
 border: 0ch;
-margin: 5px;
+margin: 4%;
 }
 .dropdown-head{
 border: 0ch;
@@ -55,9 +54,7 @@ display: inline-block;
 display: none;
 position: absolute;
 background-color: #e5e5e5;
-min-width: 160px;
 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-padding: 12px 16px;
 z-index: 1;
 }
 .dropdown-content button:hover{
@@ -70,4 +67,27 @@ display: block;
 .hr{
 width: 100%;
 
+}
+
+.buttons{
+  display: flex;
+  flex-direction: column;
+}
+.sselected{
+  margin: 2%;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: rgb(255, 0, 0);
+  border-width: 5px;
+}
+.notselected{
+  margin: 2%;
+ background-color: rgb(151, 206, 255);
+  border-radius: 10px;
+  border-style: none;
+  color: black;
+  font-weight: bold;
+}
+.containe p,.containe label,h1,h2,h3,h4,h5,hr {
+  color: white;
 }

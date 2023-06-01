@@ -6,7 +6,7 @@ import { IconContext } from "react-icons";
 import { AiFillPlusCircle, AiOutlineHeart, AiOutlineShoppingCart } from "react-icons/ai";
 import '../Styles/ProductPage.css';
 import { error } from "console";
-import { Card } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 const ProductPage =()=>{
    
@@ -81,49 +81,42 @@ const ProductPage =()=>{
     return (
         <Card>
             <CardHeader>
-                <h4>{product.name}</h4>
+                <h1></h1>
             </CardHeader>
             <Card.Body className="product-page-container">
                 <div className="image-container">
                 <Card.Img variant="top" src="/snwb1.jpg"/>
                 </div>
                 <div>
-                    <label>Category:</label>
-                    <label>{product.category.name}</label>
-                    <label>-{product.gender.name}</label>
+                <p className="bold">
+                    {product.gender.name}'s {product.brand.name} {product.category.name.toUpperCase()}<br/>
+                    <label className="head-big">{product.name}</label><br/>
+                    <label className="head-big">{product.price} RON</label>
+                </p>
+                <div className="aesthetic-bar"></div>
+                    <p className="description-container">{product.description}</p>
+                    <div className="aesthetic-bar"></div>
+                    <hr/>
+                    <label className="bold">Product specs:</label>
                     <br/>
-                    <label>Product description:</label>
-                    <label>{product.description}</label>
-                    <br/>
-                    <label>Brand:</label>
-                    <label>{product.brand.name}</label>
-                    <br/>
-                    <label>Attributes:</label>
-                    <br/>
-                    {product.attributes.map((product)=>(<><label>{product.attribute_name}:{product.value}</label><br/></>))}
-                    
-
-
-
+                    {product.attributes.map((product)=>(<><label className="bold">{product.attribute_name}</label>
+                                                        <label className="head-big">{`: ${product.value}`}</label><br/></>))}
+                
             </div>
             </Card.Body>
         <div className="product-buttons">
-                    <table>
                     <IconContext.Provider value={{size: '50px'}}>
-                        <tr>
-                            <div className="favorite-button2" onClick={addToFavorite}>
-                                <td> <AiOutlineHeart /></td>
-                                <td><label className="bold">Adauga la favorite</label></td>
-                            </div>
-                        </tr>
-                        <tr>
-                            <div className="cart-button" onClick={addToCart}>
-                                <td> <AiFillPlusCircle /></td>
-                                <td><label className="bold">Adauga in cos</label></td>
-                            </div>
-                        </tr>
+                            <Button className="favorite-button2" onClick={addToFavorite}>
+                                <AiOutlineHeart />
+                                Add to favorites
+                            </Button>
+
+                            <Button className="cart-button" onClick={addToCart}>
+                                <AiFillPlusCircle />    
+                                Add to cart
+                            </Button>
                         </IconContext.Provider>
-                    </table>    
+                   
             </div>
             </Card>)
 }

@@ -48,7 +48,8 @@ public class Product{
     private String imageFileName;
     private String description;
 
- //   @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
-    @OneToMany(mappedBy = "product")
+   @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<ShoppingCart>shoppingCarts = new ArrayList<>();
+
+
 }

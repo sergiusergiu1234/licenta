@@ -1,8 +1,14 @@
 import { Category } from "./Category.types"
 import {Attribute} from "./Attribute.types"
-export type Type ={
-    id:number,
-    name: string,
-    categoryDtoList: Category[],
-    attributeDtoList: Attribute[]
+
+export type AttributeValues ={
+  [key: string]: string[] | null;
 }
+export interface Type {
+    id: number;
+    name: string;
+    categoryDtoList: Category[];
+    attributeDtoList: Attribute[];
+    attributeValues: AttributeValues;
+  }
+  

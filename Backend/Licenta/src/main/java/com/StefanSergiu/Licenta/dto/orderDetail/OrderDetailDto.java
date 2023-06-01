@@ -10,7 +10,7 @@ public class OrderDetailDto {
     private Float price;
     public static OrderDetailDto from(OrderDetail orderDetail){
         OrderDetailDto orderDetailDto = new OrderDetailDto();
-        orderDetailDto.setProductName(orderDetail.getProduct().getName());
+        orderDetailDto.setProductName(orderDetail.getOrderItem().getProductName());
         orderDetailDto.setPrice(orderDetail.getPrice());
         orderDetailDto.setQuantity(orderDetail.getQuantity());
         return orderDetailDto;

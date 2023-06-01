@@ -1,18 +1,21 @@
-.favorites{
-    display:flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
+
 .favorite-item{
-    display:flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #ccc;
-    border-top: 1px solid #ccc;
-    border-radius: 10px;
-    height: 120px;
+display: flex;
+flex-direction: row;
+justify-content: center;
+width: 100%;
+border-style: solid;
+border-radius: 15px;
+padding: 15px;
+background-color: #fff;
+background-size: cover;
+margin: 2%;
+}
+.favorite-item label{
+    all:unset;
+    font-size: larger;
+    font-weight: bolder;
+
 }
 
 .favorite-image img{
@@ -40,6 +43,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 60%;
 }
 .addToCart{
     display:flex;
@@ -48,11 +52,9 @@
     justify-content: center;
     background-color: #5eb2f7;
     color: #fff;
-    border: none;
     border-radius:5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin: 20px;
 }
 
 .addToCart:hover{

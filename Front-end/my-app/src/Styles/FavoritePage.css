@@ -1,0 +1,19 @@
+.favorite-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-image: url("/public/unif1.jpg");
+    background-size: cover;
+    background-repeat: repeat;
+  }
+.favorite-page h1{
+    color: black;
+}
+
+.favorite-container{
+    display: flex;
+    flex-direction: column;
+}

@@ -17,7 +17,11 @@
   .sect{
     width: 50%;
   }
-
+.order-details-page{
+  background-image: url("/public/ba.jpg");
+  background-size: cover;
+  height: 100vp;
+}
   .cash-check{
     display: flex;
     flex-direction: row;

@@ -2,8 +2,10 @@ import { useContext, useEffect, useRef, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-
 import '../Styles/Login.css';
+import InputGroup from "react-bootstrap/esm/InputGroup";
+import Form from "react-bootstrap/esm/Form";
+import Button from "react-bootstrap/esm/Button";
 
 const LOGIN_URL = '/users/signin';
 
@@ -86,37 +88,44 @@ const LoginPage = () => {
 
     return (
        
-                <section className="login-container">
-                    <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"}>
-                        {errMsg}
-                    </p>
-                    <h1>Sign In</h1>
-                    <form onSubmit={handleSubmit}>
-                        <label htmlFor="username">Username:</label>
-                        <input
-                            type="text"
-                            id="username"
-                            ref={userRef}
-                            onChange={(e) => setUser(e.target.value)}
-                            value={user}
-                            required
-                        />
+        <div className="login-container">
+        <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"}>
+            {errMsg}
+        </p>
+        <h1>Sign In</h1>
+        <Form onSubmit={handleSubmit} className="inputs">
+            
+            <InputGroup className="mb-3">
+                <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
+                <Form.Control
+                placeholder="Username"
+                type="text"
+                id="username"
+                ref={userRef}
+                onChange={(e) => setUser(e.target.value)}
+                value={user}
+                required
+                />
+            </InputGroup>
+            <InputGroup className="mb-3">
+                <InputGroup.Text id="basic-addon1">Password</InputGroup.Text>
+                <Form.Control
+                placeholder="*********"
+                type="password"
+                id="password"
+                onChange={(e) => setPwd(e.target.value)}
+                value={pwd}
+                required
+                />
+            </InputGroup>
 
-                        <label htmlFor="password">Password:</label>
-                        <input
-                            type="password"
-                            id="password"
-                            onChange={(e) => setPwd(e.target.value)}
-                            value={pwd}
-                            required
-                        />
-                        <button>Sign In</button>
-                    </form>
+            <Button variant="success" type="submit">Sign In</Button>
+                    </Form>
                     <p>
                         Don't have an account? <br />
                         <a href="/Register">Sign Up</a>
                     </p>
-                </section>
+                </div>
     );
 };
 export default LoginPage;

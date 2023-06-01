@@ -127,7 +127,7 @@ const Register = () => {
     }
 
     return (
-        <>
+        <div className="page">
             {success ? (
                 <section>
                     <h1>Success!</h1>
@@ -241,7 +241,9 @@ const Register = () => {
                         >
                             Password must be 8 to 24 characters.
                             <br />
-                            It must include at least one uppercase and lowercase letter, a
+                            It must include at least one uppercase and 
+                            <br/>
+                             lowercase letter, a
                             number and a special character.
                             <br />
                             Allowed special characters: ! @ # $ %
@@ -274,7 +276,7 @@ const Register = () => {
                     </form>
                 </section>
             )}
-        </>
+        </div>
     );
 }
 

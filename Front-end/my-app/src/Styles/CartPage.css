@@ -1,14 +1,27 @@
 .cartPage{
-    display:flex;
-    flex-direction: row;
-    
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-image: url("/public/unif1.jpg");
+  background-size: cover;
+  background-repeat: repeat;
+
+}
+.cartContent{
+  display: flex;
+  flex-direction: row;
+}
+h1,h5,label{
+  color: black;
 }
 .cartList{
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
-    width: 100%;
+    width: 50%;
+    margin-left: 10%;
   }
   .sumar-comanda{
     width: 100%;

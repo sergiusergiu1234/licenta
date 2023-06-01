@@ -6,7 +6,9 @@ import com.StefanSergiu.Licenta.entity.Type;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Data
@@ -15,6 +17,8 @@ public class TypeDto {
     private String name;
     private List<PlainCategoryDto> categoryDtoList = new ArrayList<>();
 
+    // Updated field for attribute values
+    private Map<String, List<String>> attributeValues = new HashMap<>();
     private List<PlainAttributeDto> attributeDtoList = new ArrayList<>();
     //TODO: attribute link
 

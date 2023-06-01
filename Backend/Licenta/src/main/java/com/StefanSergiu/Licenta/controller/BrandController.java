@@ -55,4 +55,14 @@ public class BrandController {
     public void deleteAllBrands(){
         brandService.deleteAllBrands();
     }
+
+
+    @PutMapping("/admin/edit/{id}")
+    public ResponseEntity<BrandDto> editBrand(@PathVariable final Long id,@RequestBody BrandDto brandDto){
+        Brand brand = brandService.editBrand(id, brandDto);
+        return new ResponseEntity<>(BrandDto.from(brand),HttpStatus.OK);
+    }
+
 }
+
+

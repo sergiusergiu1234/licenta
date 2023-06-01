@@ -1,0 +1,8 @@
+.manageProducts-page label,
+.manageProducts-page hr,
+.manageProducts-page h2{
+   color: black;
+}
+.manageProducts-page{
+   background-color: rgb(170, 170, 170);
+}

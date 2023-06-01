@@ -1,6 +1,8 @@
 package com.StefanSergiu.Licenta.service;
 
+import com.StefanSergiu.Licenta.dto.type.TypeDto;
 import com.StefanSergiu.Licenta.entity.*;
+import com.StefanSergiu.Licenta.repository.AttributeRepository;
 import com.StefanSergiu.Licenta.repository.CategoryRepository;
 import com.StefanSergiu.Licenta.repository.ProductRepository;
 import com.StefanSergiu.Licenta.repository.TypeRepository;
@@ -9,8 +11,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -19,7 +20,8 @@ public class TypeService {
 
     @Autowired
     TypeRepository typeRepository;
-
+    @Autowired
+    AttributeRepository attributeRepository;
     @Autowired
     CategoryRepository categoryRepository;
     @Autowired
@@ -35,6 +37,7 @@ public class TypeService {
     public Type getType(Long id){
         return typeRepository.findById(id).orElseThrow(()->new EntityNotFoundException());
     }
+
 
     @Transactional
     public Type deleteType(Long id) {

@@ -1,9 +1,39 @@
+
+.page{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url("/public/back.jpg");
+  background-size: 130%;
+  background-repeat: no-repeat;
+}
+.page label,
+.page h2,
+.page h3,
+.page h4,
+.page h5,
+.page h6{
+  color: black;
+  font-size: large;
+}
+.page h1{
+  color: black;
+}
+section{
+  margin-top: 5%;
+  margin-bottom: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .form{
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  flex-grow: 1;
-  padding-bottom: 1rem;
+  align-items: center;
+  justify-content: center;
 }
 
 input[type="text"],
@@ -15,20 +45,6 @@ textarea{
   padding: 0.25rem;
   border-radius: 0.5rem;
 }
-
-
-.section {
-    width: 100%;
-    max-width: 420px;
-    min-height: 400px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 1rem;
-    background-color: rgba(216, 196, 196, 0.073);
-
-}
-
 
 .instructions {
     font-size: 0.75rem;

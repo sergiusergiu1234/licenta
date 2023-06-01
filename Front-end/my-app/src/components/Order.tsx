@@ -16,7 +16,7 @@ const Order = ({order}:Props)=>{
     },[]);
     return (<Accordion defaultActiveKey="1" className="order">
         <Accordion.Item eventKey="0">
-            <Accordion.Header>Order - {order.id} - {order.status} </Accordion.Header>
+            <Accordion.Header >Order - {order.id} - {order.status} </Accordion.Header>
             <Accordion.Body>
             {order.orderDetails && order.orderDetails.length > 0 ? (
                  <Table className="details">

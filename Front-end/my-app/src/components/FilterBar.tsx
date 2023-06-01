@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import "../Styles/FilterBar.css";
-import { Type } from "../Types/Type.types";
+import { AttributeValues, Type } from "../Types/Type.types";
 import { Category } from "../Types/Category.types";
-import { Button, Dropdown, DropdownButton, Form, InputGroup } from "react-bootstrap";
+import { Button, Dropdown, DropdownButton, Form, FormCheck, InputGroup } from "react-bootstrap";
 import { Gender } from "../Types/Gender.type";
 import { Brand } from "../Types/Brand.types";
 import { Attribute } from "../Types/Attribute.types";
 import { fetchBrands, fetchGenders, fetchTypes } from "../api/api";
+import { ToggleButton } from 'primereact/togglebutton';
 
 const FilterBar = ({ onSearch }: any) => {
   const [productName, setProductName] = useState("");
@@ -17,10 +18,7 @@ const FilterBar = ({ onSearch }: any) => {
   const [typeName, setTypeName] = useState("");
   const [categoryName, setCategoryName] = useState("");
 
-  const [selectedType, setSelectedType] = useState<Type>({id:9999,
-                                                          name:"",
-                                                          categoryDtoList:[{id:9999,name:''}],
-                                                          attributeDtoList:[{id:9999,name:''}],});
+  const [selectedType, setSelectedType] = useState<Type | null>(null);
   const [types, setTypes] = useState<Type[]>([]);
 
   const [categories, setCategories] = useState<Category[]>([]);
@@ -32,14 +30,11 @@ const FilterBar = ({ onSearch }: any) => {
   const [genders,setGenders] = useState<Gender[]>([]);
   const [selectedGender, setSelectedGender] = useState("");
 
-  const [attributes,setAttributes] = useState<Attribute[]>([]);
-  const [attributeValues, setAttributeValues] = useState({});
-
+  const [selectedValues,setSelectedValues]= useState(new Map());
+  const[possibleValues, setPossibleValues] = useState<AttributeValues | null>(null);
 
   const handleSearch = () => {
-    const attributeString = Object.entries(attributeValues)
-      .map(([attributeName, attributeValue]) => `${attributeName}:${attributeValue}`).join("_");
-     
+    const attributeString = mapToString(selectedValues);
     onSearch(
       productName,
       selectedBrands,
@@ -54,7 +49,6 @@ const FilterBar = ({ onSearch }: any) => {
   const handleReset = () => {
     setCategories([]);
     setTypeName("");
-    setAttributes([]);
     setProductName("");
     setSelectedBrands([]);
     setGenderName("");
@@ -63,10 +57,7 @@ const FilterBar = ({ onSearch }: any) => {
     setMaxPrice("");
     onSearch("", [], "", "", "", "");
     setSelectedCategory('');
-    setSelectedType({id:9999,
-      name:"",
-      categoryDtoList:[{id:9999,name:''}],
-      attributeDtoList:[{id:9999,name:''}],});
+    setSelectedType(null);
     setSelectedGender('');
   };
 
@@ -78,8 +69,9 @@ const FilterBar = ({ onSearch }: any) => {
 
   useEffect(()=>{
       setSelectedCategory('');
-      setAttributeValues({});
+      setSelectedValues(new Map());
   },[selectedType]);
+
 
   const handleBrandChange = (event: React.ChangeEvent<HTMLInputElement>) =>{
       const {value, checked} = event.target;
@@ -89,20 +81,48 @@ const FilterBar = ({ onSearch }: any) => {
         setSelectedBrands(prevSelected => prevSelected.filter(val=> val !== value))
       }
   }
-  const handleInputChange =(event:any, attributeName:string) => {
-    setAttributeValues({
-      ...attributeValues,
-        [attributeName]: event.target.value
-    })
-    console.log(attributeValues)
-  }
+  useEffect(()=>{
+    console.log(selectedValues);
+  },[selectedValues]);
+  const handleAttributesChange = (attributeName: string, value:string)=>{
+      setSelectedValues((prevState)=>{
+        const updatedValues:any = new Map(prevState);
+        // If the key already exists in the Map, add the new value to the array
+        if (updatedValues.has(attributeName)) {
+         const existingValues = updatedValues.get(attributeName);
+         
+         if(existingValues.includes(value)){
+          // Filter out the value from the array
+           const filteredValues = existingValues.filter((v:string) => v !== value);
+           // Update the Map with the filtered values
+            updatedValues.set(attributeName, filteredValues);
+         }else{
+           // Add the value to the array
+            updatedValues.set(attributeName, [...existingValues, value]);
+         }
+        }else{
+          // If the key doesn't exist, create a new array with the value
+          updatedValues.set(attributeName, [value]);
+        }
+         return updatedValues;
+        })
+      }
+     const mapToString = (map:any) =>{
+      let result ='';
+      for( const [key,value] of map){
+        result += `${key}:${value}_`;
+      }
+      result = result.slice(0,-1)
+      return result;
+     }
+  
 
   return (
-    <div>
+    <div className="containe">
       <h4>EQUIPMENT TYPE</h4>
       <DropdownButton
         id="dropdown-item-button"
-        title={selectedType.name ? selectedType.name : "Select type"}
+        title={selectedType?.name ? selectedType.name : "Select type"}
       >
         <Dropdown.ItemText>Pick equipment type</Dropdown.ItemText>
         {types.map((type) => (
@@ -113,7 +133,8 @@ const FilterBar = ({ onSearch }: any) => {
               setTypeName(type.name);
               setCategories(type.categoryDtoList);
               setSelectedType(type);
-              setAttributes(type.attributeDtoList);
+              setPossibleValues(type.attributeValues);
+            
             }}
           >
             {type.name}
@@ -148,13 +169,30 @@ const FilterBar = ({ onSearch }: any) => {
 
       <hr />
       <h3>FILTERS:</h3>
-      <h4>Name</h4>
-      <input
-        id="productName"
-        type="text"
-        onChange={(e) => setProductName(e.currentTarget.value)}
-        value={productName}
-      />
+      
+      <h4>Attributes</h4>
+      {
+        possibleValues != null ? 
+      <>
+        {Object.entries(possibleValues).map(([attributeName, attributeValues])=>(
+          <div key={attributeName}>
+          <h4>{attributeName}</h4>
+         
+          <div className="buttons">
+            {attributeValues && attributeValues.map((value) => (
+               <Button key={value}
+                className={selectedValues.has(attributeName) && selectedValues.get(attributeName).includes(value) ? "sselected" : "notselected"} 
+                onClick={()=>handleAttributesChange(attributeName,value)}>{value}</Button>
+            ))}
+          </div>
+        </div>
+        ))
+        }
+      </>
+      :
+     <p>Select equipment type</p> 
+    }
+     
       <hr />
       
       <h4>Brand</h4>
@@ -168,7 +206,7 @@ const FilterBar = ({ onSearch }: any) => {
         />
       ))}
       <hr />
-
+       
       <h4>Gender</h4>
       <DropdownButton
         id="dropdown-item-button"
@@ -182,6 +220,7 @@ const FilterBar = ({ onSearch }: any) => {
             onClick={() => {
               setGenderName(gender.name);
               setSelectedGender(gender.name);
+
             }}
           >
             {gender.name}
@@ -189,24 +228,13 @@ const FilterBar = ({ onSearch }: any) => {
         ))}
       </DropdownButton>
       <hr />
-
-      <h4>Attributes</h4>
-      {
-        attributes.length ? 
-      <>
-      {attributes.map((attribute) => (
-        <InputGroup key={attribute.id} className="mb-3">
-          <Form.Control 
-                        aria-label="Text input with checkbox"
-                        placeholder={attribute.name} 
-                        onChange={(event)=>handleInputChange(event, attribute.name)}
-                        />
-        </InputGroup>
-      ))}
-      </>
-      :
-      "Select equipment type"
-    }
+      <h4>Name</h4>
+      <input
+        id="productName"
+        type="text"
+        onChange={(e) => setProductName(e.currentTarget.value)}
+        value={productName}
+      />
     <hr/>
       <h4>Minimum price</h4>
       <input

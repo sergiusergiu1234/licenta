@@ -74,8 +74,6 @@ const CartItem =({item,addToCart,removeFromCart}:Props)=>{
       <CardHeader as="h5">{cartItem.productName}</CardHeader>
       <Card.Body >
             <div className="cart-attributes">
-              <h5>Product details</h5>
-              <hr/>
               <label className="attribute_name">Brand-</label>
               <label>{item.product.brand.name}</label>
                 {item.product.attributes.map((attribute)=>(

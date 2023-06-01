@@ -2,14 +2,8 @@ package com.StefanSergiu.Licenta.service;
 
 import com.StefanSergiu.Licenta.dto.order.CreateNewOrderModel;
 import com.StefanSergiu.Licenta.dto.order.UpdateOrderModel;
-import com.StefanSergiu.Licenta.entity.OrderDetail;
-import com.StefanSergiu.Licenta.entity.Orders;
-import com.StefanSergiu.Licenta.entity.ShoppingCart;
-import com.StefanSergiu.Licenta.entity.UserInfo;
-import com.StefanSergiu.Licenta.repository.OrderDetailRepository;
-import com.StefanSergiu.Licenta.repository.OrderRepository;
-import com.StefanSergiu.Licenta.repository.ShoppingCartRepository;
-import com.StefanSergiu.Licenta.repository.UserInfoRepository;
+import com.StefanSergiu.Licenta.entity.*;
+import com.StefanSergiu.Licenta.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +27,8 @@ public class OrderService {
     @Autowired
     private ShoppingCartRepository shoppingCartRepository;
 
+    @Autowired
+    private OrderItemRepository orderItemRepository;
     @Transactional
     public Orders getOrder(Long id){
         return orderRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Order with id "+id + " not found!"));
@@ -66,7 +62,9 @@ public class OrderService {
         for(ShoppingCart shoppingCart : shoppingCarts){
             //generate empty orderDetail and populate it based on shopping cart info
             OrderDetail newOrderDetail = new OrderDetail();
-            newOrderDetail.setProduct(shoppingCart.getProduct());
+            OrderItem newOrderItem = new OrderItem();
+            newOrderItem.setProductName(shoppingCart.getProduct().getName());
+            newOrderDetail.setOrderItem(newOrderItem);
             newOrderDetail.setQuantity(shoppingCart.getQuantity());
             newOrderDetail.setPrice(shoppingCart.getPrice());
             newOrder.setTotal(newOrder.getTotal()+ newOrderDetail.getPrice());
@@ -76,6 +74,7 @@ public class OrderService {
             //add it to Order's orderDetails list
             orderDetails.add(newOrderDetail);
             shoppingCartRepository.delete(shoppingCart);
+            orderItemRepository.save(newOrderItem);
         }
 
         return orderRepository.save(newOrder);

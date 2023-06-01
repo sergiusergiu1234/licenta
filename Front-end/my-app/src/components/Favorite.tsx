@@ -9,8 +9,9 @@ import { IoTrashOutline } from "react-icons/io5";
 import { useEffect } from "react";
 interface Props{
     favorite:FavoriteType
+    handleRemove: (favorite: FavoriteType) => void;
 }
-const Favorite =({favorite}:Props)=>{
+const Favorite =({favorite,handleRemove}:Props)=>{
     const navigate = useNavigate(); 
 
     //convert image data
@@ -39,19 +40,6 @@ const Favorite =({favorite}:Props)=>{
         })
         .then(response => response.json())
     }
-    const deleteFavorite =()=>{
-        const token = window.localStorage.getItem('accessToken')
-        fetch(`http://localhost:8080/favorites/delete/${favorite.productId}`,{
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(response =>response.json())
-        .then(data => console.log(data))
-        .catch(error => console.log(error));
-        window.location.reload()
-    }
 
     return (
     <div className="favorite-item">
@@ -59,20 +47,20 @@ const Favorite =({favorite}:Props)=>{
             <img src={imageUrl} alt={favorite.productName} />
         </div>
         <div className="product-details">
-            <h6>{favorite.productName}</h6>
-            <p>{favorite.price} RON</p>
+            <label>{favorite.productName}</label><br/>
+            <label>{favorite.price} RON</label><br/>
         </div>
         <div className="favorite-buttons">
-            <IconContext.Provider value={{size: '30px'}}>
+            <IconContext.Provider value={{size: '50px'}}>
                 <button className="addToCart" onClick={addToCart}>
                     <MdAddShoppingCart />
-                    Add to cart
+                    <label>Add to cart</label>
                 </button>
                 </IconContext.Provider>
-                <button className="delete-favorite" onClick={deleteFavorite}>
+                <button className="delete-favorite" onClick={()=>handleRemove(favorite)}>
                   
                         <IoTrashOutline/>
-                        <label> Sterge</label>
+                        <label>Delete</label>
                 </button>
         </div>
     </div>)

@@ -2,13 +2,18 @@ package com.StefanSergiu.Licenta.controller;
 
 import com.StefanSergiu.Licenta.dto.type.TypeDto;
 import com.StefanSergiu.Licenta.entity.Type;
+import com.StefanSergiu.Licenta.repository.AttributeRepository;
+import com.StefanSergiu.Licenta.service.AttributeService;
 import com.StefanSergiu.Licenta.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -19,6 +24,10 @@ public class TypeController {
     @Autowired
     TypeService typeService;
 
+    @Autowired
+    AttributeRepository attributeRepository;
+    @Autowired
+    AttributeService attributeService;
     //add Type
     @PostMapping("/admin/add")
     public ResponseEntity<TypeDto> addType(@RequestBody TypeDto typeDto){
@@ -30,15 +39,35 @@ public class TypeController {
     @GetMapping("/all")
     ResponseEntity<List<TypeDto>> getTypes(){
         List<Type> Types = typeService.getTypes();
-        List<TypeDto> TypeDtos = Types.stream().map(TypeDto::from).collect(Collectors.toList());
-        return new ResponseEntity<>(TypeDtos,HttpStatus.OK);
+        List<TypeDto> typeDtos = Types.stream().map(TypeDto::from).collect(Collectors.toList());
+
+        for(TypeDto typeDto : typeDtos){
+            List<Map<String, Object>> attributeValues = attributeRepository.findAttributeValuesByTypeName(typeDto.getName());
+            for(Map<String,Object> attributeValue : attributeValues){
+                String attributeName = (String) attributeValue.get("attributeName");
+                List<String> attributeValuesList = Arrays.asList(((String) attributeValue.get("attributeValues")).split(","));
+                typeDto.getAttributeValues().put(attributeName, attributeValuesList);
+            }
+        }
+        return new ResponseEntity<>(typeDtos,HttpStatus.OK);
     }
 
     //get Type by id
     @GetMapping(value = "{id}")
     public ResponseEntity<TypeDto> getType(@PathVariable final Long id){
-        Type Type = typeService.getType(id);
-        return new ResponseEntity<>(TypeDto.from(Type),HttpStatus.OK);
+        Type type = typeService.getType(id);
+        TypeDto typeDto = TypeDto.from(type);
+
+        // Retrieve attribute values for the selected type
+        List<Map<String, Object>> attributeValues = attributeRepository.findAttributeValuesByTypeName(type.getName());
+        for (Map<String, Object> attributeValue : attributeValues) {
+            String attributeName = (String) attributeValue.get("attributeName");
+            List<String> attributeValuesList = Arrays.asList(((String) attributeValue.get("attributeValues")).split(","));
+            typeDto.getAttributeValues().put(attributeName, attributeValuesList);
+        }
+
+
+        return new ResponseEntity<>(typeDto, HttpStatus.OK);
     }
 
 

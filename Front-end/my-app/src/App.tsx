@@ -16,6 +16,10 @@ import OrderDetailsPage from "./Pages/OrderDetailsPage";
 import { OrderDetailsProvider } from "./context/OrderDetailsProvider";
 import ShoppingCartPage from "./Pages/ShoppingCartPage";
 import ConfirmOrderPage from "./Pages/ConfirmOrderPage";
+import AdminDashboard from "./Pages/Admin/AdminDashboard";
+import ManageProducts from "./Pages/Admin/ManageProducts";
+import ManageBrands from "./Pages/Admin/ManageBrands";
+import ManageCategories from "./Pages/Admin/ManageCategories";
 
 
 const OrderPagesWrapper =() =>{
@@ -33,7 +37,6 @@ function App() {
   return (
     <div> 
       <Navbar/>
-
     < Routes>
       <Route path="/" element={<Layout />} >
         <Route path= 'Register' element ={<Register/>} />
@@ -45,8 +48,13 @@ function App() {
           <Route path="" element={<HomePage/>} />
     
             <Route path="ProductPage/:id" element={<ProductPage/>} />
-
-          <Route element={<RequireAuth  allowedRoles={["ROLE_USER","ROLE_ADMIN"]}/>}>
+          <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN"]}/>}>
+            <Route path="admin" element={<AdminDashboard/>}></Route>
+            <Route path="admin/products" element={<ManageProducts/>}></Route>
+            <Route path="admin/brands" element={<ManageBrands/>}></Route>
+            <Route path="admin/categories" element={<ManageCategories/>}></Route>
+          </Route>
+          <Route element={<RequireAuth  allowedRoles={["ROLE_USER"]}/>}>
             <Route path='Favorites' element={<FavoritesPage/>}></Route>
          
             <Route path='MyAccount' element={<AccountPage/>}></Route>

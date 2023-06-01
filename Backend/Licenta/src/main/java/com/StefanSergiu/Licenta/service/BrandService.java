@@ -1,5 +1,6 @@
 package com.StefanSergiu.Licenta.service;
 
+import com.StefanSergiu.Licenta.dto.brand.BrandDto;
 import com.StefanSergiu.Licenta.entity.Brand;
 import com.StefanSergiu.Licenta.entity.Category;
 import com.StefanSergiu.Licenta.entity.Gender;
@@ -51,9 +52,9 @@ public class BrandService {
     }
 
     @Transactional
-    public Brand editBrand(Long id, Brand brand){
+    public Brand editBrand(Long id, BrandDto brandDto){
         Brand brandToEdit = getBrand(id);
-        brandToEdit.setName(brand.getName());
+        brandToEdit.setName(brandDto.getName());
         return brandToEdit;
     }
     @Transactional

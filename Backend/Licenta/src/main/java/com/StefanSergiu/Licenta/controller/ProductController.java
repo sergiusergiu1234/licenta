@@ -191,6 +191,6 @@ public class ProductController {
         //set the image to the product
         productService.updateProductImage(id, path,fileName);
 
-        return new ResponseEntity<>("Image added succesfully",HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body("Image added succesfully");
     }
 }

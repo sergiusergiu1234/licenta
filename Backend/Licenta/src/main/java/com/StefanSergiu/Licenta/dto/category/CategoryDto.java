@@ -16,7 +16,6 @@ public class CategoryDto {
     private Long id;
     private String name;
     private PlainTypeDto plainTypeDto;
-
     private List<PlainProductDto> productDtoList=new ArrayList<>();
     public static CategoryDto from(Category category){
         CategoryDto categoryDto = new CategoryDto();

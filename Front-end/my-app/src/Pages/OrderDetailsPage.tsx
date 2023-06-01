@@ -54,7 +54,7 @@ const OrderDetailsPage =()=>{
        navigate("/ConfirmOrder")
     }
 
-    return (<div>
+    return (<div className="order-details-page">
             <h1>Order details</h1>
         <Form className="orderDetails-container" onSubmit={handleSubmit}>
             <Card className="sect">

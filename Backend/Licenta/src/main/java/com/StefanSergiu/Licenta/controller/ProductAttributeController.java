@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/productAttributes")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProductAttributeController {
     @Autowired
     ProductAttributeService productAttributeService;
