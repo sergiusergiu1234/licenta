@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/categories")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CategoryController {
     @Autowired
     CategoryService categoryService;
@@ -46,6 +47,12 @@ public class CategoryController {
     @DeleteMapping(value = "/admin/delete/{id}")
     public ResponseEntity<CategoryDto> deleteCategory(@PathVariable final Long id){
         Category category = categoryService.deleteCategory(id);
+        return new ResponseEntity<>(CategoryDto.from(category),HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/admin/edit/{id}")
+    public ResponseEntity<CategoryDto> editCategory(@PathVariable final Long id,@RequestBody CategoryDto categoryDto){
+        Category category = categoryService.editCategory(id, categoryDto);
         return new ResponseEntity<>(CategoryDto.from(category),HttpStatus.OK);
     }
 }

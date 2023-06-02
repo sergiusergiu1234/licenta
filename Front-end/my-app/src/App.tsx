@@ -20,6 +20,7 @@ import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import ManageProducts from "./Pages/Admin/ManageProducts";
 import ManageBrands from "./Pages/Admin/ManageBrands";
 import ManageCategories from "./Pages/Admin/ManageCategories";
+import ManageAttributes from "./Pages/Admin/ManageAttributes";
 
 
 const OrderPagesWrapper =() =>{
@@ -53,6 +54,7 @@ function App() {
             <Route path="admin/products" element={<ManageProducts/>}></Route>
             <Route path="admin/brands" element={<ManageBrands/>}></Route>
             <Route path="admin/categories" element={<ManageCategories/>}></Route>
+            <Route path="admin/attributes" element={<ManageAttributes/>}></Route>
           </Route>
           <Route element={<RequireAuth  allowedRoles={["ROLE_USER"]}/>}>
             <Route path='Favorites' element={<FavoritesPage/>}></Route>

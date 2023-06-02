@@ -2,6 +2,8 @@ package com.StefanSergiu.Licenta.controller;
 
 import com.StefanSergiu.Licenta.dto.attribute.AttributeDto;
 import com.StefanSergiu.Licenta.dto.attribute.CreateNewAttributeDto;
+import com.StefanSergiu.Licenta.dto.attribute.EditAttributeDto;
+import com.StefanSergiu.Licenta.dto.category.CategoryDto;
 import com.StefanSergiu.Licenta.dto.product.CreateNewProductModel;
 import com.StefanSergiu.Licenta.entity.Attribute;
 import com.StefanSergiu.Licenta.entity.Brand;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/attributes")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AttributeController {
     @Autowired
     AttributeService attributeService;
@@ -46,6 +49,12 @@ public class AttributeController {
     @DeleteMapping("/admin/delete/{id}")
     public ResponseEntity<AttributeDto> deleteAttribute(@PathVariable final Long id){
         Attribute attribute = attributeService.deleteAttribute(id);
+        return new ResponseEntity<>(AttributeDto.from(attribute),HttpStatus.OK);
+    }
+
+    @PutMapping("/admin/edit/{id}")
+    public ResponseEntity<AttributeDto> editAttribute(@PathVariable final Long id, @RequestBody EditAttributeDto editAttributeDto){
+        Attribute attribute = attributeService.editAttribute(id,editAttributeDto);
         return new ResponseEntity<>(AttributeDto.from(attribute),HttpStatus.OK);
     }
 }

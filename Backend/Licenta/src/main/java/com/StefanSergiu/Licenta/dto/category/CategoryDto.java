@@ -15,16 +15,12 @@ import java.util.stream.Collectors;
 public class CategoryDto {
     private Long id;
     private String name;
-    private PlainTypeDto plainTypeDto;
-    private List<PlainProductDto> productDtoList=new ArrayList<>();
+
     public static CategoryDto from(Category category){
         CategoryDto categoryDto = new CategoryDto();
         categoryDto.setId(category.getId());
         categoryDto.setName(category.getName());
-        if(Objects.nonNull(category.getType())){
-            categoryDto.setPlainTypeDto(PlainTypeDto.from(category.getType()));
-        }
-        categoryDto.setProductDtoList(category.getProducts().stream().map(PlainProductDto::from).collect(Collectors.toList()));
+
         return categoryDto;
     }
 }

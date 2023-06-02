@@ -5,5 +5,5 @@ import lombok.Getter;
 @Getter
 public class CreateNewAttributeDto {
     private String name;
-    private String type_name;
+    private Long typeId;
 }

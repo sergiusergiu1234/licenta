@@ -1,5 +1,6 @@
 package com.StefanSergiu.Licenta.service;
 
+import com.StefanSergiu.Licenta.dto.category.CategoryDto;
 import com.StefanSergiu.Licenta.dto.category.CreateNewCategoryModel;
 import com.StefanSergiu.Licenta.entity.*;
 import com.StefanSergiu.Licenta.repository.CategoryRepository;
@@ -24,10 +25,9 @@ public class CategoryService {
     public Category addCategory(CreateNewCategoryModel createNewCategoryModel){
         Category category = new Category();
 
-        Type type = typeRepository.findByName(createNewCategoryModel.getType_name());
-        if(type == null){
-            throw new EntityNotFoundException("Type "+ createNewCategoryModel.getType_name()+ " not found.");
-        }
+        Type type = typeRepository.findById(createNewCategoryModel.getTypeId()).orElseThrow(
+                ()->new EntityNotFoundException("Type with id "+ createNewCategoryModel.getTypeId()+ " not found.")
+        );
         category.setType(type);
         category.setName(createNewCategoryModel.getName());
         type.addCategory(category);
@@ -51,5 +51,13 @@ public class CategoryService {
         category.getType().getCategories().remove(category);    //detach category from type
         categoryRepository.delete(category);
         return category;
+    }
+
+    @Transactional
+    public Category editCategory(Long id, CategoryDto categoryDto){
+        Category categoryToEdit = categoryRepository.findById(id)
+                .orElseThrow(()->new EntityNotFoundException("Category with id "+ id +" not found"));
+        categoryToEdit.setName(categoryDto.getName());
+        return categoryToEdit;
     }
 }

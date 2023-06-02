@@ -36,8 +36,8 @@ const ManageBrands = () =>{
             return updatedBrands
         })});
     }
-    const handleDelete =(event:any)=>{
-        event.preventDefault();
+    const handleDelete =(brandId:number)=>{
+       
         deleteBrand(brandId).then((data)=> setBrands(prev=> prev.filter((brand)=>brand.id !== data.id)));
         
     }
@@ -66,6 +66,7 @@ const ManageBrands = () =>{
                     <td className="actions">
                         <IconContext.Provider  value={{size: '30px'}}>
                         <Button className="edit" onClick={()=>setBrandId(brand.id)}><MdOutlineModeEdit /></Button>
+                        <Button type="submit" variant="danger" onClick={()=>handleDelete(brand.id)}>Delete</Button>
                         </IconContext.Provider>
                     </td>
                 </tr>)}
@@ -112,22 +113,6 @@ const ManageBrands = () =>{
                 /></FloatingLabel>
             <Button variant="success" onClick={handleEdit}>Edit brand</Button>
             </form>
-        </section>
-
-        <section>
-            <h2>Delete brand</h2>
-            <form onSubmit={handleDelete}>
-            <FloatingLabel label="Brand id ">
-                    <Form.Control
-                        placeholder="Brand id"
-                        id="id"
-                        type="number"
-                        pattern="[0-9]*"
-                        onChange={(e) => setBrandId(parseInt(e.currentTarget.value))}
-                        value={brandId !== null ? brandId.toString() : ''}
-                    /></FloatingLabel>
-                    <Button type="submit" variant="danger" >Delete</Button>
-                    </form>
         </section>
     </div>)
 }

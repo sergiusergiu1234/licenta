@@ -58,7 +58,8 @@ const Navbar = ()=>{
               <CustomLink to={'/'}>Products</CustomLink>
                   <CustomLink to='/admin/products'><div>Manage Products</div></CustomLink>
                   <CustomLink to='/admin/brands'><div>Manage Brands</div></CustomLink>
-                  <CustomLink to='/admin/categories'><div>Manage Categories</div></CustomLink>
+                  <CustomLink to='/admin/categories'><div>Categories & Types</div></CustomLink>
+                  <CustomLink to='/admin/attributes'><div>Mange Attributes</div></CustomLink>
                   <CustomLink to='/admin/orders'><div>Manage Orders</div></CustomLink>
                   <Button variant='danger' onClick={handleLogout}>Logout</Button>
                   </> : <>
