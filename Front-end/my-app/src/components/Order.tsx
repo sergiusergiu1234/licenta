@@ -24,7 +24,7 @@ const Order = ({order}:Props)=>{
                         <tr>
                             <th>Product name</th>
                             <th>Quantity</th>
-                            <th>Price</th>
+                            <th>Total</th>
                             <th>Ordered at</th>
                         </tr>
                     </thead>
@@ -42,7 +42,7 @@ const Order = ({order}:Props)=>{
           ) : (
             <p>No order details found.</p>
           )}
-                {/* {order.OrderDetails.map((detail:OrderDetail)=>(<label>{}</label>))} */}
+               
             </Accordion.Body>
         </Accordion.Item>
     </Accordion>)

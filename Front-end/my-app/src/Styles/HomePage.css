@@ -1,12 +1,12 @@
 .homepage {
   display: flex;
   flex-direction: row;
-  background-image: url("/public/unif2.jpg");
+  background-color: rgb(135, 135, 135);
   background-size: cover;
 }
 
 .filter-container {
-  width: 20%;
+  min-width: 15%;
   height: 100%;
   padding-left: 2%;
   padding-right: 2%;
@@ -24,100 +24,30 @@
   margin-top: 2%;
 }
 
+@media screen and (max-width: 992px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr); /* Set 2 columns for smaller screens */
+  }
+}
+
+
+@media screen and (max-width: 700px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr); /* Set 2 columns for smaller screens */
+  }
+}
+
+
+
 .product-column {
   margin-left: 10%;
   width: 90%;
-}
-
-.product{
   margin-bottom: 10%;
 }
 
-.hoverable{
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-.hoverable:hover{
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
-}
-
-.not-favorited{
-  display: none;
-  position: absolute;
-  bottom: 85%;
-  right: 10%;
-}
-
-
-.product:hover .not-favorited {
-  display: block;
-  color: red;
-}
-
-.product:hover .admin-product-delete {
-  display: block;
-  color: red;
-}
-
-.favorited{
-  display: block;
-  position: absolute;
-  bottom: 85%;
-  right: 10%;
-  color: red;
-  transition: color 0.3s ease;
-}
 
 
 
-.product-name{
-  font-weight: bold;
-}
-.product-price{
-  font-weight: bolder;
-}
-.card-details{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-bottom: 0%;
-}
-
-.product-buttons{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.product-details{
-  width: 100%;
-}
-.product-details label{
-  color: black;
-}
-.addToCart-h{
-  background-color: white;
-  color: blue;
-  border-color: white;
-  position: absolute;
-  bottom: 3%;
-  right: 10%;
-}
-.addToCart-h:hover{
-  background: radial-gradient(at 50% 30px,rgb(255, 158, 13),white,white);
-  border-color: white;
-  color: rgb(22, 0, 145);
-}
-
-.admin-product-delete{
-  display: none;
-  position: absolute;
-  bottom: 85%;
-  right: 80%;
-  color: red;
-  transition: color 0.3s ease;
-}
-.user-product-delete{
-  display: none;
+label{
+  font-size: 2vw;
 }

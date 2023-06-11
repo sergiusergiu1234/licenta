@@ -1,5 +1,6 @@
 package com.StefanSergiu.Licenta.service;
 
+import com.StefanSergiu.Licenta.dto.gender.EditGenderDto;
 import com.StefanSergiu.Licenta.entity.Brand;
 import com.StefanSergiu.Licenta.entity.Category;
 import com.StefanSergiu.Licenta.entity.Gender;
@@ -21,28 +22,32 @@ public class GenderService {
     GenderRepository genderRepository;
 
 
+    public Gender addGender(Gender gender) {
+        return genderRepository.save(gender);
+    }
 
-    public Gender addGender(Gender gender){return genderRepository.save(gender);}
-
-    public List<Gender> getGenders(){
+    public List<Gender> getGenders() {
         return StreamSupport
-                .stream(genderRepository.findAll().spliterator(),false)
+                .stream(genderRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
 
-    public Gender getGender(Long id){
-        return genderRepository.findById(id).orElseThrow(()->new EntityNotFoundException());
+    public Gender getGender(Long id) {
+        return genderRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
     }
 
     @Transactional
-    public Gender deleteGender(Long id){
+    public Gender deleteGender(Long id) {
         Gender gender = getGender(id);
         genderRepository.delete(gender);
         return gender;
     }
 
     @Transactional
-    public void deleteAllGenders() {
-        genderRepository.deleteAll();
+    public Gender editGender(Long id, EditGenderDto editGenderDto){
+        Gender gender = genderRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Gender with id "+ id + " not found"));
+        gender.setName(editGenderDto.getName());
+        return gender;
     }
-    }
+}

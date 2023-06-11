@@ -1,0 +1,62 @@
+.hoverable{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .hoverable:hover{
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+  }
+  
+
+
+  
+  .product-name{
+    font-weight: bold;
+  }
+  .product-price{
+    font-weight: bolder;
+  }
+  .card-details{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 0%;
+  }
+  
+  
+.favorited{
+    display: block;
+    position: absolute;
+    bottom: 85%;
+    right: 10%;
+    color: red;
+    transition: color 0.3s ease;
+  }
+  
+  
+.not-favorited{
+    position: absolute;
+    bottom: 85%;
+    right: 1%;
+  }
+  
+  .product-buttons{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+  .admin-product-delete{
+    display: block;
+    position: absolute;
+    bottom: 85%;
+    right: 80%;
+    color: red;
+    transition: color 0.3s ease;
+
+  }
+  .user-product-delete{
+    display: none;
+  }
+  

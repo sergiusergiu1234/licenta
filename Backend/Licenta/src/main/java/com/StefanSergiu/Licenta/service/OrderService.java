@@ -92,4 +92,9 @@ public class OrderService {
         order.setStatus(updateOrderModel.getNewStatus());
         return order;
     }
+
+    public List<Orders> getAllOrders(){
+        return StreamSupport.stream(orderRepository.findAll().spliterator(),false)
+                .collect(Collectors.toList());
+    }
 }

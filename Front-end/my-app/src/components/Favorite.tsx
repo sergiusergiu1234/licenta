@@ -44,17 +44,17 @@ const Favorite =({favorite,handleRemove}:Props)=>{
     return (
     <div className="favorite-item">
         <div className="favorite-image" onClick={goToProductDetails}>
-            <img src={imageUrl} alt={favorite.productName} />
+            <img src={imageUrl} alt={favorite.productName}  className="scaled-image" />
         </div>
         <div className="product-details">
             <label>{favorite.productName}</label><br/>
             <label>{favorite.price} RON</label><br/>
         </div>
-        <div className="favorite-buttons">
-            <IconContext.Provider value={{size: '50px'}}>
+        <div >
+            <IconContext.Provider value={{size: '5vh'}}>
                 <button className="addToCart" onClick={addToCart}>
                     <MdAddShoppingCart />
-                    <label>Add to cart</label>
+                    <label>Buy</label>
                 </button>
                 </IconContext.Provider>
                 <button className="delete-favorite" onClick={()=>handleRemove(favorite)}>

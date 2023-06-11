@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Category } from "../../Types/Category.types"
-import { addCategory, addType, deleteCategory, deleteType, editCategory, fetchCategories, fetchTypes } from "../../api/api";
+import { addCategory, addType, deleteCategory, deleteType, editCategory, editType, fetchCategories, fetchTypes } from "../../api/api";
 import { IconContext } from "react-icons";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { Button } from "react-bootstrap";
@@ -10,12 +10,12 @@ import { Type } from "../../Types/Type.types";
 const ManageCategories = () =>{
 
     const [categories,setCategories] = useState<Category[]>([])
-    const [categoryId,setCategoryId] = useState(0);
+    const [categoryId,setCategoryId] = useState<number | null>(null);
     const [categoryName,setCategoryName]= useState('');
 
 
     const [types, setTypes] = useState<Type[]>([])
-    const [typeId, setTypeId] = useState(0);
+    const [typeId, setTypeId] = useState<number | null >(null);
     const [typeName, setTypeName] = useState("");
 
     useEffect(()=>{
@@ -55,10 +55,13 @@ const ManageCategories = () =>{
     }
 
     const handleDeleteType=(typeId:number)=>{
-        deleteType(typeId).then((data)=>{
-            setTypes((prev)=>prev.filter((type:Type)=> type.id !== data.id ));
-        });
-        setCategories([]);
+        const confirmed = window.confirm("Are you sure you want to delete this type?");
+        if (confirmed){
+            deleteType(typeId).then((data)=>{
+                setTypes((prev)=>prev.filter((type:Type)=> type.id !== data.id ));
+            });
+            setCategories([]);
+        }
     }
 
     const handleAddType =(event:any) =>{
@@ -66,6 +69,22 @@ const ManageCategories = () =>{
             addType(typeName).then((data)=> {setTypes((prev) => [...prev, data])});
     }
 
+    const handleEditType =(event:any) =>{
+        event.preventDefault();
+        const confirmed = window.confirm("Are you sure you want to edit this type?");
+        if (confirmed){
+        editType(typeName,typeId).then((data)=>{setTypes((prev)=> {
+            const updatedTypes= prev.map((type)=>{
+                if(type.id === typeId){
+                    return data;
+                }
+                return type;
+            });
+            return updatedTypes;
+        })
+        })
+    }
+    }
 
     
     return (<div className="manage-categories-page">
@@ -76,13 +95,14 @@ const ManageCategories = () =>{
         <label>Selected type: {typeId}</label>
         <table className="brands-table" >
             <thead>
-                <th>
-                    Cateogory id
-                </th>
-                <th>
-                    Category name
-                </th>
-                
+                <tr>
+                    <th>
+                        Cateogory id
+                    </th>
+                    <th>
+                        Category name
+                    </th>
+                </tr>
             </thead>
             <tbody>
                 {categories.map((category:Category)=><tr key={category.id}>
@@ -106,13 +126,14 @@ const ManageCategories = () =>{
         <h3>Types</h3>
         <table className="brands-table" >
             <thead>
-                <th>
-                    Type id
-                </th>
-                <th>
-                    Type name
-                </th>
-                
+                <tr>
+                    <th>
+                        Type id
+                    </th>
+                    <th>
+                        Type name
+                    </th>
+                </tr>
             </thead>
             <tbody>
                 {types.map((type:Type)=><tr key={type.id}>
@@ -186,7 +207,7 @@ const ManageCategories = () =>{
         </section>
 
         <section>
-            <h2>Add new type</h2>
+            <h2>Add/edit type</h2>
             <form onSubmit={handleAddType}>
             <FloatingLabel label='Type name'>
                 <Form.Control
@@ -197,8 +218,21 @@ const ManageCategories = () =>{
                 value={typeName}
                 required
                 /></FloatingLabel>
+             <FloatingLabel label="Type id ">
+                    <Form.Control
+                        placeholder="Type id"
+                        id="id"
+                        type="number"
+                        pattern="[0-9]*"
+                        onChange={(e) => setTypeId(parseInt(e.currentTarget.value))}
+                        value={typeId !== null ? typeId.toString() : ''}
+                    /></FloatingLabel>
                 <Button type="submit" variant="success">Add type</Button>
+                <Button onClick={handleEditType} variant="warning">Edit type</Button>
             </form>
+            
+                
+           
         </section>
     </div>)
 }

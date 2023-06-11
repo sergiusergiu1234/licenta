@@ -9,7 +9,7 @@ import { IconContext } from "react-icons";
 const ManageBrands = () =>{
 
     const [brandName, setBrandName] = useState("");
-    const [brandId,setBrandId] = useState(0);
+    const [brandId,setBrandId] = useState<number | null>(null);
     const [brands, setBrands] = useState<Brand[]>([]);
 
     
@@ -47,13 +47,16 @@ const ManageBrands = () =>{
      <section>
         <table className="brands-table" >
             <thead>
+                <tr>
+
+                
                 <th>
                     Brand id
                 </th>
                 <th>
                     Brand name
                 </th>
-                
+                </tr>
             </thead>
             <tbody>
                 {brands.map((brand:Brand)=><tr key={brand.id}>

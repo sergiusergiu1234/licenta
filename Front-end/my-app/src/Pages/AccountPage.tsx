@@ -33,7 +33,7 @@ const AccountPage =() =>{
           .then(data => setCustomer(data))
           .catch(error => console.error(error));
 
-          fetchOrders().then(data=>setOrders(data));
+          fetchOrders().then(data=>{setOrders(data);console.log(data)});
         
       }, []);
 

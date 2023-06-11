@@ -35,7 +35,7 @@ const FavoritesPage =()=>{
     
     return (<div  className="favorite-page">
         <h1>Favorite products</h1>
-        <div className="favorite-container">
+        <div>
         {favoriteList.map((favorite:FavoriteType)=>(
             <Favorite key={favorite.productId} favorite={favorite} handleRemove={handleRemove} />
         ))}

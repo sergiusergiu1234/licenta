@@ -1,13 +1,11 @@
 .manage-categories-page{
-    background-color: rgb(170, 170, 170);
+    background-color: rgb(135, 135, 135);
 }
 .tables{
     display: flex;
     flex-direction: row;
 }
-table{
-    margin: 5%;
-}
+
 .tab{
     display: flex;
     flex-direction: column;

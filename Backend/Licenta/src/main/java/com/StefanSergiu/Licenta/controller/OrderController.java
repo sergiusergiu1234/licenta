@@ -61,10 +61,21 @@ public class OrderController {
         return new ResponseEntity<>(orderDtoList,HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<OrderDto> updateOrderStatus(@RequestBody UpdateOrderModel updateOrderModel){
         Orders order = orderService.updateOrderStatus(updateOrderModel);
         return new ResponseEntity<>(OrderDto.from(order),HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/admin/all")
+    public ResponseEntity<List<OrderDto>> getAllOrders(){
+        List<Orders> orders = orderService.getAllOrders();
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        for(Orders order:orders){
+            orderDtoList.add(OrderDto.from(order));
+        }
+        return new ResponseEntity<>(orderDtoList,HttpStatus.OK);
     }
 }

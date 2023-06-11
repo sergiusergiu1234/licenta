@@ -77,7 +77,6 @@ width: 100%;
   margin: 2%;
   border-radius: 10px;
   border-style: solid;
-  border-color: rgb(255, 0, 0);
   border-width: 5px;
 }
 .notselected{
@@ -88,6 +87,19 @@ width: 100%;
   color: black;
   font-weight: bold;
 }
+.containe{
+  min-width: 100%;
+  max-width: 100%;
+  height: auto;
+}
 .containe p,.containe label,h1,h2,h3,h4,h5,hr {
   color: white;
+}
+
+.containe h4 {
+  font-size: 100%;
+}
+
+.containe .DropdownButton {
+  width: 100%;
 }

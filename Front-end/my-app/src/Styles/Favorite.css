@@ -29,7 +29,9 @@ margin: 2%;
     cursor: pointer;
     opacity: 0.7;
 }
-
+.product-details{
+    margin-right: 10%;
+}
 .product-details h6{
     font-size: 16px;
     margin-bottom: 5px;
@@ -55,6 +57,7 @@ margin: 2%;
     border-radius:5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+   
 }
 
 .addToCart:hover{

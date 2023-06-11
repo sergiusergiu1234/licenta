@@ -1,57 +1,55 @@
 .navbar-user{
-  display: flex;
-  flex-direction: row;
-  width: 100vp;
   background-color:  rgba(22, 22, 22, 0.921);
-  padding-right: 15%;
 }
 .navbar-admin{
-  display: flex;
-  flex-direction: row;
-  width: 100vp;
   background-color:  rgba(22, 22, 22, 0.921);
-  padding-right: 15%;
 }
-.navbar-buttons-user{
+
+.nav-container {
   display: flex;
-  flex-direction: flex-end;
-  justify-content: left;
+  justify-content: space-between;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  font-size: xx-large;
+}
+.nav-container-admin{
+  display: flex;
+  justify-content: space-between;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  font-size: large
+}
+
+.toolbar-action-icons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.toolbar-action-icon {
+  margin-left: 0.2em;
+}
+
+.navbar-buttons-user{
   color: white;
   font-weight: bold;
   font-style: italic;
-  font-size: 260%;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-weight: 100;
 }
 .navbar-buttons-admin{
-  display: flex;
-  flex-direction: flex-end;
-  justify-content: space-between;
   color: white;
   font-weight: bold;
   font-style: italic;
-  font-size: 160%;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-weight: 100;
+
 }
-.navbar-buttons-admin :hover{
+
+.toolbar-action-icon :hover{
   color: red;
   cursor: pointer;
 }
-.navbar-buttons-user :hover{
-  color: red;
-  cursor: pointer;
-}
-.navbar-buttons-admin div {
-  margin-right: 15%; /* Adjust this value as desired */
-}
-.navbar-buttons-user div {
-  margin-right: 15%; /* Adjust this value as desired */
-}
-.logo{
-  width: 10%;
-  margin-left: 15%;
-}
+
 .navbar-buttons-admin a,
 .navbar-buttons-user a{
   all:unset;

@@ -74,22 +74,25 @@ const CartItem =({item,addToCart,removeFromCart}:Props)=>{
       <CardHeader as="h5">{cartItem.productName}</CardHeader>
       <Card.Body >
             <div className="cart-attributes">
-              <label className="attribute_name">Brand-</label>
-              <label>{item.product.brand.name}</label>
+              
+              <label  className="attribute_name">{item.product.brand.name} - {item.product.category.name}</label>
+                <hr/>
+                <div className="attr">
                 {item.product.attributes.map((attribute)=>(
                   <div>
-                    <label className="attribute_name">{attribute.attribute_name}-</label>
+                    <label className="attribute_name">{attribute.attribute_name}:</label>
                     <label className="value">{attribute.value}</label>
                     <br/>
                   </div>
                 ))}
+                </div>
             </div>
-      <div className="cardc-content">
+      <div>
         <IconContext.Provider value={{ size: "30px" }}>
-            <div>
-                <label className="attribute_name">Quantity-</label>{cartItem.quantity}
+            <div  >
+                <label className="attribute_name">Quantity: {cartItem.quantity}</label>
                 <br/>
-                <label className="attribute_name">Price-</label>{cartItem.price}
+                <label className="attribute_name">Price: {cartItem.price}</label>
           </div>
           <div className="shoppingCart-buttons">
           <button className="addToCart" onClick={()=> addToCart(item)}>

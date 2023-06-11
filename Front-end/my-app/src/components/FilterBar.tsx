@@ -116,13 +116,16 @@ const FilterBar = ({ onSearch }: any) => {
       return result;
      }
   
+     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   return (
     <div className="containe">
-      <h4>EQUIPMENT TYPE</h4>
-      <DropdownButton
+       
+      <h3>EQUIPMENT TYPE</h3>
+      <DropdownButton 
         id="dropdown-item-button"
         title={selectedType?.name ? selectedType.name : "Select type"}
+        size='sm'
       >
         <Dropdown.ItemText>Pick equipment type</Dropdown.ItemText>
         {types.map((type) => (
@@ -143,11 +146,12 @@ const FilterBar = ({ onSearch }: any) => {
       </DropdownButton>
 
       <hr />
-      <h4>CATEGORY</h4>
+      <h3>CATEGORY</h3>
       {categories.length ? (
-        <DropdownButton
+        <DropdownButton className="de"
           id="dropdown-item-button"
-          title={selectedCategory ? selectedCategory : "Select category"}
+          title={selectedCategory ? selectedCategory : 'Select category'}
+          size='sm'
         >
           <Dropdown.ItemText>Pick equipment category</Dropdown.ItemText>
           {categories.map((category) => (
@@ -164,13 +168,13 @@ const FilterBar = ({ onSearch }: any) => {
           ))}
         </DropdownButton>
       ) : (
-        <label>No category selected. Pick a type first.</label>
+        <p>No category selected. Pick a type first.</p>
       )}
 
       <hr />
-      <h3>FILTERS:</h3>
+
       
-      <h4>Attributes</h4>
+      <h3>Attributes</h3>
       {
         possibleValues != null ? 
       <>
@@ -195,7 +199,7 @@ const FilterBar = ({ onSearch }: any) => {
      
       <hr />
       
-      <h4>Brand</h4>
+      <h3>Brand</h3>
       {brands.map((brand) => (
         <Form.Check
           key={brand.id}

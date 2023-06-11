@@ -18,7 +18,7 @@
     width: 50%;
   }
 .order-details-page{
-  background-image: url("/public/ba.jpg");
+  background-color: rgb(135, 135, 135);
   background-size: cover;
   height: 100vp;
 }

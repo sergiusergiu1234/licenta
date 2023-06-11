@@ -2,11 +2,14 @@
     height: 800px;
     background-image: url("/public/back.jpg");
     background-size: 120%;
+    background-repeat: no-repeat;
+    background-size: cover;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
+
 
 .inputs{
     display: flex;

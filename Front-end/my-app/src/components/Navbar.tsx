@@ -38,46 +38,56 @@ const Navbar = ()=>{
         return <div>Loading...</div>; // Display a loading state while fetching authentication information
       }
 
-      const handleLogout=()=>{
-        setAuth({
-          user:'',
-          roles:[''],
-          accessToken:''
-        })
-        window.localStorage.clear();
-        window.location.reload();
-      }
+     
     return (
         <div className={isAdmin ? "navbar-admin" : "navbar-user"}>
           <div className={isAdmin ? 'navbar-buttons-admin':'navbar-buttons-user'}>
-            <IconContext.Provider value={{ size: '60px' }}>
-            { isAdmin ? <>
-              <CustomLink to={'/home'}>
-                <AiOutlineHome />
-              </CustomLink>
-              <CustomLink to={'/'}>Products</CustomLink>
-                  <CustomLink to='/admin/products'><div>Manage Products</div></CustomLink>
-                  <CustomLink to='/admin/brands'><div>Manage Brands</div></CustomLink>
-                  <CustomLink to='/admin/categories'><div>Categories & Types</div></CustomLink>
-                  <CustomLink to='/admin/attributes'><div>Mange Attributes</div></CustomLink>
-                  <CustomLink to='/admin/orders'><div>Manage Orders</div></CustomLink>
-                  <Button variant='danger' onClick={handleLogout}>Logout</Button>
-                  </> : <>
-                  <CustomLink to={'/home'}>
-                <AiOutlineHome />
-              </CustomLink>
-              <CustomLink to={'/'}>Products</CustomLink>
-              <CustomLink to={'/MyAccount'}>
-                <IoPersonOutline />
-              </CustomLink>
-              <CustomLink to={'/Favorites'}>
-                <AiOutlineHeart />
-              </CustomLink>
-              <CustomLink to={'/ShoppingCart'}>
-                <AiOutlineShoppingCart />
-              </CustomLink>
-              </>
-              }
+            <IconContext.Provider value={{ size:'1em' }}>
+            { isAdmin ? 
+              <div className='nav-container-admin'>
+                <div className='toolbar-action-icon'>
+                <CustomLink to={'/'}>Products</CustomLink>
+                </div>
+                <CustomLink to='/admin/products'><div>Manage Products</div></CustomLink>
+                <CustomLink to='/admin/brands'><div>Manage Brands</div></CustomLink>
+                <CustomLink to='/admin/categories'><div>Categories & Types</div></CustomLink>
+                <CustomLink to='/admin/attributes'><div>Mange Attributes</div></CustomLink>
+                <CustomLink to='/admin/genders'><div>Manage Genders</div></CustomLink>
+                <CustomLink to='/admin/orders'><div>Manage Orders</div></CustomLink>
+                
+               
+              </div > : 
+              <div className="nav-container">
+                
+                <CustomLink to={'/home'}>
+                  <AiOutlineHome />
+                </CustomLink>
+               
+               
+                
+                
+                <div className='toolbar-action-icons'>
+                  
+                <div className='toolbar-action-icon'>
+                <CustomLink to={'/'}>Products</CustomLink>
+                </div>
+                    <CustomLink to={'/MyAccount'} >
+                      <IoPersonOutline />
+                    </CustomLink>
+                  
+                  
+                    <CustomLink to={'/Favorites'}>
+                      <AiOutlineHeart />
+                    </CustomLink>
+                 
+                                 
+                    <CustomLink to={'/ShoppingCart'}>
+                      <AiOutlineShoppingCart />
+                    </CustomLink>
+                                   
+                </div>
+              </div>
+            }
             </IconContext.Provider>
           
           </div>  
@@ -96,7 +106,9 @@ function CustomLink({ to, children}:any) {
     return (
       <div className={isActive ? "active" : ""}>
         <Link to={to}>
+          <div className='toolbar-action-icon'>
           {children}
+          </div>
         </Link>
       </div>
     )

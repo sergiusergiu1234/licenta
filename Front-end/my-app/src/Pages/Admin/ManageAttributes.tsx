@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "../../Styles/ManageAttributes.css";
 import { Type } from "../../Types/Type.types";
-import { addAttribute, editAttribute, fetchTypes } from "../../api/api";
+import { addAttribute, deleteAttribute, editAttribute, fetchTypes } from "../../api/api";
 import { IconContext } from "react-icons";
 import { Button, FloatingLabel, Form } from "react-bootstrap";
 import { MdOutlineModeEdit } from "react-icons/md";
@@ -12,11 +12,11 @@ import { type } from "os";
 const ManageAttributes = ()=>{
 
     const [types, setTypes] = useState<Type[]>([])
-    const [typeId, setTypeId] = useState(0);
+    const [typeId, setTypeId] = useState<number | null>(null);
 
     const [attributes, setAttributes] = useState<Attribute[]>([]);
     const [attributeName,setAttributeName] = useState('');
-    const [attributeId, setAttributeId] = useState(0);
+    const [attributeId, setAttributeId] = useState<number | null>(null);
 
     useEffect(()=>{
         fetchTypes().then((data)=>setTypes(data));
@@ -28,9 +28,9 @@ const ManageAttributes = ()=>{
         addAttribute(attributeName, typeId).then((data)=>setAttributes((prev)=> [...prev, data]))
     }
 
-    const handleDelete=(event:any)=>{
-        event.preventDefault();
-
+    const handleDelete=(attributeId:number)=>{
+        deleteAttribute(attributeId).then((data)=>
+        setAttributes((prev)=>prev.filter((attr:Attribute)=> attr.id !== data.id)));
     }
 
     const handleEditAttribute = (event:any)=>{
@@ -84,12 +84,14 @@ const ManageAttributes = ()=>{
             <h2>Attributes</h2>
         <table className="brands-table">
             <thead>
-                <th>
-                    Attribute id 
-                </th>
-                <th>
-                    Attribute name 
-                </th>
+                <tr>
+                    <th>
+                        Attribute id 
+                    </th>
+                    <th>
+                        Attribute name 
+                    </th>
+                </tr>
             </thead>
             <tbody>
                 {attributes.map((attribute)=><tr key={attribute.id}>
@@ -102,8 +104,8 @@ const ManageAttributes = ()=>{
                 <td>
                 <div className="actions">
                 <IconContext.Provider  value={{size: '30px'}}>
-                    <Button type="submit" variant="danger" onClick={handleDelete}>Delete</Button>
-                    <Button className="edit" onClick={()=>setAttributeId(attribute.id)}><MdOutlineModeEdit /></Button>
+                    <Button  variant="danger" onClick={()=>handleDelete(attribute.id)}>Delete</Button>
+                    <Button className="edit"  onClick={()=>setAttributeId(attribute.id)}><MdOutlineModeEdit /></Button>
                 </IconContext.Provider>
                 </div>
                 </td>
@@ -115,11 +117,11 @@ const ManageAttributes = ()=>{
         <section>
         <h2>Add new attribute</h2>
         <form onSubmit={handleAddAttribute}>
-            <FloatingLabel label='Category name'>
+            <FloatingLabel label='Attribute name'>
                 <Form.Control
-                placeholder="Category name"
+                placeholder="Attribute name"
                 type="text"
-                id="categoryName"
+                id="attributeName"
                 onChange={(e) => setAttributeName(e.target.value)}
                 value={attributeName}
                 required
@@ -158,7 +160,7 @@ const ManageAttributes = ()=>{
                         onChange={(e) => setAttributeId(parseInt(e.currentTarget.value))}
                         value={attributeId !== null ? attributeId.toString() : ''}
                     /></FloatingLabel>
-            <Button type="submit" variant="success">Edit category</Button>
+            <Button type="submit" variant="success">Edit attribute</Button>
             </form>
         </section>
 

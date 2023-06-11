@@ -106,11 +106,11 @@ const HomePage = () => {
       <Pagination>{paginationItems}</Pagination>
       </div>
    
-      <div className="product-list">
+      <div>
             <div className="product-grid">
               {products.map((product: ProductType) => (
                 <div className="product-column" key={product.id}> 
-                <div className="product">
+                <div>
                 <Product  product={product} 
                            isFavorite={product.isFavorite} />  
                            </div>   

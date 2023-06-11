@@ -66,7 +66,7 @@ const ProductPage =()=>{
 
      const addToCart=()=>{
         const token = window.localStorage.getItem('accessToken')
-        fetch(`http://localhost:8080/shoppingCart/add${id}`,{
+        fetch(`http://localhost:8080/shoppingCart/add/${id}`,{
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Alert, Button, Dropdown, DropdownButton, FloatingLabel, Form, InputGroup, Table } from "react-bootstrap";
 import { VscDebugStart } from "react-icons/vsc";
 import { Brand } from "../../Types/Brand.types";
@@ -9,6 +9,7 @@ import { Type } from "../../Types/Type.types";
 import { deleteProduct, fetchBrands, fetchGenders, fetchTypes } from "../../api/api";
 import "../../Styles/ManageProducts.css";
 import { error } from "console";
+import AuthContext from "../../context/AuthProvider";
 
 const ManageProducts = () => {
     const [showSuccess, setShowSuccess] = useState(false);
@@ -149,7 +150,20 @@ const ManageProducts = () => {
         setSelectedFile(file);
         console.log(file)
     }
+
+    const { auth,setAuth } = useContext(AuthContext);
+    const handleLogout=()=>{
+        setAuth({
+          user:'',
+          roles:[''],
+          accessToken:''
+        })
+        window.localStorage.clear();
+        window.location.reload();
+      }
+
     return (<div className="manageProducts-page">
+         <Button variant='danger' onClick={handleLogout}>Logout</Button> 
         {showSuccess ? <Alert variant="success" onClose={()=>setShowSuccess(false)} dismissible>
     <Alert.Heading>Success!</Alert.Heading>
     </Alert>: <></>} 

@@ -6,6 +6,7 @@
 h1{
 text-align: center;
 }
+
 .removeFromCart{
     all:unset;
     display:flex;
@@ -50,4 +51,10 @@ text-align: center;
 
 .attribute_name{
  font-weight: bold;
+}
+
+.attr {
+  border-left-color: white;
+  border-right-color: white;
+  border-style: solid;
 }

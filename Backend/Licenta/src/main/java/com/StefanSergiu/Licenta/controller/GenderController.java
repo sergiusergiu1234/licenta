@@ -2,6 +2,7 @@ package com.StefanSergiu.Licenta.controller;
 
 
 import com.StefanSergiu.Licenta.dto.brand.BrandDto;
+import com.StefanSergiu.Licenta.dto.gender.EditGenderDto;
 import com.StefanSergiu.Licenta.dto.gender.GenderDto;
 import com.StefanSergiu.Licenta.entity.Brand;
 import com.StefanSergiu.Licenta.entity.Gender;
@@ -52,8 +53,10 @@ public class GenderController {
         return new ResponseEntity<>(GenderDto.from(gender),HttpStatus.OK);
     }
 
-    @DeleteMapping("/admin/deleteAll")
-    public void deleteAllGenders(){
-        genderService.deleteAllGenders();
+
+    @PutMapping("/admin/edit/{id}")
+    public ResponseEntity<GenderDto> editGender(@PathVariable final Long id, @RequestBody EditGenderDto editGenderDto){
+        Gender gender = genderService.editGender(id,editGenderDto);
+        return new ResponseEntity<>(GenderDto.from(gender),HttpStatus.OK);
     }
 }

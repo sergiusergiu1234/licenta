@@ -1,5 +1,6 @@
 package com.StefanSergiu.Licenta.controller;
 
+import com.StefanSergiu.Licenta.dto.type.PlainTypeDto;
 import com.StefanSergiu.Licenta.dto.type.TypeDto;
 import com.StefanSergiu.Licenta.entity.Type;
 import com.StefanSergiu.Licenta.repository.AttributeRepository;
@@ -76,5 +77,11 @@ public class TypeController {
     public ResponseEntity<TypeDto> deleteType(@PathVariable final Long id){
         Type type = typeService.deleteType(id);
         return new ResponseEntity<>(TypeDto.from(type),HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/admin/edit/{id}")
+    public ResponseEntity<TypeDto> editType(@PathVariable final Long id, @RequestBody PlainTypeDto plainTypeDto){
+        Type type = typeService.editType(id,plainTypeDto);
+        return new ResponseEntity<>(TypeDto.from(type), HttpStatus.OK);
     }
 }

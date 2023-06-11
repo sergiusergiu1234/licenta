@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 import { Button, Card } from "react-bootstrap";
 import { MdAddShoppingCart } from "react-icons/md";
 import { deleteProduct } from "../api/api";
-
+import "../Styles/Product.css";
 
 interface Props {
     product: ProductType
@@ -96,29 +96,26 @@ const toggleFavorite =()=>{
 
     return(
 
-    <Card className="card" 
-    style={{ width: '300px' }}>
+    <Card>
            <div className="hoverable">
     <Card.Img variant="top" src={"/snwb1.jpg"}
                  onClick={goToProductDetails}
                 />
  </div>
     <Card.Body className="card-details">
-      <Card.Text className="product-details">
+      <Card.Text>
         <label className="product-name">{product.name} </label><br/>
         <label className="product-price">{product.price} RON </label>
       </Card.Text>
       <div className="product-buttons">
-                 <IconContext.Provider value={{size: '50px'}}>
-                 <div className={`${favorited ? 'favorited' : 'not-favorited'}`}
-                              onClick={toggleFavorite}>
-                                 {favorited ? <AiFillHeart />  : <AiOutlineHeart />  }
+      <IconContext.Provider value={(isAdmin) ? {size: '60%'} : {size: '20%'}}>
+                 <div className={isAdmin  ?  "admin-product-delete" : (`${favorited ? 'favorited' : 'not-favorited'}`)}
+                              onClick={isAdmin ? handleProductDelete :  toggleFavorite}>
+                                 {isAdmin ? <AiOutlineDelete/> : ( favorited ? <AiFillHeart />  : <AiOutlineHeart />  )}
                                  </div> 
-                    <div className={isAdmin ? "admin-product-delete" : 'user-product-delete'} onClick={()=>deleteProduct(product.id)}><AiOutlineCloseCircle/></div>
-                 </IconContext.Provider>
-                 <IconContext.Provider value={{size: '50px'}}>
-                    <Button className="addToCart-h" onClick={addToCart}><MdAddShoppingCart/></Button>
-                 </IconContext.Provider>
+                                 </IconContext.Provider>
+                                
+               
       </div>
     </Card.Body>
   </Card>
