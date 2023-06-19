@@ -58,7 +58,7 @@ td{
 }
 
 .aesthetic-bar {
-    background: linear-gradient(to right, #000000, #ffffff 70%, transparent 70%);
+    background: linear-gradient(to right, #000000, #ffffff 100%, transparent 70%);
     height: 20px;
     width: 100%;
     margin: 10px 0;

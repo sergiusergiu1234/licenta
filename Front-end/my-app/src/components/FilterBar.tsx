@@ -121,7 +121,7 @@ const FilterBar = ({ onSearch }: any) => {
   return (
     <div className="containe">
        
-      <h3>EQUIPMENT TYPE</h3>
+      <h2>EQUIPMENT TYPE</h2>
       <DropdownButton 
         id="dropdown-item-button"
         title={selectedType?.name ? selectedType.name : "Select type"}
@@ -146,7 +146,7 @@ const FilterBar = ({ onSearch }: any) => {
       </DropdownButton>
 
       <hr />
-      <h3>CATEGORY</h3>
+      <h2>CATEGORY</h2>
       {categories.length ? (
         <DropdownButton className="de"
           id="dropdown-item-button"
@@ -174,7 +174,7 @@ const FilterBar = ({ onSearch }: any) => {
       <hr />
 
       
-      <h3>Attributes</h3>
+      <h2>Attributes</h2>
       {
         possibleValues != null ? 
       <>
@@ -199,7 +199,7 @@ const FilterBar = ({ onSearch }: any) => {
      
       <hr />
       
-      <h3>Brand</h3>
+      <h2>Brand</h2>
       {brands.map((brand) => (
         <Form.Check
           key={brand.id}

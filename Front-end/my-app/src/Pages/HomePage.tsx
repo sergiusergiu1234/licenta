@@ -1,126 +1,40 @@
-import { useContext, useEffect, useState } from "react";
-import { ProductType } from "../Types/ProductType.types";
-import Product from "../components/Product";
-import '../Styles/HomePage.css';
-import FilterBar from "../components/FilterBar";
-import Pagination from 'react-bootstrap/Pagination';
-
-
-
-
+import React from 'react';
+import "../Styles/HomePage.css"
+import { Button } from 'react-bootstrap';
+import Carousel from 'react-bootstrap/Carousel';
+import ControlledCarousel from '../components/ControlledCarousel';
+import { useNavigate } from "react-router";
 const HomePage = () => {
-  const [activePage, setActivePage] = useState(1);
-  const [totalPages,setTotalPages] = useState(2);
-  const [products, setProducts] = useState<ProductType[]>([]);
-  const [filter,setFilter] = useState({
-    name: '',
-    brands:'',
-    gender: '',
-    category_name: '',
-    minPrice:'',
-    maxPrice:'',
-    type_name:"",
-    attributes:""
-  })
-
-  const fetchProducts = async ()=>{
-    const {name, brands, gender, category_name, minPrice, maxPrice,type_name,attributes} = filter;
-    let params ='';
-    params += `&pageNumber=${activePage-1}`
-    if(name) params += `&name=${name}`;
-    if(brands) params += `&brands=${brands}`
-    if(gender) params += `&gender=${gender}`;
-    if(category_name) params += `&category_name=${category_name}`;
-    if(minPrice) params += `&minPrice=${minPrice}`;
-    if(maxPrice) params += `&maxPrice=${maxPrice}`;
-    if(type_name) params += `&type_name=${type_name}`;
-    if(attributes) params +=`&attributes=${attributes}`
-    const token = window.localStorage.getItem('accessToken');
-    const url = `http://localhost:8080/products?${params.slice(1)}`;
-    console.log(params)
-    let response;
-    if(token != null){
-      response = await fetch(url,{
-        method: 'GET',
-        headers:{
-          'Authorization': `Bearer ${token}`
-        }
-      });
-    }else{
-      response = await fetch(url);
-    }
-    const data = await response.json();
-    setProducts(data.content);
-    setTotalPages(data.totalPages)
-    console.log(data)
-  };
-
-  useEffect(()=>{
-    fetchProducts();
-  },[filter,activePage]);
-
-  const handleSearch =(productName:string,
-                       brands:string[], 
-                       genderName:string,
-                       categoryName:string,
-                       minPrice:string,
-                       maxPrice:string,
-                       typeName:string,
-                       attributeString:string
-                       ) =>{
-    setFilter({ name:productName,
-                brands:brands.join(","),
-                gender:genderName,
-                category_name:categoryName,
-                minPrice:minPrice,
-                maxPrice:maxPrice,
-                type_name:typeName,
-                attributes:attributeString
-              });
-
-  }
-
-  const handlePageChange = (pageNumber:number) => {
-    setActivePage(pageNumber);
-  }
-
-  const paginationItems = [];
-  for (let number = 1; number <= totalPages; number++) {
-    paginationItems.push(
-      <Pagination.Item
-        key={number}
-        active={number === activePage}
-        onClick={() => handlePageChange(number)}
-      >
-        {number}
-      </Pagination.Item>
-    );
-  }
-
-  return (
-    <div className="homepage">
-
-      <div className="filter-container">
-      <FilterBar  onSearch={handleSearch}/>
-      <br/>
-      <Pagination>{paginationItems}</Pagination>
+    const navigate = useNavigate();
+    const goShopping=()=>{
+        navigate("/");
+     }
+ 
+      
+    return (
+      <div className="homepage-container">
+        <div className="about-us-container">
+          <h1 className='about-us'>About Us</h1>
+          <div className='about-us-text'>
+          <p>Welcome to our online store for skiers and snowboarders!<br/>
+           We are focused on providing top-notch gear and accessories<br/>
+            from some of the best brands in the industry.<br/>
+           We have everything you need, whether you're a seasoned pro<br/>
+            or just getting started, to hit the slopes with confidence.</p></div>
+            <div className='logo-container'><img src="/logo.png" alt="Logo" /></div>
+        </div>
+        
+        <div className='ribbon'></div>
+        <div className="shop-now-container">
+            <ControlledCarousel/>
+          <Button className="shop-now-button">EXPLORE</Button>
+        </div>
+        <div className='ribbon'></div>
+        <div className="contact-us-container">
+          <Button className="contact-us-button"onClick={goShopping}>Contact Us</Button>
+        </div>
       </div>
-   
-      <div>
-            <div className="product-grid">
-              {products.map((product: ProductType) => (
-                <div className="product-column" key={product.id}> 
-                <div>
-                <Product  product={product} 
-                           isFavorite={product.isFavorite} />  
-                           </div>   
-                </div>
-                
-              ))}
-            </div>
-     </div>
-   </div>
-  )
-}
-
-export default HomePage;
+    );
+  };
+  
+  export default HomePage;

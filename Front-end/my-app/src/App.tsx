@@ -1,7 +1,7 @@
 
 import Navbar from "./components/Navbar";
 import FavoritesPage from "./Pages/FavoritesPage";
-import HomePage from "./Pages/HomePage";
+import Products from "./Pages/Products";
 import './App.css';
 
 import Register from "./Pages/Register";
@@ -22,6 +22,7 @@ import ManageCategories from "./Pages/Admin/ManageCategories";
 import ManageAttributes from "./Pages/Admin/ManageAttributes";
 import ManageGenders from "./Pages/Admin/ManageGenders";
 import ManageOrders from "./Pages/Admin/ManageOrders";
+import HomePage from "./Pages/HomePage";
 
 
 
@@ -45,11 +46,11 @@ function App() {
       <Route path="/" element={<Layout />} >
         <Route path= 'Register' element ={<Register/>} />
         <Route path= 'LoginPage' element ={<LoginPage/>} />
-
+        <Route path= "Home" element ={<HomePage/>} />
 
         <Route element={<PersistLogin />} >
           
-          <Route path="" element={<HomePage/>} />
+          <Route path="" element={<Products/>} />
     
             <Route path="ProductPage/:id" element={<ProductPage/>} />
           <Route element={<RequireAuth allowedRoles={["ROLE_ADMIN"]}/>}>
