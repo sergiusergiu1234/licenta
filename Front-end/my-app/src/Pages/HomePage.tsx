@@ -27,11 +27,11 @@ const HomePage = () => {
         <div className='ribbon'></div>
         <div className="shop-now-container">
             <ControlledCarousel/>
-          <Button className="shop-now-button">EXPLORE</Button>
+          <Button className="shop-now-button" onClick={goShopping}>EXPLORE</Button>
         </div>
         <div className='ribbon'></div>
         <div className="contact-us-container">
-          <Button className="contact-us-button"onClick={goShopping}>Contact Us</Button>
+          <Button className="contact-us-button">Contact Us</Button>
         </div>
       </div>
     );

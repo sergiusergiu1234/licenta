@@ -91,6 +91,7 @@ const Navbar = ()=>{
             </IconContext.Provider>
           
           </div>  
+          <div className='ribbon'></div>
         </div>
         
       );
