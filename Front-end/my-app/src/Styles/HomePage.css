@@ -108,7 +108,7 @@
     position: relative;
     width: 100%;
     height: 6vh;
-    background: linear-gradient(45deg, black 50%, white 50%);
+    background: linear-gradient(45deg, white 50%, black 50%);
   }
   
   .ribbon::before {
@@ -118,7 +118,7 @@
     left: 0;
     width: 100%;
     height: 2vh;
-    background: linear-gradient(45deg, white 50%, black 50%);
+    background: linear-gradient(45deg, black 50%, white 50%);
   }
   
   .ribbon::after {
@@ -128,6 +128,6 @@
     left: 0;
     width: 100%;
     height: 2vh;
-    background: linear-gradient(45deg,white 50% , black 50%);
+    background: linear-gradient(45deg,black 50% , white 50%);
   }
   

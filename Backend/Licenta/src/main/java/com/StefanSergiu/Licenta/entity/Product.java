@@ -12,36 +12,31 @@ import java.util.*;
 
 @Table
 @Builder
-@Entity
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Product{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-
     @Column(unique = true)
     private String name;
-
     @Column
     private Float price;
-
     @ManyToOne
     @JoinColumn(name = "brand_id",nullable = false)
     private Brand brand;
-
     @ManyToOne
     @JoinColumn(name = "gender_id",nullable = false)
     private Gender gender;
-
     @ManyToOne
     @JoinColumn(name = "category_id",nullable = false)
     private Category category;
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<ProductAttribute> productAttributes=new ArrayList<>();
-
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Favorite> favorites = new ArrayList<>();
     private String imagePath;

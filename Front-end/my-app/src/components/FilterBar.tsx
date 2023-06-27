@@ -145,7 +145,7 @@ const FilterBar = ({ onSearch }: any) => {
         ))}
       </DropdownButton>
 
-      <hr />
+      <br />
       <h2>CATEGORY</h2>
       {categories.length ? (
         <DropdownButton className="de"
@@ -171,7 +171,7 @@ const FilterBar = ({ onSearch }: any) => {
         <p>No category selected. Pick a type first.</p>
       )}
 
-      <hr />
+      <br />
 
       
       <h2>Attributes</h2>
@@ -197,7 +197,7 @@ const FilterBar = ({ onSearch }: any) => {
      <p>Select equipment type</p> 
     }
      
-      <hr />
+      <br />
       
       <h2>Brand</h2>
       {brands.map((brand) => (
@@ -209,7 +209,7 @@ const FilterBar = ({ onSearch }: any) => {
           checked={selectedBrands.includes(brand.name)}
         />
       ))}
-      <hr />
+      <br />
        
       <h4>Gender</h4>
       <DropdownButton
@@ -231,7 +231,7 @@ const FilterBar = ({ onSearch }: any) => {
           </Dropdown.Item>
         ))}
       </DropdownButton>
-      <hr />
+      <br /><br />
       <h4>Name</h4>
       <input
         id="productName"
@@ -239,7 +239,8 @@ const FilterBar = ({ onSearch }: any) => {
         onChange={(e) => setProductName(e.currentTarget.value)}
         value={productName}
       />
-    <hr/>
+    <br/>
+    <br />
       <h4>Minimum price</h4>
       <input
         id="minPrice"
@@ -256,7 +257,8 @@ const FilterBar = ({ onSearch }: any) => {
         onChange={(e) => setMaxPrice(e.currentTarget.value)}
         value={maxPrice}
       />
-      <hr />
+      <br />
+      <br />
       <Button variant="primary" onClick={handleSearch}>
         Search
       </Button>

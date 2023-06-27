@@ -43,6 +43,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.apache.http.entity.ContentType.*;
+//@Autowired
+//    AmazonS3 s3Client;
 
 @RestController
 @RequestMapping("/products")
@@ -50,8 +52,7 @@ import static org.apache.http.entity.ContentType.*;
 public class ProductController {
     @Autowired
     ProductService productService;
-    @Autowired
-    AmazonS3 s3Client;
+
     @Autowired
     FileStore fileStore;
     @Autowired
@@ -161,7 +162,7 @@ public class ProductController {
         return fileStore.download(product.getImagePath(), product.getImageFileName());
     }
     @PostMapping(value = "/admin/add-image/{id}")
-    public ResponseEntity<String> addProductImage(@PathVariable Long id, @RequestParam("file")MultipartFile file) {
+        public ResponseEntity<String> addProductImage(@PathVariable Long id, @RequestParam("file")MultipartFile file) {
         //check if product exists
         Product product = productService.getProduct(id);
         if (product == null) {

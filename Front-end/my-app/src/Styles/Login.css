@@ -1,11 +1,10 @@
 .login-container{
-    height: 800px;
-    background-image: url("/public/back.jpg");
-    background-size: 120%;
-    background-repeat: no-repeat;
-    background-size: cover;
     display: flex;
+    height: 100vh;
     flex-direction: column;
+    background: linear-gradient(white, black) 100% 25%;
+      
+    background-repeat: no-repeat;
     align-items: center;
     justify-content: center;
 }

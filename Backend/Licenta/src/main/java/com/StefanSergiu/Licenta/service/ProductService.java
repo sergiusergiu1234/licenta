@@ -19,30 +19,27 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@Service
+
 @AllArgsConstructor
+@Service
 public class ProductService {
         @Autowired
         FileStore fileStore;
-
        @Autowired
         ProductRepository productRepository;
-
        @Autowired
        BrandRepository brandRepository;
-
        @Autowired
        GenderRepository genderRepository;
         @Autowired
          CategoryRepository categoryRepository;
-
         @Autowired
         ProductSpecification productSpecification;
-
         @Autowired
         ProductAttributeRepository productAttributeRepository;
         public Product getProduct(Long productId) {
-            return productRepository.findById(productId).orElseThrow(()->new EntityNotFoundException("Product with id " + productId + " does not exist"));
+            return productRepository.findById(productId).orElseThrow(()->
+                    new EntityNotFoundException("Product with id " + productId + " does not exist"));
         }
 
         @Transactional

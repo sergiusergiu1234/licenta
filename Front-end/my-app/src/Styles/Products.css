@@ -1,8 +1,7 @@
 .homepage {
   display: flex;
   flex-direction: row;
-  background: linear-gradient(to left top, rgb(0, 0, 0), rgb(248, 248, 248));
-  background-size: cover;
+  background: linear-gradient(white, black) 100% 25%;
 }
 
 .filter-container {

@@ -5,9 +5,7 @@
     min-height: 100vh;
     margin: 0;
     padding: 0;
-    background-color: rgb(135, 135, 135);
-    background-size: cover;
-    background-repeat: repeat;
+    background: linear-gradient(white, black) 100% 25%;
   }
 .favorite-page h1{
     color: black;
