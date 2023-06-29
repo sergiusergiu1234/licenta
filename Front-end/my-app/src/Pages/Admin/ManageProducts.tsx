@@ -40,6 +40,8 @@ const ManageProducts = () => {
 
     const [attributeValues, setAttributeValues] = useState<string[]>([]);
 
+    const [size,setSize] = useState<string>('');
+
     const handleAttributeValueChange = (index: number, value: string) => {
       const updatedAttributeValues = [...attributeValues];
       updatedAttributeValues[index] = value;
@@ -61,7 +63,8 @@ const ManageProducts = () => {
             gender_name: selectedGender,
             category_name: selectedCategory,
             price: price,
-            description: description
+            description: description,
+            size:size
         }
         const token = localStorage.getItem("accessToken")
       const createProductReponse = await fetch("http://localhost:8080/products/admin/add",{
@@ -177,7 +180,7 @@ const ManageProducts = () => {
             <h2>Add product</h2>
             <form onSubmit={handleSubmit1}>
                 
-            <FloatingLabel label='Product name'>
+            <FloatingLabel label='Product name' className="floating">
                 <Form.Control
                 placeholder="Product name"
                 type="text"
@@ -187,6 +190,18 @@ const ManageProducts = () => {
                 value={productName}
                 required
                 /></FloatingLabel>
+
+            <FloatingLabel label='Product size' className="floating">
+                <Form.Control
+                placeholder="Product size"
+                type="text"
+                id="username"
+                
+                onChange={(e) => setSize(e.currentTarget.value)}
+                value={size}
+                required
+                /></FloatingLabel>
+
 
                 <FloatingLabel label="Price">
                     <Form.Control
@@ -216,7 +231,7 @@ const ManageProducts = () => {
                     <Dropdown.ItemText>Select type</Dropdown.ItemText>
                     {types.map((type) => (
                         <Dropdown.Item
-                            as="option"
+                            as="button"
                             key={type.id}
                             onClick={() => {
                                 setSelectedType(type);
@@ -237,7 +252,7 @@ const ManageProducts = () => {
 
                     {categories.map((category: Category) =>
                         <Dropdown.Item
-                            as="option"
+                            as="button"
                             key={category.id}
                             onClick={() => { setSelectedCategory(category.name) }}
                             value={category.name}>{category.name}</Dropdown.Item>)}
@@ -249,7 +264,7 @@ const ManageProducts = () => {
                     <Dropdown.ItemText>Select brand</Dropdown.ItemText>
                     {brands.map((brand: Brand) =>
                         <Dropdown.Item
-                            as="option"
+                            as="button"
                             key={brand.id}
                             onClick={() => { setSelectedBrand(brand.name) }}
                             value={brand.name}>{brand.name}</Dropdown.Item>)}
@@ -262,7 +277,7 @@ const ManageProducts = () => {
                     <Dropdown.ItemText>Select gender</Dropdown.ItemText>
                     {genders.map((gender: Gender) =>
                         <Dropdown.Item
-                            as="option"
+                            as="button"
                             key={gender.id}
                             onClick={() => { setSelectedGender(gender.name) }}
                             value={gender.name}>{gender.name}</Dropdown.Item>)}

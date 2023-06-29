@@ -20,21 +20,23 @@ const HomePage = () => {
     minPrice:'',
     maxPrice:'',
     type_name:"",
-    attributes:""
+    attributes:"",
+    sizes:""
   })
 
   const fetchProducts = async ()=>{
-    const {name, brands, gender, category_name, minPrice, maxPrice,type_name,attributes} = filter;
+    const {name, brands, gender, category_name, minPrice, maxPrice,type_name,attributes,sizes} = filter;
     let params ='';
     params += `&pageNumber=${activePage-1}`
     if(name) params += `&name=${name}`;
     if(brands) params += `&brands=${brands}`
-    if(gender) params += `&gender=${gender}`;
+    if(gender) params += `&genders=${gender}`;
     if(category_name) params += `&category_name=${category_name}`;
     if(minPrice) params += `&minPrice=${minPrice}`;
     if(maxPrice) params += `&maxPrice=${maxPrice}`;
     if(type_name) params += `&type_name=${type_name}`;
     if(attributes) params +=`&attributes=${attributes}`
+    if(sizes) params += `&sizes=${sizes}`;
     const token = window.localStorage.getItem('accessToken');
     const url = `http://localhost:8080/products?${params.slice(1)}`;
     console.log(params)
@@ -66,7 +68,8 @@ const HomePage = () => {
                        minPrice:string,
                        maxPrice:string,
                        typeName:string,
-                       attributeString:string
+                       attributeString:string,
+                       sizes:string[]
                        ) =>{
     setFilter({ name:productName,
                 brands:brands.join(","),
@@ -75,7 +78,8 @@ const HomePage = () => {
                 minPrice:minPrice,
                 maxPrice:maxPrice,
                 type_name:typeName,
-                attributes:attributeString
+                attributes:attributeString,
+                sizes:sizes.join(",")
               });
 
   }

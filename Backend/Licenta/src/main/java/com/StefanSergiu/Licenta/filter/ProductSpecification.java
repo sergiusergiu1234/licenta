@@ -74,6 +74,12 @@ public class ProductSpecification {
             predicates.add(attributeValueCombinedPredicate);
         }
 
+        //filter by sizes
+        if(request.getSizes() != null && !request.getSizes().isEmpty()){
+            String[] sizeValues = request.getSizes().split(",");
+            List<String> sizeList = Arrays.asList(sizeValues);
+            predicates.add(root.get("size").in(sizeList));
+        }
 
         // filter by brand names
         if (request.getBrands() != null && !request.getBrands().isEmpty()) {
@@ -111,15 +117,15 @@ public class ProductSpecification {
                 predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("price"), request.getMaxPrice()));
             }
         }
-
-
+        query.multiselect(root.get("name"));
+        query.groupBy(root.get("name"));
         query.orderBy(criteriaBuilder.desc(root.get("price")));
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     };
 }
 }
 
-////this whole predicate creates this querry example
+////this whole predicate creates this query example
 //SELECT *
 //        FROM product
 //        JOIN category ON product.category_id = category.id

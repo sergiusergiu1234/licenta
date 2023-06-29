@@ -8,6 +8,7 @@ import { Brand } from "../Types/Brand.types";
 import { Attribute } from "../Types/Attribute.types";
 import { fetchBrands, fetchGenders, fetchTypes } from "../api/api";
 import { ToggleButton } from 'primereact/togglebutton';
+import { Size } from "../Types/Size.types";
 
 const FilterBar = ({ onSearch }: any) => {
   const [productName, setProductName] = useState("");
@@ -33,6 +34,9 @@ const FilterBar = ({ onSearch }: any) => {
   const [selectedValues,setSelectedValues]= useState(new Map());
   const[possibleValues, setPossibleValues] = useState<AttributeValues | null>(null);
 
+  const [sizes,setSizes] = useState<Size[]>([]);
+  const [selectedSizes,setSelectedSizes]=useState<string[]>([])
+
   const handleSearch = () => {
     const attributeString = mapToString(selectedValues);
     onSearch(
@@ -43,7 +47,8 @@ const FilterBar = ({ onSearch }: any) => {
       minPrice,
       maxPrice,
       typeName,
-      attributeString
+      attributeString,
+      selectedSizes
     );
   };
   const handleReset = () => {
@@ -59,6 +64,7 @@ const FilterBar = ({ onSearch }: any) => {
     setSelectedCategory('');
     setSelectedType(null);
     setSelectedGender('');
+    setSelectedSizes([]);
   };
 
   useEffect(() => {
@@ -84,22 +90,32 @@ const FilterBar = ({ onSearch }: any) => {
   useEffect(()=>{
     console.log(selectedValues);
   },[selectedValues]);
+
+  const handleSizesChange =(sizeValue:string)=>{
+    setSelectedSizes((prevState)=>{
+      if(prevState.includes(sizeValue)){
+        return prevState.filter((size)=> size != sizeValue);
+      } else {
+        return [...prevState,sizeValue];
+      }
+    })
+  }
   const handleAttributesChange = (attributeName: string, value:string)=>{
       setSelectedValues((prevState)=>{
         const updatedValues:any = new Map(prevState);
         // If the key already exists in the Map, add the new value to the array
         if (updatedValues.has(attributeName)) {
-         const existingValues = updatedValues.get(attributeName);
-         
-         if(existingValues.includes(value)){
-          // Filter out the value from the array
-           const filteredValues = existingValues.filter((v:string) => v !== value);
-           // Update the Map with the filtered values
-            updatedValues.set(attributeName, filteredValues);
-         }else{
-           // Add the value to the array
-            updatedValues.set(attributeName, [...existingValues, value]);
-         }
+          const existingValues = updatedValues.get(attributeName);
+          
+          if(existingValues.includes(value)){
+            // Filter out the value from the array
+            const filteredValues = existingValues.filter((v:string) => v !== value);
+            // Update the Map with the filtered values
+              updatedValues.set(attributeName, filteredValues);
+          }else{
+            // Add the value to the array
+              updatedValues.set(attributeName, [...existingValues, value]);
+          }
         }else{
           // If the key doesn't exist, create a new array with the value
           updatedValues.set(attributeName, [value]);
@@ -109,14 +125,16 @@ const FilterBar = ({ onSearch }: any) => {
       }
      const mapToString = (map:any) =>{
       let result ='';
+      //Each entry of the map...
       for( const [key,value] of map){
+        //...write it as a string
         result += `${key}:${value}_`;
       }
+      //cut off the "_"
       result = result.slice(0,-1)
       return result;
      }
-  
-     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
 
   return (
     <div className="containe">
@@ -137,7 +155,7 @@ const FilterBar = ({ onSearch }: any) => {
               setCategories(type.categoryDtoList);
               setSelectedType(type);
               setPossibleValues(type.attributeValues);
-            
+              setSizes(type.sizeDtoList);
             }}
           >
             {type.name}
@@ -173,11 +191,22 @@ const FilterBar = ({ onSearch }: any) => {
 
       <br />
 
+      <h2>Sizes</h2>
+      {sizes.length?(<>
+        {sizes.map((size)=>(
+          <Button key={size.id}
+                  className={selectedSizes.includes(size.value) ? "sselected" : "notselected" }
+                  onClick={()=>handleSizesChange(size.value)}>{size.value}</Button>
+        ))}
+      </>) : (
+        <p>Pick a type first.</p>
+      )}
       
       <h2>Attributes</h2>
       {
         possibleValues != null ? 
       <>
+      {/* map through a array of maps Map<string,string[]>[] */}
         {Object.entries(possibleValues).map(([attributeName, attributeValues])=>(
           <div key={attributeName}>
           <h4>{attributeName}</h4>
@@ -185,6 +214,7 @@ const FilterBar = ({ onSearch }: any) => {
           <div className="buttons">
             {attributeValues && attributeValues.map((value) => (
                <Button key={value}
+               //check wether selectedValues map has attributeName key and if corresponding values array includes the selected value
                 className={selectedValues.has(attributeName) && selectedValues.get(attributeName).includes(value) ? "sselected" : "notselected"} 
                 onClick={()=>handleAttributesChange(attributeName,value)}>{value}</Button>
             ))}

@@ -41,13 +41,13 @@ const AccountPage =() =>{
       }, []);
 
       useEffect(()=>{
-        setPendingOrders(orders.filter((order:OrderType)=>order.status !== "pending"));
-        setAcceptedOrders(orders.filter((order:OrderType)=>order.status !== "Accepted"))
-        setDeclinedOrders(orders.filter((order:OrderType)=>order.status !== "Declined"));
-        setDeliveredOrders(orders.filter((order:OrderType)=>order.status !== "Delivered"))
+        setPendingOrders(orders.filter((order:OrderType)=>order.status === "pending"));
+        setAcceptedOrders(orders.filter((order:OrderType)=>order.status === "Accepted"))
+        setDeclinedOrders(orders.filter((order:OrderType)=>order.status === "Declined"));
+        setDeliveredOrders(orders.filter((order:OrderType)=>order.status === "Delivered"))
 
       },[orders])
-
+      console.log(pendingOrders)
     const handleLogout =()=>{
         window.localStorage.clear();
         setAuth({
@@ -60,7 +60,7 @@ const AccountPage =() =>{
     return (
       <div className="account-page">
         <div className="account-details">
-          <h1>Personal data:</h1>
+          <h1>Personal data</h1>
           <p>
             <label>Email:</label> <label>{customer.email}</label> <br />
             <label>Name:</label>{" "}
@@ -72,52 +72,56 @@ const AccountPage =() =>{
             <br />
           </p>
           <div className="aesthetic-bar"></div>
-          <h1>Issued orders:</h1>
+          <h1>Issued orders</h1>
 
 
-          {/* Map through pendingOrders and show orders with "pending state" */}
+        
           <div>
             <h3>Pending orders</h3>
-            {orders.length > 0 ? (
-              pendingOrders.map((order: OrderType) => (
-                <Order key={order.id} order={order} />
-              ))
+            {pendingOrders.length >  0 ? 
+              (
+                pendingOrders.map((order: OrderType) => (
+                  <Order key={order.id} order={order} />
+                ))
             ) : (
               <p>You have no pending orders</p>
             )}
           </div>
 
-     {/* Map through pendingOrders and show orders with "pending state" */}
-     <div>
-            <h3>Accepted orders orders</h3>
-            {orders.length > 0 ? (
-              acceptedOrders.map((order: OrderType) => (
-                <Order key={order.id} order={order} />
-              ))
-            ) : (
-              <p>You have no pending orders</p>
-            )}
-          </div>
-
-     {/* Map through pendingOrders and show orders with "pending state" */}
-     <div>
+    
+          <div>
             <h3>Delivered orders</h3>
-            {orders.length > 0 ? (
-              deliveredOrders.map((order: OrderType) => (
-                <Order key={order.id} order={order} />
-              ))
+            {deliveredOrders.length >  0 ? 
+              (
+                deliveredOrders.map((order: OrderType) => (
+                  <Order key={order.id} order={order} />
+                ))
             ) : (
-              <p>You have no pending orders</p>
+              <p>You have no delivered orders</p>
             )}
           </div>
 
-     {/* Map through pendingOrders and show orders with "pending state" */}
-     <div>
+    
+          <div>
             <h3>Declined orders</h3>
-            {orders.length > 0 ? (
-              declinedOrders.map((order: OrderType) => (
-                <Order key={order.id} order={order} />
-              ))
+            {declinedOrders.length >  0 ? 
+              (
+                declinedOrders.map((order: OrderType) => (
+                  <Order key={order.id} order={order} />
+                ))
+            ) : (
+              <p>You have no declined orders</p>
+            )}
+          </div>
+
+   
+          <div>
+            <h3>Accepted orders</h3>
+            {acceptedOrders.length >  0 ? 
+              (
+                acceptedOrders.map((order: OrderType) => (
+                  <Order key={order.id} order={order} />
+                ))
             ) : (
               <p>You have no pending orders</p>
             )}

@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import "../../Styles/ManageAttributes.css";
 import { Type } from "../../Types/Type.types";
-import { addAttribute, deleteAttribute, editAttribute, fetchTypes } from "../../api/api";
+import { addAttribute, addSize, deleteAttribute, editAttribute, fetchTypes } from "../../api/api";
 import { IconContext } from "react-icons";
 import { Button, FloatingLabel, Form } from "react-bootstrap";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { Attribute } from "../../Types/Attribute.types";
 import { type } from "os";
+import { Size } from "../../Types/Size.types";
 
 
 const ManageAttributes = ()=>{
@@ -18,11 +19,18 @@ const ManageAttributes = ()=>{
     const [attributeName,setAttributeName] = useState('');
     const [attributeId, setAttributeId] = useState<number | null>(null);
 
+    const [sizes,setSizes] = useState<Size[]>([]);
+    const [sizeValue,setSizeValue] = useState<string>("");
+
     useEffect(()=>{
         fetchTypes().then((data)=>setTypes(data));
     },[]);
 
 
+    const handleAddSize=(event:any)=>{
+        event.preventDefault();
+        addSize(sizeValue,typeId).then((data)=>setSizes((prev)=> [...prev,data]))
+    }
     const handleAddAttribute=(event:any)=>{
         event.preventDefault();
         addAttribute(attributeName, typeId).then((data)=>setAttributes((prev)=> [...prev, data]))
@@ -72,7 +80,7 @@ const ManageAttributes = ()=>{
                     </td>
                     <td >
                         <IconContext.Provider  value={{size: '30px'}}>
-                        <Button className="edit" onClick={()=>{setTypeId(type.id);setAttributes(type.attributeDtoList)}}><MdOutlineModeEdit /></Button>
+                        <Button className="edit" onClick={()=>{setTypeId(type.id);setAttributes(type.attributeDtoList);setSizes(type.sizeDtoList)}}><MdOutlineModeEdit /></Button>
                         </IconContext.Provider>
                     </td>
                 </tr>)}
@@ -106,6 +114,41 @@ const ManageAttributes = ()=>{
                 <IconContext.Provider  value={{size: '30px'}}>
                     <Button  variant="danger" onClick={()=>handleDelete(attribute.id)}>Delete</Button>
                     <Button className="edit"  onClick={()=>setAttributeId(attribute.id)}><MdOutlineModeEdit /></Button>
+                </IconContext.Provider>
+                </div>
+                </td>
+                </tr>)}
+            </tbody>
+        </table>
+        </section>
+
+
+        <section>
+            <h2>Sizes</h2>
+        <table className="brands-table">
+            <thead>
+                <tr>
+                    <th>
+                        Size id 
+                    </th>
+                    <th>
+                        Size Value 
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {sizes.map((size)=><tr key={size.id}>
+                <td>
+                    {size.id}
+                </td>
+                <td>
+                    {size.value}
+                </td>
+                <td>
+                <div className="actions">
+                <IconContext.Provider  value={{size: '30px'}}>
+                    <Button  variant="danger" onClick={()=>handleDelete(size.id)}>Delete</Button>
+
                 </IconContext.Provider>
                 </div>
                 </td>
@@ -161,6 +204,32 @@ const ManageAttributes = ()=>{
                         value={attributeId !== null ? attributeId.toString() : ''}
                     /></FloatingLabel>
             <Button type="submit" variant="success">Edit attribute</Button>
+            </form>
+        </section>
+
+
+        <section>
+        <h2>Add new size</h2>
+        <form onSubmit={handleAddSize}>
+            <FloatingLabel label='Size Value'>
+                <Form.Control
+                placeholder="SizeValue"
+                type="text"
+                id="sizeValue"
+                onChange={(e) => setSizeValue(e.target.value)}
+                value={sizeValue}
+                required
+                /></FloatingLabel>
+                   <FloatingLabel label="Type id ">
+                    <Form.Control
+                        placeholder="Type id"
+                        id="id"
+                        type="number"
+                        pattern="[0-9]*"
+                        onChange={(e) => setTypeId(parseInt(e.currentTarget.value))}
+                        value={typeId !== null ? typeId.toString() : ''}
+                    /></FloatingLabel>
+            <Button type="submit" variant="success">Add Size</Button>
             </form>
         </section>
 

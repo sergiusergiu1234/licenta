@@ -12,9 +12,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product,Long>, JpaSpecificationExecutor<Product> {
+    List<Product> findByNameIgnoreCase(String name);
+    long countByName(String name);
     List<Product> findAll(Specification<Product> spec);
     Page<Product>findAll(Specification<Product>spec, Pageable pageable);
-    Product findByName(String name);
+    List<Product> findAllByName(String name);
+    Boolean  existsByName(String name);
     Optional<Product> findByBrand(Brand brand);
     List<Product> findByBrandName(String brandName);
+
+    List<Product> findByName(String productName);
 }

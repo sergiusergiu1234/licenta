@@ -22,5 +22,6 @@ public class ProductRequestModel {
     private Float maxPrice;
     private String type_name;
     private Map<String, String>  attributes;
+    private String sizes;
 
 }

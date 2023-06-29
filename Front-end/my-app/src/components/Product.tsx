@@ -14,11 +14,7 @@ interface Props {
     isFavorite: boolean
 }
 const Product =({product, isFavorite}:Props)=>{
-    const [favorited,setFavorited] = useState(isFavorite);
    const navigate = useNavigate();
-    const {auth} = useAuth();
-    const [isAdmin,setIsAdmin] = useState(false);
-
 
     //convert image data 
     const base64String = product.image;
@@ -31,92 +27,27 @@ const Product =({product, isFavorite}:Props)=>{
     const image= new Blob([byteArray], {type:'image/jpeg'});
     const imageUrl = URL.createObjectURL(image);
 
-    useEffect(()=>{
-        setIsAdmin(auth.roles.includes('ROLE_ADMIN'))
-    },[]);
-
-const toggleFavorite =()=>{
-   //verify if authenticated
-   if(auth.accessToken){
-    const token = window.localStorage.getItem('accessToken')
-    if(!favorited){
-        //send server request
-            fetch(`http://localhost:8080/favorites/add/${product.id}`,{
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(response => response.json())
-            .then(data =>{setFavorited(true);
-            })
-    }else{
-                    //send server request
-                    fetch(`http://localhost:8080/favorites/delete/${product.id}`,{
-                        method: 'DELETE',
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data =>{
-                                    setFavorited(false);
-                    })
-    }
-   }else{
-    alert("You must log in first!")
-   }
-}
     const goToProductDetails =()=>{
-        navigate(`/ProductPage/${product.id}`)
+    
+        navigate(`/ProductPage/${product.name}`)
+        window.localStorage.setItem("productName",product.name)
         window.localStorage.setItem("imageUrl",base64String)
     }
-    const addToCart =()=>{
-        const token = window.localStorage.getItem('accessToken')
-        fetch(`http://localhost:8080/shoppingCart/add/${product.id}`,{
-            method: 'POST',
-            headers: {
-                'Authorization' : `Bearer ${token}`
-            }
-        })
-        .then(response => response.json())
-    }
-    
-
-    const handleProductDelete =()=>{
-        const token = window.localStorage.getItem('accessToken')
-        fetch(`http://localhost:8080/shoppingCart/delete/${product.id}`,{
-            method: 'POST',
-            headers: {
-                'Authorization' : `Bearer ${token}`
-            }
-        })
-        .then(response => response.json())
-    }
+   
 
     return(
-
     <Card>
            <div className="hoverable">
-    <Card.Img variant="top" src={"/snwb1.jpg"}
+    <Card.Img variant="top" src={imageUrl}
                  onClick={goToProductDetails}
+                 style={{ height: "40vh" }}
                 />
  </div>
     <Card.Body className="card-details">
       <Card.Text>
-        <label className="product-name">{product.name} </label><br/>
+        <label className={product.name.length > 20 ? `product-name-small` : `product-name-normal`}>{product.name} </label><br/>
         <label className="product-price">{product.price} RON </label>
       </Card.Text>
-      <div className="product-buttons">
-      <IconContext.Provider value={(isAdmin) ? {size: '60%'} : {size: '20%'}}>
-                 <div className={isAdmin  ?  "admin-product-delete" : (`${favorited ? 'favorited' : 'not-favorited'}`)}
-                              onClick={isAdmin ? handleProductDelete :  toggleFavorite}>
-                                 {isAdmin ? <AiOutlineDelete/> : ( favorited ? <AiFillHeart />  : <AiOutlineHeart />  )}
-                                 </div> 
-                                 </IconContext.Provider>
-                                
-               
-      </div>
     </Card.Body>
   </Card>
     )

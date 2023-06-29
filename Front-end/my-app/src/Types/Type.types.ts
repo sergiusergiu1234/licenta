@@ -1,5 +1,6 @@
 import { Category } from "./Category.types"
 import {Attribute} from "./Attribute.types"
+import { Size } from "./Size.types";
 
 export type AttributeValues ={
   [key: string]: string[] | null;
@@ -10,5 +11,6 @@ export interface Type {
     categoryDtoList: Category[];
     attributeDtoList: Attribute[];
     attributeValues: AttributeValues;
+    sizeDtoList: Size[];
   }
   

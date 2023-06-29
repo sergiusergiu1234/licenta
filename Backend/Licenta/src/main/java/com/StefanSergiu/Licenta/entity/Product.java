@@ -10,9 +10,9 @@ import lombok.*;
 import java.io.Serializable;
 import java.util.*;
 
-@Table
+@Table(
+        uniqueConstraints = @UniqueConstraint(columnNames={"name","size"}))
 @Builder
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,8 +22,10 @@ public class Product{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-    @Column(unique = true)
+    @Column
     private String name;
+    @Column
+    private String size;
     @Column
     private Float price;
     @ManyToOne
@@ -41,6 +43,7 @@ public class Product{
     private List<Favorite> favorites = new ArrayList<>();
     private String imagePath;
     private String imageFileName;
+    @Column(length = 5000)
     private String description;
 
    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)

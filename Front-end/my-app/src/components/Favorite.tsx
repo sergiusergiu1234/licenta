@@ -49,6 +49,7 @@ const Favorite =({favorite,handleRemove}:Props)=>{
         <div className="product-details">
             <label>{favorite.productName}</label><br/>
             <label>{favorite.price} RON</label><br/>
+            size:  <label>{favorite.size}</label>
         </div>
         <div >
             <IconContext.Provider value={{size: '5vh'}}>

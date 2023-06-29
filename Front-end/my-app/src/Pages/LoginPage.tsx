@@ -92,9 +92,9 @@ const LoginPage = () => {
         <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"}>
             {errMsg}
         </p>
-        <h1>Sign In</h1>
+    
         <Form onSubmit={handleSubmit} className="inputs">
-            
+        <h1>Sign In</h1>
             <InputGroup className="mb-3">
                 <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
                 <Form.Control
@@ -120,11 +120,12 @@ const LoginPage = () => {
             </InputGroup>
 
             <Button variant="success" type="submit">Sign In</Button>
-                    </Form>
-                    <p>
+            <p>
                         Don't have an account? <br />
                         <a href="/Register">Sign Up</a>
                     </p>
+                    </Form>
+                    <div className='ribbon'></div>
                 </div>
     );
 };

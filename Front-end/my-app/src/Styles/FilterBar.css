@@ -72,20 +72,28 @@ width: 100%;
 .buttons{
   display: flex;
   flex-direction: column;
+  color: black;
+}
+.button:hover{
+  background-color: bisque;
 }
 .sselected{
   margin: 2%;
   border-radius: 10px;
   border-style: solid;
-  border-width: 5px;
+  border-width: 1px;
+  background-color: #e5e5e5;
+  color: black;
+  font-weight: bolder;
 }
 .notselected{
   margin: 2%;
- background-color: rgb(151, 206, 255);
+  
   border-radius: 10px;
+  background-color: #888888;
   border-style: none;
-  color: black;
-  font-weight: bold;
+
+
 }
 .containe{
   min-width: 100%;

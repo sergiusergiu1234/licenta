@@ -252,6 +252,25 @@ export const editType = async (typeName:string,typeId:number | null) =>{
     return data;
     }
 
+  export const addSize = async (sizeValue:string, typeId:number | null) =>{
+    const url=`http://localhost:8080/size/admin/add`;
+    const token = localStorage.getItem('accessToken');
+    const requestBody = {
+      "value": sizeValue,
+      "typeId": typeId
+    }
+    const response = await fetch(url,{
+      method: 'POST',
+      headers:{
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    });
+    const data = await response.json();
+    return data;
+  }
+
   export const addAttribute = async (attributeName:string , typeId:number | null)=>{
     const url = `http://localhost:8080/attributes/admin/add`;
     const token = localStorage.getItem('accessToken');
