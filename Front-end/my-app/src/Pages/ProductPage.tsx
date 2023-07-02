@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "../api/axios";
 import { ProductType } from "../Types/ProductType.types";
 import { IconContext } from "react-icons";
@@ -16,9 +16,13 @@ import CardHeader from "react-bootstrap/esm/CardHeader";
 import { SpecificProduct } from "../Types/SpecificProduct.types";
 import useAuth from "../hooks/useAuth";
 
+
 const ProductPage = () => {
+  const navigate = useNavigate();
     const {auth} = useAuth();
   const productName = window.localStorage.getItem("productName");
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [edit,setEdit] = useState(false);
 
   const [products, setProducts] = useState<SpecificProduct[]>([
     {
@@ -55,7 +59,9 @@ const ProductPage = () => {
 
   useEffect(() => {
     fetchProducts();
-    
+    if(auth.accessToken){
+      setIsAdmin(auth.roles.includes("ROLE_ADMIN"));
+    }
   }, []);
 
   useEffect(()=>{
@@ -64,9 +70,12 @@ const ProductPage = () => {
   },[selectedProduct]);
   
   const fetchProducts = () => {
-    const token = window.localStorage.getItem('accessToken')
-    fetch(`http://localhost:8080/products/${productName}`,{
+   
+    if(auth.accessToken){
+    const token = window.localStorage.getItem('accessToken');
+      fetch(`http://localhost:8080/products/${productName}`,{
         method: 'GET',
+        
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -74,6 +83,14 @@ const ProductPage = () => {
       .then((response) => response.json())
       .then((data) => setProducts(data))
       .catch((error) => console.log(error));
+    }
+    else{
+      fetch(`http://localhost:8080/products/${productName}`)
+      .then((response) => response.json())
+      .then((data) => setProducts(data))
+      .catch((error) => console.log(error));
+    }
+  
   };
 
   const addToFavorite = () => {
@@ -110,21 +127,49 @@ const ProductPage = () => {
   };
 
   const addToCart = () => {
+    if(auth.accessToken){
+      const token = window.localStorage.getItem('accessToken')
+      fetch(`http://localhost:8080/shoppingCart/add/${selectedProduct.id}`,{
+          method: 'POST',
+          headers: {
+              'Authorization': `Bearer ${token}`
+          }
+      })
+      .then(response => response.json())
+      .then(data =>console.log(data))
+    }else{
+      alert("You must log in first!")
+    }
+  };
+
+  const handleDelete=()=>{
     const token = window.localStorage.getItem('accessToken')
-    fetch(`http://localhost:8080/shoppingCart/add/${selectedProduct.id}`,{
-        method: 'POST',
+    fetch(`http://localhost:8080/products/admin/${selectedProduct.id}`,{
+        method: 'DELETE',
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization' : `Bearer ${token}`
         }
     })
     .then(response => response.json())
-    .then(data =>console.log(data))
-  };
+    window.location.reload();
+  }
+
+  const handleAddSize =()=>{
+    navigate("/admin/products");
+    if(productName){
+      window.localStorage.setItem('selectedName',productName);
+    }
+  
+  }
 
   return (
     <Card>
       <CardHeader>
-        <h1></h1>
+        {
+          isAdmin  ?<> <Button variant="danger" onClick={handleDelete}>Delete</Button>
+                      <Button variant="success" onClick={handleAddSize} >Add new size </Button>
+          </>: <></> 
+        }
       </CardHeader>
       <Card.Body className="product-page-container">
        

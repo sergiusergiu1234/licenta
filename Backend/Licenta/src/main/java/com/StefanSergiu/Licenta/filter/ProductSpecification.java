@@ -35,43 +35,29 @@ public class ProductSpecification {
         //check if attribute and values are not null
         if (request.getAttributes() != null && !request.getAttributes().isEmpty()) {
 
-            //new empty list of predicates
             List<Predicate> attributePredicates = new ArrayList<>();
 
-            //map through the map
             for (Map.Entry<String, String> entry : request.getAttributes().entrySet()) {
-                //for each entry ...
 
-                //...save key
                 String attributeName = entry.getKey();
-                //...save value
                 String attributeValueString = entry.getValue();
+
                 //generate list from the value "red,green,blue" becomes [red, green, blue]
                 List<String> attributeValues = Arrays.asList(attributeValueString.split(","));
 
-                //join Product with Product Attribute
-               //...JOIN product_attribute ON product.id = product_attribute.productId
                 Join<Product, ProductAttribute> productAttributeJoin = root.join("productAttributes");
-
-                // link another join to the previous one ^
-                 //...JOIN attribute ON product_attribute.attribute_id = attribute.id
                 Join<ProductAttribute, Attribute> attributeJoin = productAttributeJoin.join("attribute");
 
-                //[1] ... attribute.name LIKE '%<attributeName>%'
                 Predicate attributeNamePredicate = criteriaBuilder.like(criteriaBuilder.lower(attributeJoin.get("name")),
                         "%" + attributeName.toLowerCase() + "%");
 
-                //...[2] product_attribute.value IN (<attributeValues>)
                 Predicate attributeValuePredicate = productAttributeJoin.get("value").in(attributeValues);
-                //^2^ - AND ...
-                attributePredicates.add(attributeValuePredicate);
-                //^1^- WHERE ...
-                predicates.add(attributeNamePredicate);
+
+                attributePredicates.add(criteriaBuilder.and(attributeNamePredicate, attributeValuePredicate));
             }
-            // after generating everything, combine all using OR
-            Predicate attributeValueCombinedPredicate = criteriaBuilder.or(attributePredicates.toArray(new Predicate[0]));
-            //wrap all in () and add AND
-            predicates.add(attributeValueCombinedPredicate);
+            Predicate attributeCombinedPredicate = criteriaBuilder.or(attributePredicates.toArray(new Predicate[0]));
+
+            predicates.add(attributeCombinedPredicate);
         }
 
         //filter by sizes
@@ -117,9 +103,15 @@ public class ProductSpecification {
                 predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("price"), request.getMaxPrice()));
             }
         }
+        //select name
         query.multiselect(root.get("name"));
+
+        //group by name
         query.groupBy(root.get("name"));
+
+        //order by
         query.orderBy(criteriaBuilder.desc(root.get("price")));
+
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     };
 }
@@ -136,11 +128,11 @@ public class ProductSpecification {
 //        WHERE
 //        LOWER(type.name) LIKE '%<type_name>%'
 //        AND (
-//        (LOWER(attribute.name) LIKE '%<attribute_name_1>%' AND product_attribute.value IN ('red', 'green', 'blue'))
-//        OR
-//        (LOWER(attribute.name) LIKE '%<attribute_name_2>%' AND product_attribute.value IN ('X', 'L', 'M'))
-//        -- Add more conditions for additional attribute names and values
-//        )
+        //        (LOWER(attribute.name) LIKE '%<attribute_name_1>%' AND product_attribute.value IN ('red', 'green', 'blue'))
+        //        OR
+        //        (LOWER(attribute.name) LIKE '%<attribute_name_2>%' AND product_attribute.value IN ('X', 'L', 'M'))
+        //        -- Add more conditions for additional attribute names and values
+    //        )
 //        AND brand.name IN ('<brand_1>', '<brand_2>', '<brand_3>')
 //        AND gender.name IN ('<gender_1>', '<gender_2>', '<gender_3>')
 //        AND LOWER(product.name) LIKE '%<product_name>%'

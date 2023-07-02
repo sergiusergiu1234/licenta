@@ -4,6 +4,7 @@ import com.StefanSergiu.Licenta.dto.user.UserDto;
 import com.StefanSergiu.Licenta.entity.UserInfo;
 import com.StefanSergiu.Licenta.repository.UserInfoRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,5 +45,19 @@ public class UserService {
         }
         UserInfo user = repository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("User not found. Username:"+ username));
         return user;
+    }
+
+
+    @Transactional
+    public String editUserPassword(UserInfo userInfo, String password){
+        userInfo.setPassword(passwordEncoder.encode(password));
+        try{
+            UserInfo savedUser =  repository.save(userInfo);
+        }catch(Exception ex){
+            return "Password edit failed.";
+        }
+
+
+        return "Password changed succesfully.";
     }
 }

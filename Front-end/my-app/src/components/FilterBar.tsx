@@ -52,6 +52,7 @@ const FilterBar = ({ onSearch }: any) => {
     );
   };
   const handleReset = () => {
+    window.location.reload();
     setCategories([]);
     setTypeName("");
     setProductName("");

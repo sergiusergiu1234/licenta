@@ -77,5 +77,17 @@ public class UserController {
         response.addCookie(cookie);
         return ResponseEntity.ok("Logout succesfull");
     }
+
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @PutMapping("/me/edit/password")
+    public String editPassword(@RequestBody String password){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username =  authentication.getName();    //get users name
+        UserInfo user = userService.getLoggedInUser(username); //get userInfo object based on logged-in user's username
+        String message = userService.editUserPassword(user, password);
+        return message;
+    }
+
+
 }
 

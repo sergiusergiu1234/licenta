@@ -1,8 +1,10 @@
 package com.StefanSergiu.Licenta.controller;
 
 import com.StefanSergiu.Licenta.config.BucketName;
+import com.StefanSergiu.Licenta.dto.brand.BrandDto;
 import com.StefanSergiu.Licenta.dto.favorite.FavoriteDto;
 import com.StefanSergiu.Licenta.dto.product.*;
+import com.StefanSergiu.Licenta.entity.Brand;
 import com.StefanSergiu.Licenta.entity.Favorite;
 import com.StefanSergiu.Licenta.entity.Product;
 import com.StefanSergiu.Licenta.entity.UserInfo;
@@ -16,6 +18,7 @@ import com.StefanSergiu.Licenta.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +33,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -55,9 +60,16 @@ public class ProductController {
     private ProductRepository productRepository;
 
     @PostMapping("/admin/add")
-    public ResponseEntity<ProductDto> addProduct(@RequestBody final CreateNewProductModel createNewProductModel){
-        Product product = productService.addProduct(createNewProductModel);
-        return new ResponseEntity<>(ProductDto.from(product), HttpStatus.OK);
+    public ResponseEntity<?> addProduct(@RequestBody final CreateNewProductModel createNewProductModel){
+        try{
+            Product product = productService.addProduct(createNewProductModel);
+            return new ResponseEntity<>(ProductDto.from(product), HttpStatus.OK);
+        }catch(DataIntegrityViolationException e) {
+            // Handle the exception and send an error response
+
+            String errorMessage = e.getMessage();
+            return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PreAuthorize("permitAll()")
@@ -166,7 +178,7 @@ public class ProductController {
             List<Product> products = productRepository.findAllByName(product.getName());
             //set the existing image to the product
             productService.updateProductImage(id, products.get(0).getImagePath(),products.get(0).getImageFileName());
-            System.out.println("am ajuns aiciaea");
+
             return ResponseEntity.status(HttpStatus.OK).body("Image added succesfully");
         }
 
@@ -195,4 +207,9 @@ public class ProductController {
 
         return ResponseEntity.status(HttpStatus.OK).body("Image added succesfully");
     }
+
+
+
+
+
 }
