@@ -7,4 +7,5 @@ export type CartItemType={
     price: number;
     quantity:number;
     product:ProductType;
+    stock:number;
 }

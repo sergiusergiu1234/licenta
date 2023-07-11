@@ -225,13 +225,20 @@ const FilterBar = ({ onSearch }: any) => {
         {Object.entries(possibleValues).map(([attributeName, attributeValues])=>(
           <div key={attributeName}>
              <Accordion>
-        <Accordion.Item eventKey="0">
-          <Accordion.Header>
+        <Accordion.Item eventKey="0"  className="accordion-header">
+          <Accordion.Header  style={{ backgroundColor: "#333", color: "#fff" }}>
           {attributeName}
           </Accordion.Header>
           <Accordion.Body className="filter-accordion">
           <div className="buttons">
-            {attributeValues && attributeValues.map((value) => (
+            {attributeValues && attributeValues
+            .sort((a, b)=>{
+              if (!isNaN(Number(a)) && !isNaN(Number(b))) {
+                return Number(a) - Number(b);
+              }
+              return a.localeCompare(b);
+            })
+            .map((value) => (
                <Button key={value}
                //check wether selectedValues map has attributeName key and if corresponding values array includes the selected value
                 className={selectedValues.has(attributeName) && selectedValues.get(attributeName).includes(value) ? "sselected" : "notselected"} 
@@ -312,7 +319,7 @@ const FilterBar = ({ onSearch }: any) => {
       />
       <br />
       <br />
-      <Button variant="primary" onClick={handleSearch}>
+      <Button variant="primary" onClick={()=>{handleSearch();}}>
         Search
       </Button>
       <Button variant="danger" onClick={handleReset}>

@@ -15,7 +15,7 @@ const ShoppingCartPage =()=>{
     const token = window.localStorage.getItem('accessToken');
     const [totalPrice,setTotalPrice]= useState(0);
     const {order, setOrder} = useContext(OrderContext);
-
+    const [isValid, setIsValid] = useState(true);
 
     useEffect(()=>{
         
@@ -96,14 +96,16 @@ const ShoppingCartPage =()=>{
             <div className="cartList">
             {cartItems.map((cart:CartItemType)=>(
                 <CartItem key={cart.productId} item={cart} addToCart={handleAddToCart}
-                removeFromCart={handleRemoveFromCart}/>
+                removeFromCart={handleRemoveFromCart}
+                setIsValid={setIsValid}/>
             ))}
             </div>
             <div className="sumar-comanda">
                 <SumarComanda total={totalPrice}/>
                 <IconContext.Provider value={{ size: "30px" }}>
-            <button className="continue-button"
-                    onClick={goToCheckout}>
+            <button className={isValid ? "continue-button" : "invalid-continue" } 
+                    onClick={goToCheckout}
+                    disabled={!isValid}>
             <VscDebugStart />
             Continue
             </button>

@@ -69,8 +69,8 @@ const HomePage = () => {
                        maxPrice:string,
                        typeName:string,
                        attributeString:string,
-                       sizes:string[]
-                       ) =>{
+                       sizes:string[],
+                       ) =>{setActivePage(1);
     setFilter({ name:productName,
                 brands:brands.join(","),
                 gender:genderName,

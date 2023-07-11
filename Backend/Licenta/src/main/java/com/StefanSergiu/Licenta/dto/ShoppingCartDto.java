@@ -14,6 +14,7 @@ public class ShoppingCartDto {
     private byte[] productImage;
     private Float price;
     private ProductDto product;
+    private Long stock;
 
     public static ShoppingCartDto from(ShoppingCart shoppingCart){
         ShoppingCartDto shoppingCartDto = new ShoppingCartDto();
@@ -23,6 +24,7 @@ public class ShoppingCartDto {
         shoppingCartDto.setPrice(shoppingCart.getPrice());
         shoppingCartDto.setProductName(shoppingCart.getProduct().getName());
         shoppingCartDto.setProduct(ProductDto.from(shoppingCart.getProduct()));
+        shoppingCartDto.setStock(shoppingCart.getProduct().getStock());
         return shoppingCartDto;
     }
     public static ShoppingCartDto from(ShoppingCart shoppingCart, byte[] productImage){

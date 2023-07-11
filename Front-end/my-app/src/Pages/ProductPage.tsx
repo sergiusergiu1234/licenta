@@ -37,6 +37,7 @@ const ProductPage = () => {
       isFavorite: false,
       attributes: [{ attribute_name: "", value: "" }],
       size: "",
+      stock:0
     },
   ]);
 
@@ -130,6 +131,7 @@ const ProductPage = () => {
   const addToCart = () => {
     if(auth.accessToken){
       const token = window.localStorage.getItem('accessToken')
+   
       fetch(`http://localhost:8080/shoppingCart/add/${selectedProduct.id}`,{
           method: 'POST',
           headers: {
@@ -208,6 +210,20 @@ const ProductPage = () => {
               <br />
             </>
           ))}
+           <div className="product-buttons">
+        <IconContext.Provider value={{ size: "50px" }}>
+          <Button className={favorited ? "favoritedd" : "not-favoritedd"} onClick={addToFavorite}>
+           {favorited ? <AiFillHeart/> :  <AiOutlineHeart />} 
+            
+          </Button>
+            
+            {selectedProduct.stock !== 0 ?           <Button className="cart-button" disabled={selectedProduct.stock===0} onClick={addToCart}>
+            <AiFillPlusCircle />
+            Add to cart
+          </Button> : <label>Out of stock</label>}
+
+        </IconContext.Provider>
+      </div>
 </div>
         </> }
 
@@ -215,8 +231,8 @@ const ProductPage = () => {
    
           <div className="size-buttons">
             {products.map((product,index) => (
-              <Button key={product.id} className={product.id == selectedProduct.id ? "selected-size" : "not-selected-size"}
-                    onClick={()=>{setSelectedProduct(product); window.localStorage.setItem("at",`${index}`)}}>
+              <Button key={product.id}  className={product.id == selectedProduct.id ? "selected-size" : "not-selected-size"}
+                    onClick={()=>{setSelectedProduct(product); }}>
                 {product.size}
               </Button>
             ))}
@@ -224,19 +240,7 @@ const ProductPage = () => {
         </div>
         </div>
       </Card.Body>
-      <div className="product-buttons">
-        <IconContext.Provider value={{ size: "50px" }}>
-          <Button className={favorited ? "favoritedd" : "not-favoritedd"} onClick={addToFavorite}>
-           {favorited ? <AiFillHeart/> :  <AiOutlineHeart />} 
-            Add to favorites
-          </Button>
-
-          <Button className="cart-button" onClick={addToCart}>
-            <AiFillPlusCircle />
-            Add to cart
-          </Button>
-        </IconContext.Provider>
-      </div>
+     
     </Card>
   );
 };

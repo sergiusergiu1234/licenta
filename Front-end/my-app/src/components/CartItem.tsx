@@ -11,10 +11,12 @@ interface Props {
    item:CartItemType;
    addToCart: (item: CartItemType) => void;
    removeFromCart: (item: CartItemType) => void;
+   setIsValid: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CartItem =({item,addToCart,removeFromCart}:Props)=>{
-  const token = window.localStorage.getItem("accessToken");
+const CartItem =({item,addToCart,removeFromCart, setIsValid}:Props)=>{
+
+
   const [cartItem, setCartItem] = useState<CartItemType>({
     productId: item.productId,
     productImage: item.productImage,
@@ -22,21 +24,28 @@ const CartItem =({item,addToCart,removeFromCart}:Props)=>{
     quantity: item.quantity,
     price: item.price,
     product:{
-        id: item.product.id,
-        name:item.productName,
-        price:item.price,
-        brand: {id:item.product.brand.id,
-                name:item.product.brand.name},
-        gender:{id:item.product.gender.id,
-                name:item.product.gender.name},
-        category:{id:item.product.category.id,
-                name:item.product.category.name,
-                typeName:item.product.category.typeName},
-        image:item.productImage,
-        description:item.product.description,
-        isFavorite:item.product.isFavorite,
-        attributes:item.product.attributes
-    }
+      id: item.product.id,
+      name: item.productName,
+      price: item.price,
+      brand: {
+        id: item.product.brand.id,
+        name: item.product.brand.name
+      },
+      gender: {
+        id: item.product.gender.id,
+        name: item.product.gender.name
+      },
+      category: {
+        id: item.product.category.id,
+        name: item.product.category.name,
+        typeName: item.product.category.typeName
+      },
+      image: item.productImage,
+      description: item.product.description,
+      isFavorite: item.product.isFavorite,
+      attributes: item.product.attributes,
+      stock: item.product.stock
+    },stock:item.stock
   });
 
   useEffect(() => {
@@ -66,10 +75,16 @@ const CartItem =({item,addToCart,removeFromCart}:Props)=>{
         image: item.productImage,
         description: item.product.description,
         isFavorite: item.product.isFavorite,
-        attributes: item.product.attributes
-      }
+        attributes: item.product.attributes,
+        stock: item.product.stock
+      },stock:item.stock
     });
   }, [item]);
+
+  useEffect(() => {
+    setIsValid(item.quantity <= item.product.stock); // Update the isValid state within the CartItem component
+  }, [item.quantity]);
+
 
   return (
     <Card className="cartItem">
@@ -77,7 +92,7 @@ const CartItem =({item,addToCart,removeFromCart}:Props)=>{
       <Card.Body >
             <div className="cart-attributes">
               
-              <label  className="attribute_name">{item.product.brand.name} - {item.product.category.name}</label>
+              <label  className="attribute_name">{item.product.brand.name} - {item.product.category.name} - {item.product.category.typeName}</label>
                 <hr/>
                 <div className="attr">
                 {item.product.attributes.map((attribute)=>(
@@ -93,14 +108,17 @@ const CartItem =({item,addToCart,removeFromCart}:Props)=>{
         <IconContext.Provider value={{ size: "30px" }}>
             <div  >
                 <label className="attribute_name">Quantity: {cartItem.quantity}</label>
+                <label>({cartItem.product.stock} in stock)</label>
                 <br/>
                 <label className="attribute_name">Price: {cartItem.price}</label>
           </div>
           <div className="shoppingCart-buttons">
-          <button className="addToCart" onClick={()=> addToCart(item)}>
+          <button className="addToCart" onClick={()=> cartItem.quantity !== cartItem.product.stock ? 
+              addToCart(item) : alert(`Only ${cartItem.product.stock} left in stock!`)}>
             <HiOutlinePlusCircle />
           </button>
-          <button className="removeFromCart" onClick={()=> removeFromCart(item)}>
+          <button className="removeFromCart" onClick={()=>
+             removeFromCart(item) }>
             <HiOutlineMinusCircle />
           </button>
           </div>

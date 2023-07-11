@@ -13,5 +13,6 @@ export  type ProductType = {
     image: string;
     description: string;
     isFavorite: boolean;
-    attributes: ProductAttribute[]
+    attributes: ProductAttribute[];
+    stock:number
   };
