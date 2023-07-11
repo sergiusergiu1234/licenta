@@ -86,5 +86,17 @@ public class ProductAttributeService {
         return productAttribute;
     }
 
+    @Transactional
+    public ProductAttribute editProductAttribute(CreateProductAttributeModel createProductAttributeModel){
+        Product product = productRepository.findById(createProductAttributeModel.getProductId())
+                .orElseThrow(() -> new EntityNotFoundException("Product with id " + createProductAttributeModel.getProductId() + " not found!"));
+        Attribute attribute = attributeRepository.findById(createProductAttributeModel.getAttributeId())
+                .orElseThrow(() -> new EntityNotFoundException("Attribute with id " + createProductAttributeModel.getAttributeId() + " not found!"));
+        String value = createProductAttributeModel.getValue();
+        ProductAttribute productAttribute = getProductAttribute(product.getId(), attribute.getId());
+        productAttribute.setValue(value);
+        return productAttribute;
+    }
+
 
 }

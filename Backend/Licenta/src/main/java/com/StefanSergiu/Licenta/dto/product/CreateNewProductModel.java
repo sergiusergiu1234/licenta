@@ -12,6 +12,6 @@ public class CreateNewProductModel {
     private String category_name;
     private Float price;
     private String description;
-
+    private Long stock;
 
 }

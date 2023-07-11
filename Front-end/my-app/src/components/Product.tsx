@@ -40,12 +40,12 @@ const Product =({product, isFavorite}:Props)=>{
            <div className="hoverable">
     <Card.Img variant="top" src={imageUrl}
                  onClick={goToProductDetails}
-                 style={{ height: "40vh" }}
+                 style={{ height: "40vh"}}
                 />
  </div>
     <Card.Body className="card-details">
       <Card.Text>
-        <label className={product.name.length > 20 ? `product-name-small` : `product-name-normal`}>{product.name} </label><br/>
+        <label className={product.name.length > 16 ? `product-name-small` : `product-name-normal`}>{product.name} </label><br/>
         <label className="product-price">{product.price} RON </label>
       </Card.Text>
     </Card.Body>

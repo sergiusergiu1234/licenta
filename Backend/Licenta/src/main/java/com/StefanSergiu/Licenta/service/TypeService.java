@@ -56,4 +56,8 @@ public class TypeService {
         type.setName(plainTypeDto.getName());
         return type;
     }
+    public Type getTypeByCategory(String categoryName){
+        Type type = typeRepository.findByCategories_Name(categoryName);
+        return type;
+    }
 }

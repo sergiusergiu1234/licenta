@@ -13,8 +13,15 @@ import java.util.Optional;
 public interface AttributeRepository extends JpaRepository<Attribute, Long> {
      Optional<Attribute> findById(Long id);
 
-     @Query("SELECT new map(a.name as attributeName, GROUP_CONCAT(DISTINCT pa.value) as attributeValues) FROM Attribute a JOIN a.productAttributes pa JOIN a.type t WHERE t.name = :typeName GROUP BY a.name")
+     @Query("SELECT a.name as attributeName, GROUP_CONCAT(DISTINCT pa.value) as attributeValues " +
+             "FROM Attribute a " +
+             "JOIN ProductAttribute pa ON a.id = pa.attribute.id " +
+             "JOIN Type t ON a.type.id = t.id " +
+             "WHERE t.name = :typeName " +
+             "GROUP BY a.name")
      List<Map<String, Object>> findAttributeValuesByTypeName(@Param("typeName") String typeName);
+
+
 
 
 }

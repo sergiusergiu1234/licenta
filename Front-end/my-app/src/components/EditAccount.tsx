@@ -1,66 +1,72 @@
 import { Button } from "react-bootstrap";
 import "../Styles/EditAccount.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { updatePersonalData } from "../api/api";
 
 const EditAccount =()=>{
 const [selected,setSelected] = useState("");
+const [text,setText] = useState("");
 
-const handleEdit = (param:string)=>{
+useEffect(()=>{
+    setText("");
+},[selected])
 
-
+const handleSubmit=()=>{
+    updatePersonalData(selected, text).then((data)=>console.log(data));   
 }
+
     return (<div className="editAccount-container">
-        {selected == "fn"   ?
+        {selected == "firstname"   ?
             <div>
-                <label>EdName</label>
-                <Button variant="success">confirm</Button>
+                <label>Enter new firstname</label><input value={text} onChange={(e)=>setText(e.target.value)}></input>
+                <Button variant="success" onClick={handleSubmit}>confirm</Button>
                 <Button variant="danger" onClick={()=>{setSelected("")}}>close</Button>  
             </div>
             : 
-            <Button  onClick={()=>{setSelected("fn")}}>Edit Firstname </Button> 
+            <Button  onClick={()=>{setSelected("firstname")}}>Edit Firstname </Button> 
         } 
 
 
-        {selected == "ln"   ?
+        {selected == "lastname"   ?
             <div>
-                <label>EdName</label>
-                <Button variant="success">confirm</Button>
+                <label>Enter new lastname</label><input value={text} onChange={(e)=>setText(e.target.value)}></input>
+                <Button variant="success"  onClick={handleSubmit}>confirm</Button>
                 <Button variant="danger" onClick={()=>{setSelected("")}}>close</Button>  
             </div>
             : 
-            <Button  onClick={()=>{setSelected("ln")}}>Edit Lastname </Button> 
+            <Button  onClick={()=>{setSelected("lastname")}}>Edit Lastname </Button> 
         } 
 
 
-        {selected == "e"   ?
+        {selected == "email"   ?
             <div>
-                <label>EdName</label>
-                <Button variant="success">confirm</Button>
+                <label>Enter new email</label><input value={text} onChange={(e)=>setText(e.target.value)}></input>
+                <Button variant="success" onClick={handleSubmit}>confirm</Button>
                 <Button variant="danger" onClick={()=>{setSelected("")}}>close</Button>  
             </div>
             : 
-            <Button  onClick={()=>{setSelected("e")}}>Edit Email </Button> 
+            <Button  onClick={()=>{setSelected("email")}}>Edit Email </Button> 
         } 
 
 
-        {selected == "ph"   ?
+        {selected == "phonenumber"   ?
             <div>
-                <label>EdName</label>
-                <Button variant="success">confirm</Button>
+                <label>Enter new phone number</label><input value={text} onChange={(e)=>setText(e.target.value)}></input>
+                <Button variant="success" onClick={handleSubmit}>confirm</Button>
                 <Button variant="danger" onClick={()=>{setSelected("")}}>close</Button>  
             </div>
             : 
-            <Button  onClick={()=>{setSelected("ph")}}>Edit phone number </Button> 
+            <Button  onClick={()=>{setSelected("phonenumber")}}>Edit phone number </Button> 
         } 
         
-        {selected == "pass"   ?
+        {selected == "password"   ?
             <div>
-                <label>EdName</label>
-                <Button variant="success">confirm</Button>
+                <label>Enter new password</label><input value={text} onChange={(e)=>setText(e.target.value)}></input>
+                <Button variant="success" onClick={handleSubmit}>confirm</Button>
                 <Button variant="danger" onClick={()=>{setSelected("")}}>close</Button>  
             </div>
             : 
-            <Button  onClick={()=>{setSelected("pass")}}>Edit password </Button> 
+            <Button  onClick={()=>{setSelected("password")}}>Edit password </Button> 
         } 
     </div>)
 }

@@ -4,7 +4,12 @@ export const fetchTypes = async () => {
     const data = await response.json();
     return data;
   };
-  
+  export const fetchType = async(categoryName:string)=>{
+    const url = `http://localhost:8080/types/admin/get/c=${categoryName}`
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  }
   export const fetchGenders = async () => {
     const url ="http://localhost:8080/genders/all";
     const response = await fetch(url);
@@ -69,6 +74,25 @@ export const fetchAllOrders = async ()=>{
     }
   });
   const data = await response.json();
+  return data;
+}
+
+export const updatePersonalData = async(selected:string, text:string)=>{
+  const url = `http://localhost:8080/users/me/edit/${selected}`;
+  const token = localStorage.getItem("accessToken");
+  const requestBody = {
+    "updateText": text
+  }
+  console.log(url)
+  const response = await fetch(url, {
+    method: 'PUT',
+    headers:{
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(requestBody)
+  });
+  const data = await response;
   return data;
 }
 
@@ -270,7 +294,18 @@ export const editType = async (typeName:string,typeId:number | null) =>{
     const data = await response.json();
     return data;
   }
-
+  export const deleteSize = async (sizeId:number |null) =>{
+    const url =`http://localhost:8080/size/admin/delete/${sizeId}`;
+    const token = localStorage.getItem('accessToken');
+    const response = await fetch(url, {
+      method: `DELETE`,
+      headers:{
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    const data = await response.json();
+    return data;
+  }
   export const addAttribute = async (attributeName:string , typeId:number | null)=>{
     const url = `http://localhost:8080/attributes/admin/add`;
     const token = localStorage.getItem('accessToken');

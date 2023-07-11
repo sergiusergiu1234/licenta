@@ -8,7 +8,7 @@ const ControlledCarousel =()=>{
       <Carousel.Item interval={3000}>
         <img
           className="carousel-image"
-          src="snwb1.jpg"
+          src="snwa.webp"
           alt="First slide"
         />
 
@@ -25,7 +25,7 @@ const ControlledCarousel =()=>{
       <Carousel.Item  interval={3000}>
         <img
           className="carousel-image"
-          src="snwb1.jpg"
+          src="burtonmen1.jpg"
           alt="Third slide"
         />
 

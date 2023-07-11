@@ -113,13 +113,12 @@ const HomePage = () => {
       <div>
             <div className="product-grid">
               {products.map((product: ProductType) => (
-                <div className="product-column" key={product.id}> 
-                <div>
-                <Product  product={product} 
-                           isFavorite={product.isFavorite} />  
-                           </div>   
-                </div>
-                
+                <div className="product-column"> 
+                <Product 
+                   key={product.id}
+                   product={product} 
+                   isFavorite={product.isFavorite} />  
+                 </div>   
               ))}
             </div>
      </div>

@@ -36,9 +36,10 @@ public class ProductService {
         ProductSpecification productSpecification;
         @Autowired
         ProductAttributeRepository productAttributeRepository;
+    private final TypeRepository typeRepository;
 
 
-        @Transactional
+    @Transactional
         public Product addProduct(CreateNewProductModel createNewProductModel){
             Product product = new Product();
 
@@ -66,6 +67,7 @@ public class ProductService {
             product.setSize(createNewProductModel.getSize());
             product.setPrice(createNewProductModel.getPrice());
             product.setDescription(createNewProductModel.getDescription());
+            product.setStock(createNewProductModel.getStock());
             //add the product to the other side of every relationship
             brand.addProduct(product);
             gender.addProduct(product);
@@ -98,19 +100,11 @@ public class ProductService {
             product.getBrand().getProducts().remove(product);   //detach product from brand
             product.getGender().getProducts().remove(product);  //detach product from gender
             product.getCategory().getProducts().remove(product); //detach product from category
-
-
-
             productRepository.delete(product);
             return product;
         }
 
-        @Transactional
-        public Product editProduct(Long id, Product product){       //id retrieve product from db. item used to update existing item
-            Product productToEdit = getProduct(id);      //mananged product. no need to .save
-            productToEdit.setName(product.getName());
-            return productToEdit;          //changes will be persisted
-        }
+
 
         @Transactional
         public void updateProductImage(Long productId, String imagePath, String imageFileName) {
@@ -124,6 +118,7 @@ public class ProductService {
         public  Page<ProductCardDto> getAllProducts(ProductRequestModel request, Pageable pageable){
             //get the product entries based on the request (grouped by name)
             Page<Product> productsPage = productRepository.findAll(productSpecification.getProducts(request), pageable);
+            Long totalDistinctNames = productRepository.countDistinctNames();
             List<Product> products = productsPage.getContent();
             //generate a dto List
             List<ProductCardDto> productCardDtos = new ArrayList<>();
@@ -150,9 +145,14 @@ public class ProductService {
                         productCardDto.setCategory(product.getCategory().getName());
                         productCardDto.setBrand(product.getCategory().getName());
                         productCardDto.setGender(product.getGender().getName());
-
-                        byte[] imageData = fileStore.download(product.getImagePath(), product.getImageFileName());
-                        System.out.println("sjdfbhasguyfgasdrfudagyrde");
+                        String placeholder = "N/A";
+                        byte[] imageData = placeholder.getBytes();
+                        try{
+                            System.out.println("image downloaded");
+                           imageData  = fileStore.download(product.getImagePath(), product.getImageFileName());
+                        }catch(Exception e){
+                            System.out.println("Image field is null");
+                        }
                         productCardDto.setImage(imageData);
 
                         //placeholder for image downloading
@@ -168,13 +168,14 @@ public class ProductService {
                 productCardDtos.add(productCardDto);
             }
 
-           return new PageImpl<>(productCardDtos, pageable, productsPage.getTotalElements());
+           return new PageImpl<>(productCardDtos, pageable, totalDistinctNames);
         }
     public Product getProduct(Long productId) {
         return productRepository.findById(productId).orElseThrow(()->
                 new EntityNotFoundException("Product with id " + productId + " does not exist"));
     }
     public List<Product> getProductByName(String productName) {
+
         List<Product> products = productRepository.findAllByName(productName);
             return products;
     }

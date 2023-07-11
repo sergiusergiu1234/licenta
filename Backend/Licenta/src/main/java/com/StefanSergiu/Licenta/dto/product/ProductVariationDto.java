@@ -14,4 +14,5 @@ public class ProductVariationDto {
     private Long id;
     private String size;
     private boolean isFavorite;
+    private Long stock;
 }

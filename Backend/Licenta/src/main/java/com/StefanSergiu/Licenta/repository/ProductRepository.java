@@ -7,11 +7,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product,Long>, JpaSpecificationExecutor<Product> {
+    @Query("SELECT COUNT(DISTINCT p.name) FROM Product p")
+    long countDistinctNames();
     List<Product> findByNameIgnoreCase(String name);
     long countByName(String name);
     List<Product> findAll(Specification<Product> spec);
@@ -22,4 +25,6 @@ public interface ProductRepository extends JpaRepository<Product,Long>, JpaSpeci
     List<Product> findByBrandName(String brandName);
 
     List<Product> findByName(String productName);
+
+
 }

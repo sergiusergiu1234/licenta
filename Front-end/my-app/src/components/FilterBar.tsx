@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "../Styles/FilterBar.css";
 import { AttributeValues, Type } from "../Types/Type.types";
 import { Category } from "../Types/Category.types";
-import { Button, Dropdown, DropdownButton, Form, FormCheck, InputGroup } from "react-bootstrap";
+import { Accordion, Button, Dropdown, DropdownButton, Form, FormCheck, InputGroup } from "react-bootstrap";
 import { Gender } from "../Types/Gender.type";
 import { Brand } from "../Types/Brand.types";
 import { Attribute } from "../Types/Attribute.types";
@@ -140,15 +140,17 @@ const FilterBar = ({ onSearch }: any) => {
   return (
     <div className="containe">
        
-      <h2>EQUIPMENT TYPE</h2>
+      <h3 className="fbh3">EQUIPMENT TYPE</h3>
       <DropdownButton 
         id="dropdown-item-button"
         title={selectedType?.name ? selectedType.name : "Select type"}
         size='sm'
+        variant="light"
       >
         <Dropdown.ItemText>Pick equipment type</Dropdown.ItemText>
         {types.map((type) => (
           <Dropdown.Item
+            className="picker"
             as="button"
             key={type.id}
             onClick={() => {
@@ -164,13 +166,14 @@ const FilterBar = ({ onSearch }: any) => {
         ))}
       </DropdownButton>
 
-      <br />
-      <h2>CATEGORY</h2>
+      
+      <h3 className="fbh3">CATEGORY</h3>
       {categories.length ? (
         <DropdownButton className="de"
           id="dropdown-item-button"
           title={selectedCategory ? selectedCategory : 'Select category'}
           size='sm'
+          variant="light"
         >
           <Dropdown.ItemText>Pick equipment category</Dropdown.ItemText>
           {categories.map((category) => (
@@ -192,8 +195,14 @@ const FilterBar = ({ onSearch }: any) => {
 
       <br />
 
-      <h2>Sizes</h2>
-      {sizes.length?(<>
+      <h3 className="fbh3">Sizes</h3>
+      <Accordion defaultActiveKey="1" className="filter-accordion">
+        <Accordion.Item eventKey="0">
+          <Accordion.Header className="filter-accordion">
+            Product size
+          </Accordion.Header>
+          <Accordion.Body className="filter-accordion">
+          {sizes.length?(<>
         {sizes.map((size)=>(
           <Button key={size.id}
                   className={selectedSizes.includes(size.value) ? "sselected" : "notselected" }
@@ -202,16 +211,25 @@ const FilterBar = ({ onSearch }: any) => {
       </>) : (
         <p>Pick a type first.</p>
       )}
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+     
       
-      <h2>Attributes</h2>
+      <h3 className="fbh3">Attributes</h3>
       {
         possibleValues != null ? 
       <>
+     
       {/* map through a array of maps Map<string,string[]>[] */}
         {Object.entries(possibleValues).map(([attributeName, attributeValues])=>(
           <div key={attributeName}>
-          <h4>{attributeName}</h4>
-         
+             <Accordion>
+        <Accordion.Item eventKey="0">
+          <Accordion.Header>
+          {attributeName}
+          </Accordion.Header>
+          <Accordion.Body className="filter-accordion">
           <div className="buttons">
             {attributeValues && attributeValues.map((value) => (
                <Button key={value}
@@ -220,6 +238,10 @@ const FilterBar = ({ onSearch }: any) => {
                 onClick={()=>handleAttributesChange(attributeName,value)}>{value}</Button>
             ))}
           </div>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+         
         </div>
         ))
         }
@@ -230,7 +252,7 @@ const FilterBar = ({ onSearch }: any) => {
      
       <br />
       
-      <h2>Brand</h2>
+      <h3 className="fbh3">Brand</h3>
       {brands.map((brand) => (
         <Form.Check
           key={brand.id}
@@ -263,7 +285,7 @@ const FilterBar = ({ onSearch }: any) => {
         ))}
       </DropdownButton>
       <br /><br />
-      <h4>Name</h4>
+      <h3 className="fbh3">Name</h3>
       <input
         id="productName"
         type="text"
@@ -272,7 +294,7 @@ const FilterBar = ({ onSearch }: any) => {
       />
     <br/>
     <br />
-      <h4>Minimum price</h4>
+      <h3 className="fbh3">Minimum price</h3>
       <input
         id="minPrice"
         type="number"

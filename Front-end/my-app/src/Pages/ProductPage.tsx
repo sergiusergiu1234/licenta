@@ -31,7 +31,7 @@ const ProductPage = () => {
       price: 0,
       brand: { id: 0, name: "" },
       gender: { id: 0, name: "" },
-      category: { id: 0, name: "" },
+      category: { id: 0, name: "" ,typeName: ""},
       image: "",
       description: "",
       isFavorite: false,
@@ -67,6 +67,7 @@ const ProductPage = () => {
   useEffect(()=>{
     fetchProducts();
     setFavorited(selectedProduct.isFavorite);
+    console.log(selectedProduct)
   },[selectedProduct]);
   
   const fetchProducts = () => {
@@ -81,7 +82,7 @@ const ProductPage = () => {
         }
     })
       .then((response) => response.json())
-      .then((data) => setProducts(data))
+      .then((data) =>{ setProducts(data)})
       .catch((error) => console.log(error));
     }
     else{
@@ -158,31 +159,36 @@ const ProductPage = () => {
     navigate("/admin/products");
     if(productName){
       window.localStorage.setItem('selectedName',productName);
+      
     }
-  
   }
+
+  useEffect(()=>{
+    console.log(products)
+  },[products])
 
   return (
     <Card>
       <CardHeader>
         {
-          isAdmin  ?<> <Button variant="danger" onClick={handleDelete}>Delete</Button>
-                      <Button variant="success" onClick={handleAddSize} >Add new size </Button>
+          isAdmin  ? <> <Button variant="danger" onClick={handleDelete}>Delete product :( </Button>
+                      <Button variant="warning" onClick={handleAddSize} >Edit product :| </Button>
+                      
           </>: <></> 
         }
       </CardHeader>
       <Card.Body className="product-page-container">
        
         <div className="image-container">
-          <Card.Img variant="top" src="/snwb1.jpg" />
+          <Card.Img variant="top" src={imageUrl}/>
         </div>
-<div>
+<div className="productDetails">
 
-        {selectedProduct.name=="" ? <p>Select a size</p> : <>
+        {selectedProduct.name=="" ? <p >Select a size</p> : <>
         <div>
           <p className="bold">
             {selectedProduct?.gender.name}'s {selectedProduct?.brand.name}{" "}
-            {selectedProduct?.category.name.toUpperCase()}
+            {selectedProduct?.category.name.toUpperCase()} {selectedProduct.category.typeName}
             <br />
             <label className="head-big">{selectedProduct.name}</label>
             <br />
@@ -208,9 +214,9 @@ const ProductPage = () => {
         <div>
    
           <div className="size-buttons">
-            {products.map((product) => (
+            {products.map((product,index) => (
               <Button key={product.id} className={product.id == selectedProduct.id ? "selected-size" : "not-selected-size"}
-                    onClick={()=>{setSelectedProduct(product);}}>
+                    onClick={()=>{setSelectedProduct(product); window.localStorage.setItem("at",`${index}`)}}>
                 {product.size}
               </Button>
             ))}

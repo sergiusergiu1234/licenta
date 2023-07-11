@@ -4,10 +4,7 @@ import com.StefanSergiu.Licenta.config.BucketName;
 import com.StefanSergiu.Licenta.dto.brand.BrandDto;
 import com.StefanSergiu.Licenta.dto.favorite.FavoriteDto;
 import com.StefanSergiu.Licenta.dto.product.*;
-import com.StefanSergiu.Licenta.entity.Brand;
-import com.StefanSergiu.Licenta.entity.Favorite;
-import com.StefanSergiu.Licenta.entity.Product;
-import com.StefanSergiu.Licenta.entity.UserInfo;
+import com.StefanSergiu.Licenta.entity.*;
 import com.StefanSergiu.Licenta.repository.ProductRepository;
 import com.StefanSergiu.Licenta.service.FavoriteService;
 import com.StefanSergiu.Licenta.service.FileStore;
@@ -59,6 +56,8 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
+
+
     @PostMapping("/admin/add")
     public ResponseEntity<?> addProduct(@RequestBody final CreateNewProductModel createNewProductModel){
         try{
@@ -72,6 +71,7 @@ public class ProductController {
         }
     }
 
+
     @PreAuthorize("permitAll()")
     @GetMapping
     public ResponseEntity<Page<ProductCardDto>> getproducts(@RequestParam(name = "name", required = false) String name,
@@ -83,9 +83,9 @@ public class ProductController {
                                                             @RequestParam(name = "maxPrice", required = false) Float maxPrice,
                                                             @RequestParam(name = "type_name", required = false) String type_name,
                                                             @RequestParam(name = "attributes", required = false) String attributesParam,
-                                                            @RequestParam(name="pageNumber", defaultValue = "0") int pageNumber,
+                                                            @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
                                                             @RequestParam(name = "sizes", required = false) String sizes,
-                                                            @RequestParam(name = "size", defaultValue = "12") int size){
+                                                            @RequestParam(name = "size", defaultValue = "16") int size){
 
         // Parse attributes parameter into a Map<String, String>
         Map<String, String> attributes = new HashMap<>();
@@ -104,7 +104,7 @@ public class ProductController {
 
         Page<ProductCardDto> productsPage = productService.getAllProducts(request, pageable);
 
-        CacheControl cacheControl = CacheControl.maxAge(20, TimeUnit.SECONDS);
+        CacheControl cacheControl = CacheControl.maxAge(1, TimeUnit.MINUTES);
         return ResponseEntity.ok().cacheControl(cacheControl).body(productsPage);
     }
     @PreAuthorize("permitAll()")

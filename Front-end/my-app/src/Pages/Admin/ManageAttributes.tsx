@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "../../Styles/ManageAttributes.css";
 import { Type } from "../../Types/Type.types";
-import { addAttribute, addSize, deleteAttribute, editAttribute, fetchTypes } from "../../api/api";
+import { addAttribute, addSize, deleteAttribute, deleteSize, editAttribute, fetchTypes } from "../../api/api";
 import { IconContext } from "react-icons";
 import { Button, FloatingLabel, Form } from "react-bootstrap";
 import { MdOutlineModeEdit } from "react-icons/md";
@@ -39,6 +39,11 @@ const ManageAttributes = ()=>{
     const handleDelete=(attributeId:number)=>{
         deleteAttribute(attributeId).then((data)=>
         setAttributes((prev)=>prev.filter((attr:Attribute)=> attr.id !== data.id)));
+    }
+    
+    const handleDeleteSize=(sizeId:number)=>{
+        deleteSize(sizeId).then((data)=>
+        setSizes((prev)=>prev.filter((size:Size)=> size.id !=data.id)));
     }
 
     const handleEditAttribute = (event:any)=>{
@@ -147,7 +152,7 @@ const ManageAttributes = ()=>{
                 <td>
                 <div className="actions">
                 <IconContext.Provider  value={{size: '30px'}}>
-                    <Button  variant="danger" onClick={()=>handleDelete(size.id)}>Delete</Button>
+                    <Button  variant="danger" onClick={()=>handleDeleteSize(size.id)}>Delete</Button>
 
                 </IconContext.Provider>
                 </div>

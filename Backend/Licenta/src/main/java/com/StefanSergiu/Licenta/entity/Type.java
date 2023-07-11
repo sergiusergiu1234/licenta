@@ -35,4 +35,6 @@ public class Type {
     public void addSize(Size size){sizes.add(size);}
     public void addAttribute(Attribute attribute){attributes.add(attribute);}
     public void removeAttribute(Attribute attribute){attributes.remove(attribute);}
+
+
 }

@@ -35,6 +35,12 @@ public class ProductAttributeController {
         return new ResponseEntity<>(ProductAttributeDto.from(productAttribute),HttpStatus.OK);
     }
 
+    @PutMapping("admin/edit")
+    public ResponseEntity<ProductAttributeDto> editProductAttribute(@RequestBody final CreateProductAttributeModel createProductAttributeModel){
+        ProductAttribute productAttribute = productAttributeService.editProductAttribute(createProductAttributeModel);
+        return new ResponseEntity<>(ProductAttributeDto.from(productAttribute), HttpStatus.OK);
+    }
+
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @DeleteMapping("admin/delete/{productId}&{attributeId}")
     public ResponseEntity<ProductAttributeDto> deleteProductAttribute(@PathVariable final Long productId, @PathVariable final Long attributeId){

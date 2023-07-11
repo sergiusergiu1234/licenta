@@ -66,8 +66,6 @@ public class TypeController {
             List<String> attributeValuesList = Arrays.asList(((String) attributeValue.get("attributeValues")).split(","));
             typeDto.getAttributeValues().put(attributeName, attributeValuesList);
         }
-
-
         return new ResponseEntity<>(typeDto, HttpStatus.OK);
     }
 
@@ -83,5 +81,11 @@ public class TypeController {
     public ResponseEntity<TypeDto> editType(@PathVariable final Long id, @RequestBody PlainTypeDto plainTypeDto){
         Type type = typeService.editType(id,plainTypeDto);
         return new ResponseEntity<>(TypeDto.from(type), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/admin/get/c={categoryName}")
+    public ResponseEntity<TypeDto> getByCategory(@PathVariable final String categoryName){
+        Type type = typeService.getTypeByCategory(categoryName);
+        return new ResponseEntity<>(TypeDto.from(type),HttpStatus.OK);
     }
 }

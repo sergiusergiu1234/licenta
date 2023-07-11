@@ -4,7 +4,17 @@
 }
 .image-container{
     min-width: 25%;
+    max-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+.image-container img {
+
+    max-height: 100%;
+    object-fit: contain;
+
+  }
 .product-buttons{
     display: flex;
     flex-direction: row;
@@ -98,7 +108,7 @@ td{
     border: 2px solid black;
     color: black;
     transition: all 0.3s ease;
-    min-width: 15%;
+  
 
   }
 
@@ -114,4 +124,7 @@ td{
   }
   .not-selected-size:hover {
     background-color: black;
+  }
+  .productDetails {
+    min-width: 70vw;
   }

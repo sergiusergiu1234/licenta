@@ -15,12 +15,13 @@ import java.util.stream.Collectors;
 public class CategoryDto {
     private Long id;
     private String name;
+    private String typeName;
 
     public static CategoryDto from(Category category){
         CategoryDto categoryDto = new CategoryDto();
         categoryDto.setId(category.getId());
         categoryDto.setName(category.getName());
-
+        categoryDto.setTypeName(category.getType().getName());
         return categoryDto;
     }
 }

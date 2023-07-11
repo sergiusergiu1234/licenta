@@ -20,6 +20,4 @@ public class Size {
     @ManyToOne
     @JoinColumn(name = "type_id",nullable = false)
     private Type type;
-
-
 }

@@ -2,6 +2,7 @@ package com.StefanSergiu.Licenta.controller;
 
 import com.StefanSergiu.Licenta.config.AuthRequest;
 import com.StefanSergiu.Licenta.dto.user.AuthResponse;
+import com.StefanSergiu.Licenta.dto.user.EditDataDto;
 import com.StefanSergiu.Licenta.dto.user.UserDto;
 import com.StefanSergiu.Licenta.entity.UserInfo;
 import com.StefanSergiu.Licenta.service.JwtService;
@@ -80,11 +81,11 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @PutMapping("/me/edit/password")
-    public String editPassword(@RequestBody String password){
+    public String editPassword(@RequestBody EditDataDto text){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username =  authentication.getName();    //get users name
         UserInfo user = userService.getLoggedInUser(username); //get userInfo object based on logged-in user's username
-        String message = userService.editUserPassword(user, password);
+        String message = userService.editUserPassword(user, text.getUpdateText());
         return message;
     }
 

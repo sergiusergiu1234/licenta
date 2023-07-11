@@ -9,12 +9,14 @@ import com.StefanSergiu.Licenta.service.SizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/size")
 @CrossOrigin(origins = "http://localhost:3000")
 public class SizeController {
+
 
     @Autowired
     SizeService sizeService;
@@ -25,4 +27,13 @@ public class SizeController {
         Size size =   sizeService.addSize(sizeDto);
         return new ResponseEntity<>(SizeDto.from(size), HttpStatus.OK);
     }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @DeleteMapping("admin/delete/{id}")
+    public ResponseEntity<SizeDto> deleteSize(@PathVariable final Long id){
+        Size size = sizeService.deleteSize(id);
+        return new ResponseEntity<>(SizeDto.from(size), HttpStatus.OK);
+    }
+
+
 }

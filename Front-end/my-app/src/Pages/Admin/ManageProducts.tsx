@@ -17,13 +17,17 @@ import { Attribute } from "../../Types/Attribute.types";
 import { Type } from "../../Types/Type.types";
 import {
   deleteProduct,
+  editAttribute,
   fetchBrands,
   fetchGenders,
+  fetchType,
   fetchTypes,
 } from "../../api/api";
 import "../../Styles/ManageProducts.css";
 import { error } from "console";
 import AuthContext from "../../context/AuthProvider";
+import { Entryes } from "../../Types/Entryes.types";
+
 
 const ManageProducts = () => {
   const [showSuccess, setShowSuccess] = useState(false);
@@ -35,7 +39,7 @@ const ManageProducts = () => {
   const [productName, setProductName] = useState("");
 
   const [price, setPrice] = useState("");
-
+  const [stock,setStock]= useState("");
   const [description, setDescription] = useState("");
 
   const [types, setTypes] = useState<Type[]>([]);
@@ -51,38 +55,44 @@ const ManageProducts = () => {
   const [selectedGender, setSelectedGender] = useState("");
 
   const [attributes, setAttributes] = useState<Attribute[]>([]);
-
+  const [selectedAttribute,setSelectedAttribute] = useState<Attribute | null>(null);
   const [attributeValues, setAttributeValues] = useState<string[]>([]);
 
-  const [size, setSize] = useState<string>("");
+  const [attributeEntries,setAttributeEntries] = useState<Entryes[]>();
 
+  const [size, setSize] = useState<string>("");
+  const [editedTypeName,setEditedTypeName] = useState("");
+  //get products from db and set field states
   const fetchProducts = () => {
-   
     if(auth.accessToken){
- 
       fetch(`http://localhost:8080/products/${localStorage.getItem("selectedName")}`)
       .then((response) => response.json())
       .then((data) => {
-        setProductId(data.at(0).id)
-        setProductName(data.at(0).name)
-        setPrice(data.at(0).price)
-        setSize(data.at(0).size)
-        setDescription(data.at(0).description)
-        setSelectedGender(data.at(0).gender.name)
-        setSelectedCategory(data.at(0).category.name)
-        setSelectedBrand(data.at(0).brand.name)
+       let selectedIndex = localStorage.getItem("at");
+        setProductId(data.at(selectedIndex).id)
+        setProductName(data.at(selectedIndex).name)
+        setPrice(data.at(selectedIndex).price)
+        setSize(data.at(selectedIndex).size)
+        setDescription(data.at(selectedIndex).description)
+        setSelectedGender(data.at(selectedIndex).gender.name)
+        setSelectedCategory(data.at(selectedIndex).category.name)
+        setSelectedBrand(data.at(selectedIndex).brand.name)
+        setEditedTypeName(data.at(selectedIndex).category.typeName)
+        setAttributeEntries(data.at(selectedIndex).attributes)
         localStorage.removeItem("selectedName")
       })
       .catch((error) => console.log(error));
     }
-  
   };
-
+  
+  //on attribute field state set the value with the corresponding index
   const handleAttributeValueChange = (index: number, value: string) => {
     const updatedAttributeValues = [...attributeValues];
     updatedAttributeValues[index] = value;
     setAttributeValues(updatedAttributeValues);
   };
+
+
 
   useEffect(() => {
     fetchTypes().then((data) => setTypes(data));
@@ -92,6 +102,20 @@ const ManageProducts = () => {
         fetchProducts();
     }
   }, []);
+
+  useEffect(()=>{
+
+    const matchingType = types.find((type) => editedTypeName === type.name);
+    setSelectedType(matchingType || null);
+  },[types])
+
+  useEffect(() => {
+    if (attributeEntries) {
+      const updatedAttributeValues = attributeEntries.map((entry) => entry.value);
+      setAttributeValues(updatedAttributeValues);
+    }
+  }, [attributeEntries]);
+  
 
   const handleSubmit1 = async (event: any) => {
     event.preventDefault();
@@ -103,6 +127,7 @@ const ManageProducts = () => {
       price: price,
       description: description,
       size: size,
+      stock:stock
     };
     const token = localStorage.getItem("accessToken");
 
@@ -113,7 +138,8 @@ const ManageProducts = () => {
       selectedGender != "" &&
       selectedCategory != "" &&
       description != "" &&
-      size != ""
+      size != "" &&
+      stock != ""
     ) {
       if (selectedFile) {
         const createProductReponse = await fetch(
@@ -173,6 +199,8 @@ const ManageProducts = () => {
     }
   };
 
+
+
   useEffect(() => {
     if (showSuccess) {
       const timer1 = setTimeout(() => {
@@ -196,6 +224,12 @@ const ManageProducts = () => {
         };
       }
   },[showFail]);
+  
+
+
+
+
+
 
   const handleSubmit2 = async (event: any) => {
     event.preventDefault();
@@ -228,7 +262,35 @@ const ManageProducts = () => {
       }
     });
   };
+  const handleEdit =()=>{
+        selectedType?.attributeDtoList.forEach(async (attribute, index) => {
+      const attributeRequest = {
+        productId: productId,
+        attributeId: attribute.id,
+        value: attributeValues[index],
+      };
 
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        "http://localhost:8080/productAttributes/admin/edit",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(attributeRequest),
+        }
+      );
+      if (response.ok) {
+        setErrorMessage("Product attributes uploaded succesfully!");
+        setShowSuccess(true);
+      } else {
+        setErrorMessage(await response.text());
+        setShowFail(true);
+      }
+    });
+  }
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
     console.log(file);
@@ -240,6 +302,7 @@ const ManageProducts = () => {
     }
   };
 
+
   const { auth, setAuth } = useContext(AuthContext);
   const handleLogout = () => {
     setAuth({
@@ -250,6 +313,7 @@ const ManageProducts = () => {
     window.localStorage.clear();
     window.location.reload();
   };
+
 
   return (
     <div className="manageProducts-page">
@@ -284,7 +348,7 @@ const ManageProducts = () => {
             <Form.Control
               placeholder="Product name"
               type="text"
-              id="username"
+            
               onChange={(e) => setProductName(e.target.value)}
               value={productName}
               required
@@ -295,7 +359,7 @@ const ManageProducts = () => {
             <Form.Control
               placeholder="Product size"
               type="text"
-              id="username"
+              
               onChange={(e) => setSize(e.currentTarget.value)}
               value={size}
               required
@@ -310,6 +374,17 @@ const ManageProducts = () => {
               pattern="[0-9]*"
               onChange={(e) => setPrice(e.currentTarget.value)}
               value={price}
+            />
+          </FloatingLabel>
+
+          <FloatingLabel label="Stock">
+            <Form.Control
+              placeholder="Stock"
+              id="stock"
+              type="number"
+              pattern="[0-9]*"
+              onChange={(e) => setStock(e.currentTarget.value)}
+              value={stock}
             />
           </FloatingLabel>
 
@@ -433,17 +508,25 @@ const ManageProducts = () => {
             />
           </FloatingLabel>
 
+    
           {selectedType?.attributeDtoList.map(
+      /* for each attribute of the selected type (based on the index in the array)
+            eg: 1.Bend , 2.Shape, 3.Color 
+      */
             (attribute: Attribute, index: number) => (
               <FloatingLabel label={attribute.name}>
                 <Form.Control
                   placeholder={attribute.name}
                   id={attribute.name}
                   type="text"
-                  onChange={(e) =>
+                  key={attribute.id}
+                  onChange={(e) =>{
                     handleAttributeValueChange(index, e.currentTarget.value)
+                    console.log(index + " " + e.currentTarget.value)
                   }
-                  value={attributeValues[index] || ""}
+
+                  }
+                  value={attributeValues[index] }
                 />
               </FloatingLabel>
             )
@@ -467,9 +550,14 @@ const ManageProducts = () => {
               </Dropdown.Item>
             ))}
           </DropdownButton>
-
+                <br/>
           <Button variant="success" type="submit">
             Add product attribute
+          </Button>
+          <Button variant="warning"
+                onClick={()=>handleEdit()}
+                >
+            Edit attributes
           </Button>
         </form>
       </section>
@@ -491,6 +579,9 @@ const ManageProducts = () => {
           Delete product
         </Button>
       </section>
+
+
+    
     </div>
   );
 };

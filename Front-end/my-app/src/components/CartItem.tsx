@@ -30,7 +30,8 @@ const CartItem =({item,addToCart,removeFromCart}:Props)=>{
         gender:{id:item.product.gender.id,
                 name:item.product.gender.name},
         category:{id:item.product.category.id,
-                name:item.product.category.name},
+                name:item.product.category.name,
+                typeName:item.product.category.typeName},
         image:item.productImage,
         description:item.product.description,
         isFavorite:item.product.isFavorite,
@@ -59,7 +60,8 @@ const CartItem =({item,addToCart,removeFromCart}:Props)=>{
         },
         category: {
           id: item.product.category.id,
-          name: item.product.category.name
+          name: item.product.category.name,
+          typeName: item.product.category.typeName
         },
         image: item.productImage,
         description: item.product.description,
