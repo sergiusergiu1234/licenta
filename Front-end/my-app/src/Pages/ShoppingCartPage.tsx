@@ -89,7 +89,10 @@ const ShoppingCartPage =()=>{
         console.log(order)
         navigate("/OrderDetails");
     }
-
+    useEffect(() => {
+        const allItemsValid = cartItems.every((cartItem) => cartItem.quantity <= cartItem.product.stock);
+        setIsValid(allItemsValid);
+      }, [cartItems]);
     return(<div className="cartPage">
             <h1>Shopping cart</h1>
          <div className="cartContent">
@@ -97,7 +100,8 @@ const ShoppingCartPage =()=>{
             {cartItems.map((cart:CartItemType)=>(
                 <CartItem key={cart.productId} item={cart} addToCart={handleAddToCart}
                 removeFromCart={handleRemoveFromCart}
-                setIsValid={setIsValid}/>
+                setIsValid={setIsValid}
+                isValid={isValid}/>
             ))}
             </div>
             <div className="sumar-comanda">

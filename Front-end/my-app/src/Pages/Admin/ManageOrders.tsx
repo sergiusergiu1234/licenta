@@ -58,15 +58,23 @@ const ManageOrders = () => {
             </Accordion.Header>
             <Accordion.Body>
               <div className="manage-order-actions">
-                <Button variant="info" onClick={()=>handleUpdate(order.id,"Accepted")}>Set Accepted</Button>
-                <Button variant="danger" onClick={()=>handleUpdate(order.id,"Declined")}>Set Declined</Button>
-                <Button variant="success" onClick={()=>handleUpdate(order.id,"Delivered")}>Set Delivered</Button>
+                {(order.status === "pending")  && 
+                <> 
+                  <Button variant="info" onClick={()=>handleUpdate(order.id,"Accepted")}>Set Accepted</Button>
+                  <Button variant="danger" onClick={()=>handleUpdate(order.id,"Declined")}>Set Declined</Button>
+                </>}
+
+                {(order.status === "Accepted") && <>
+                  <Button variant="danger" onClick={()=>handleUpdate(order.id,"Declined")}>Set Declined</Button>
+                  <Button variant="success" onClick={()=>handleUpdate(order.id,"Delivered")}>Set Delivered</Button>
+                </>}
+
               </div>
               {order.orderDetails && order.orderDetails.length > 0 ? (
                 <Table variant="light">
                   <thead>
                     <tr key={order.id+"b"}>
-                      <th>Product name</th>
+                      <th>Product</th>
                       <th>Quantity</th>
                       <th>Price</th>
                       <th>Ordered at</th>
@@ -76,7 +84,7 @@ const ManageOrders = () => {
                   </thead>
                   <tbody>
                     {order.orderDetails.map((detail: OrderDetail) => (
-                      <tr key={detail.productName}>
+                      <tr key={`${detail.productName} - ${detail.size}`}>
                         <td>{detail.productName}</td>
                         <td>{detail.quantity}</td>
                         <td>{detail.price} RON</td>

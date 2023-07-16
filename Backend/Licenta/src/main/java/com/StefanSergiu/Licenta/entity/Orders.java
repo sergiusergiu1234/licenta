@@ -30,7 +30,7 @@ public class Orders{
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<OrderDetail> orderDetails = new ArrayList<>();
 
-    //TODO: address entity + payment entity
+
     private String deliveryAddress;
     private String paymentMethod;
     private String billingName;

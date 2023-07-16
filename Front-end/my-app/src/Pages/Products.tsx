@@ -12,6 +12,7 @@ const HomePage = () => {
   const [activePage, setActivePage] = useState(1);
   const [totalPages,setTotalPages] = useState(2);
   const [products, setProducts] = useState<ProductType[]>([]);
+  let tp = localStorage.getItem("f");
   const [filter,setFilter] = useState({
     name: '',
     brands:'',
@@ -19,7 +20,7 @@ const HomePage = () => {
     category_name: '',
     minPrice:'',
     maxPrice:'',
-    type_name:"",
+    type_name:tp ? tp  : "" ,
     attributes:"",
     sizes:""
   })
@@ -59,8 +60,10 @@ const HomePage = () => {
 
   useEffect(()=>{
     fetchProducts();
+  
   },[filter,activePage]);
-
+  
+ 
   const handleSearch =(productName:string,
                        brands:string[], 
                        genderName:string,

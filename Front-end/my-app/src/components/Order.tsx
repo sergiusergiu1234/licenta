@@ -31,13 +31,17 @@ const Order = ({order}:Props)=>{
                     <tbody>
             {order.orderDetails.map((detail: OrderDetail) => (
                     <tr>
-                        <td>{detail.productName}</td>
+                        <td>{detail.productName} {detail.size}</td>
                         <td>{detail.quantity}</td>
                         <td>{detail.price} RON</td>
                         <td>{order.generationDateTime}</td>
                     </tr>
             ))}
             </tbody>
+            <label className="bold">Total: {order.total} RON</label>
+            <br/>
+            <label>{`Paid with ` + " " + order.paymentMethod} </label>
+        
             </Table>
           ) : (
             <p>No order details found.</p>

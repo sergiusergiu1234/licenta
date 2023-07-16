@@ -108,7 +108,7 @@
     position: relative;
     width: 100%;
     height: 6vh;
-    background: linear-gradient(45deg, white 50%, black 50%);
+    background: linear-gradient(45deg, white 51%, black 50%);
   }
   
   .ribbon::before {
@@ -118,7 +118,7 @@
     left: 0;
     width: 100%;
     height: 2vh;
-    background: linear-gradient(45deg, black 50%, white 50%);
+    background: linear-gradient(45deg, black 51%, white 50%);
   }
   
   .ribbon::after {
@@ -131,3 +131,51 @@
     background: linear-gradient(45deg,black 50% , white 50%);
   }
   
+  .gif-cont{
+    width: '100%';
+     
+  }
+
+  .text1 {
+    position: absolute;
+    top: 50%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .text2 {
+    position: absolute;
+    top: 50%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
+  }
+.text1 :hover,
+.text2 :hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+  .overlay-text{
+    font-family: 'Orbitron', sans-serif;
+    font-size: 7vh;
+    color: black;
+  }
+
+ .sepparator{
+  position: absolute;
+  left: 49.5%;
+
+  width: 2vw;
+  height: 100%;
+  background-image: linear-gradient(to left, white 50%, black 50%);
+  background-repeat: no-repeat;
+ }
+ .halfs-container{
+  display: flex;
+  flex-direction: row;
+ }

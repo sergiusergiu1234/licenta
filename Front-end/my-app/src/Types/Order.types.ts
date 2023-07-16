@@ -9,5 +9,5 @@ export type OrderType ={
     status:string,
     total:number,
     generationDateTime: string,
-
+    paymentMethod:string;
 }

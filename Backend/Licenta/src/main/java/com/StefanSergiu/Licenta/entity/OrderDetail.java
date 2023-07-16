@@ -22,4 +22,5 @@ public class OrderDetail {
 
     private Long quantity;
     private Float price;
+    private String size;
 }

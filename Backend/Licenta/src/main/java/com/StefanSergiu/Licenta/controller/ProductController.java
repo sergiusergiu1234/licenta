@@ -85,7 +85,7 @@ public class ProductController {
                                                             @RequestParam(name = "attributes", required = false) String attributesParam,
                                                             @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
                                                             @RequestParam(name = "sizes", required = false) String sizes,
-                                                            @RequestParam(name = "size", defaultValue = "16") int size){
+                                                            @RequestParam(name = "size", defaultValue = "12") int size){
 
         // Parse attributes parameter into a Map<String, String>
         Map<String, String> attributes = new HashMap<>();
@@ -209,7 +209,47 @@ public class ProductController {
     }
 
 
+    @PutMapping(value = "/admin/edit-image/{id}")
+    public ResponseEntity<String> editProductImage(@PathVariable Long id, @RequestParam("file")MultipartFile file){
 
+
+        Product product = productService.getProduct(id);
+        if (product == null) {
+            return new ResponseEntity<>("Product not found!", HttpStatus.NOT_FOUND);
+        }
+
+        //Check if the file is an image
+        if (!Arrays.asList(IMAGE_PNG.getMimeType(),
+                IMAGE_BMP.getMimeType(),
+                IMAGE_GIF.getMimeType(),
+                IMAGE_JPEG.getMimeType()).contains(file.getContentType())) {
+            throw new IllegalStateException("FIle uploaded is not an image");
+        }
+
+        //get file metadata
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("Content-Type", file.getContentType());
+        metadata.put("Content-Length", String.valueOf(file.getSize()));
+        //Save Image in S3
+        String path = String.format("%s/images/%s", BucketName.PRODUCT_IMAGE.getBucketName(), UUID.randomUUID());
+        String fileName = String.format("%s", file.getOriginalFilename());
+
+        try {
+            fileStore.upload(path, fileName, Optional.of(metadata), file.getInputStream());
+
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to upload file", e);
+        }
+
+        List<Product> products = productRepository.findAllByName(product.getName());
+        for (Product p : products){
+            //set the image to the product
+            productService.updateProductImage(p.getId(), path,fileName);
+        }
+
+
+        return ResponseEntity.status(HttpStatus.OK).body("Image edited succesfully");
+    }
 
 
 }

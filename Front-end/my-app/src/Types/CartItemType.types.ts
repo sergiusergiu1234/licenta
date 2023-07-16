@@ -8,4 +8,5 @@ export type CartItemType={
     quantity:number;
     product:ProductType;
     stock:number;
+    size:string
 }

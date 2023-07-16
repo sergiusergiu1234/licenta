@@ -302,6 +302,31 @@ const ManageProducts = () => {
     }
   };
 
+  const modifyImage = async (productId: number)=>{
+    if (selectedFile != null) {
+      console.log(productId);
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        `http://localhost:8080/products/admin/edit-image/${productId}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
+      if (response.ok) {
+        console.log("Image updated succesfully!");
+        setShowSuccess(true);
+      } else {
+        console.log(response);
+        setShowFail(true);
+      }
+    }
+  }
 
   const { auth, setAuth } = useContext(AuthContext);
   const handleLogout = () => {
@@ -490,6 +515,10 @@ const ManageProducts = () => {
 
           <Button variant="success" type="submit">
             Add product
+          </Button>
+
+          <Button variant="warning" onClick={()=>modifyImage(productId!)}>
+            Edit image
           </Button>
         </form>
       </section>

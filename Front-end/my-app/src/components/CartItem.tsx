@@ -1,7 +1,7 @@
 import { IconContext } from "react-icons";
 import {HiOutlineMinusCircle, HiOutlinePlusCircle} from "react-icons/hi"
 import { CartItemType } from "../Types/CartItemType.types";
-import { Card } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 
 import { useEffect, useState } from "react";
@@ -12,9 +12,10 @@ interface Props {
    addToCart: (item: CartItemType) => void;
    removeFromCart: (item: CartItemType) => void;
    setIsValid: React.Dispatch<React.SetStateAction<boolean>>;
+   isValid: boolean;
 }
 
-const CartItem =({item,addToCart,removeFromCart, setIsValid}:Props)=>{
+const CartItem =({item,addToCart,removeFromCart, setIsValid,isValid}:Props)=>{
 
 
   const [cartItem, setCartItem] = useState<CartItemType>({
@@ -44,8 +45,11 @@ const CartItem =({item,addToCart,removeFromCart, setIsValid}:Props)=>{
       description: item.product.description,
       isFavorite: item.product.isFavorite,
       attributes: item.product.attributes,
-      stock: item.product.stock
-    },stock:item.stock
+      stock: item.product.stock,
+      size:item.product.size
+    },
+    stock:item.stock,
+    size:item.product.size
   });
 
   useEffect(() => {
@@ -76,24 +80,36 @@ const CartItem =({item,addToCart,removeFromCart, setIsValid}:Props)=>{
         description: item.product.description,
         isFavorite: item.product.isFavorite,
         attributes: item.product.attributes,
-        stock: item.product.stock
+        stock: item.product.stock,
+        size:item.product.size
       },stock:item.stock
+      ,size:item.product.size
     });
   }, [item]);
 
+  
   useEffect(() => {
-    setIsValid(item.quantity <= item.product.stock); // Update the isValid state within the CartItem component
-  }, [item.quantity]);
+    setCartItem(item);
+  }, [item]);
 
+  useEffect(() => {
+    setIsValid((prevIsValid) => prevIsValid && cartItem.quantity <= cartItem.product.stock);
+  }, [cartItem.quantity, cartItem.product.stock, setIsValid]);
+
+  useEffect(() => {
+    setIsValid((prevIsValid) => prevIsValid && cartItem.quantity <= cartItem.product.stock);
+  }, []);
 
   return (
     <Card className="cartItem">
       <CardHeader as="h5">{cartItem.productName}</CardHeader>
       <Card.Body >
             <div className="cart-attributes">
-              
+    
               <label  className="attribute_name">{item.product.brand.name} - {item.product.category.name} - {item.product.category.typeName}</label>
                 <hr/>
+                <label className="attribute_name">Size: </label>
+              <label className="value">{item.product.size}</label>
                 <div className="attr">
                 {item.product.attributes.map((attribute)=>(
                   <div>
@@ -113,10 +129,11 @@ const CartItem =({item,addToCart,removeFromCart, setIsValid}:Props)=>{
                 <label className="attribute_name">Price: {cartItem.price}</label>
           </div>
           <div className="shoppingCart-buttons">
-          <button className="addToCart" onClick={()=> cartItem.quantity !== cartItem.product.stock ? 
+          <Button className="addToCart" 
+                  disabled={cartItem.quantity >= cartItem.product.stock} onClick={()=>  cartItem.quantity !== cartItem.product.stock ? 
               addToCart(item) : alert(`Only ${cartItem.product.stock} left in stock!`)}>
             <HiOutlinePlusCircle />
-          </button>
+          </Button>
           <button className="removeFromCart" onClick={()=>
              removeFromCart(item) }>
             <HiOutlineMinusCircle />

@@ -2,13 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import "../Styles/FilterBar.css";
 import { AttributeValues, Type } from "../Types/Type.types";
 import { Category } from "../Types/Category.types";
-import { Accordion, Button, Dropdown, DropdownButton, Form, FormCheck, InputGroup } from "react-bootstrap";
+import { Accordion, AccordionButton, Button, Dropdown, DropdownButton, Form, FormCheck, InputGroup } from "react-bootstrap";
 import { Gender } from "../Types/Gender.type";
 import { Brand } from "../Types/Brand.types";
 import { Attribute } from "../Types/Attribute.types";
 import { fetchBrands, fetchGenders, fetchTypes } from "../api/api";
 import { ToggleButton } from 'primereact/togglebutton';
 import { Size } from "../Types/Size.types";
+import AccordionHeader from "react-bootstrap/esm/AccordionHeader";
+import AccordionItem from "react-bootstrap/esm/AccordionItem";
+import AccordionBody from "react-bootstrap/esm/AccordionBody";
 
 const FilterBar = ({ onSearch }: any) => {
   const [productName, setProductName] = useState("");
@@ -36,7 +39,7 @@ const FilterBar = ({ onSearch }: any) => {
 
   const [sizes,setSizes] = useState<Size[]>([]);
   const [selectedSizes,setSelectedSizes]=useState<string[]>([])
-
+  let tp = localStorage.getItem("f");
   const handleSearch = () => {
     const attributeString = mapToString(selectedValues);
     onSearch(
@@ -69,6 +72,7 @@ const FilterBar = ({ onSearch }: any) => {
   };
 
   useEffect(() => {
+    
     fetchTypes().then(data => setTypes(data));
     fetchGenders().then(data => setGenders(data));
     fetchBrands().then(data => setBrands(data));
@@ -79,6 +83,18 @@ const FilterBar = ({ onSearch }: any) => {
       setSelectedValues(new Map());
   },[selectedType]);
 
+  useEffect(() => {
+    const matchedType = types.find(type => type.name === tp);
+    if (matchedType) {
+      setSelectedType(matchedType);
+      setTypeName(matchedType.name);
+      setCategories(matchedType.categoryDtoList);
+      setSelectedType(matchedType);
+      setPossibleValues(matchedType.attributeValues);
+      setSizes(matchedType.sizeDtoList);
+      localStorage.removeItem("f")
+    }
+  }, [types]);
 
   const handleBrandChange = (event: React.ChangeEvent<HTMLInputElement>) =>{
       const {value, checked} = event.target;
@@ -139,46 +155,52 @@ const FilterBar = ({ onSearch }: any) => {
 
   return (
     <div className="containe">
-       
-      <h3 className="fbh3">EQUIPMENT TYPE</h3>
-      <DropdownButton 
-        id="dropdown-item-button"
-        title={selectedType?.name ? selectedType.name : "Select type"}
-        size='sm'
-        variant="light"
-      >
-        <Dropdown.ItemText>Pick equipment type</Dropdown.ItemText>
-        {types.map((type) => (
-          <Dropdown.Item
-            className="picker"
-            as="button"
-            key={type.id}
-            onClick={() => {
-              setTypeName(type.name);
-              setCategories(type.categoryDtoList);
-              setSelectedType(type);
-              setPossibleValues(type.attributeValues);
-              setSizes(type.sizeDtoList);
-            }}
-          >
-            {type.name}
-          </Dropdown.Item>
-        ))}
-      </DropdownButton>
+       <Button variant="primary" onClick={()=>{handleSearch();}}>
+        Search
+      </Button>
+      <Button variant="danger" onClick={handleReset}>
+        Reset
+      </Button>
+         <Accordion defaultActiveKey="1">
+          <AccordionButton className="accordion-item bg-transparent">
+            Equipment type
+          </AccordionButton>
+          <AccordionBody  className="filter-accordion">
+          {types.map((type) => (
+            <div className="buttons">
+                  <Button
+              className={selectedType === type ? "sselected " : "notselected"}
+              key={type.id}
+              onClick={() => {
+                setTypeName(type.name);
+                setCategories(type.categoryDtoList);
+                setSelectedType(type);
+                setPossibleValues(type.attributeValues);
+                setSizes(type.sizeDtoList);
+              }}
+            >
+              {type.name}
+            </Button>
 
-      
-      <h3 className="fbh3">CATEGORY</h3>
+            </div>
+          
+          ))}
+          <hr/>
+          </AccordionBody>
+        </Accordion>
+  
+    
+
       {categories.length ? (
-        <DropdownButton className="de"
-          id="dropdown-item-button"
-          title={selectedCategory ? selectedCategory : 'Select category'}
-          size='sm'
-          variant="light"
-        >
-          <Dropdown.ItemText>Pick equipment category</Dropdown.ItemText>
+        <Accordion defaultActiveKey="1">
+          <AccordionButton className="accordion-item bg-transparent">
+            Category
+          </AccordionButton>
+          <AccordionBody  className="filter-accordion">
           {categories.map((category) => (
-            <Dropdown.Item
-              as="button"
+            <div className="buttons">
+                            <Button
+              className={selectedCategory === category.name ? "sselected " : "notselected"}
               key={category.id}
               onClick={() => {
                 setCategoryName(category.name);
@@ -186,37 +208,41 @@ const FilterBar = ({ onSearch }: any) => {
               }}
             >
               {category.name}
-            </Dropdown.Item>
+            </Button>
+
+            </div>
+
           ))}
-        </DropdownButton>
+         
+          </AccordionBody>
+        </Accordion>
       ) : (
         <p>No category selected. Pick a type first.</p>
       )}
-
-      <br />
-
-      <h3 className="fbh3">Sizes</h3>
-      <Accordion defaultActiveKey="1" className="filter-accordion">
-        <Accordion.Item eventKey="0">
-          <Accordion.Header className="filter-accordion">
-            Product size
-          </Accordion.Header>
-          <Accordion.Body className="filter-accordion">
+     
+   
+      <Accordion defaultActiveKey="1">
+          <AccordionButton className="accordion-item bg-transparent">
+          Product size
+          </AccordionButton>
+          <AccordionBody>
           {sizes.length?(<>
         {sizes.map((size)=>(
-          <Button key={size.id}
+          <Button
+                   key={size.id}
                   className={selectedSizes.includes(size.value) ? "sselected" : "notselected" }
+              
                   onClick={()=>handleSizesChange(size.value)}>{size.value}</Button>
         ))}
       </>) : (
         <p>Pick a type first.</p>
       )}
-          </Accordion.Body>
-        </Accordion.Item>
+          </AccordionBody>
       </Accordion>
+      <br/>
      
       
-      <h3 className="fbh3">Attributes</h3>
+      
       {
         possibleValues != null ? 
       <>
@@ -225,10 +251,10 @@ const FilterBar = ({ onSearch }: any) => {
         {Object.entries(possibleValues).map(([attributeName, attributeValues])=>(
           <div key={attributeName}>
              <Accordion>
-        <Accordion.Item eventKey="0"  className="accordion-header">
-          <Accordion.Header  style={{ backgroundColor: "#333", color: "#fff" }}>
+       
+          <AccordionButton className="accordion-item bg-transparent">
           {attributeName}
-          </Accordion.Header>
+          </AccordionButton>
           <Accordion.Body className="filter-accordion">
           <div className="buttons">
             {attributeValues && attributeValues
@@ -246,15 +272,15 @@ const FilterBar = ({ onSearch }: any) => {
             ))}
           </div>
           </Accordion.Body>
-        </Accordion.Item>
       </Accordion>
+      <br/>
          
         </div>
         ))
         }
       </>
       :
-     <p>Select equipment type</p> 
+     <></>
     }
      
       <br />
@@ -319,13 +345,9 @@ const FilterBar = ({ onSearch }: any) => {
       />
       <br />
       <br />
-      <Button variant="primary" onClick={()=>{handleSearch();}}>
-        Search
-      </Button>
-      <Button variant="danger" onClick={handleReset}>
-        Reset
-      </Button>
-    </div>
+     
+
+</div>
   );
 };
 

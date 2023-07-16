@@ -28,7 +28,7 @@ public class ProductSpecification {
             Join<Category,Type> typeJoin = categoryJoin.join("type");
 
             predicates.add(criteriaBuilder.like(criteriaBuilder.lower(typeJoin.get("name")),
-                     "%" + request.getType_name().toLowerCase() + "%"));
+                       request.getType_name()));
         }
 
         // filter by attribute name and value
@@ -91,7 +91,7 @@ public class ProductSpecification {
         if (request.getCategory_name() != null && !request.getCategory_name().isEmpty()) {
             Join<Product, Category> categoryJoin = root.join("category");
             predicates.add(criteriaBuilder.like(criteriaBuilder.lower(categoryJoin.get("name")),
-                    "%" + request.getCategory_name().toLowerCase() + "%"));
+                     request.getCategory_name().toLowerCase()));
         }
         if (request.getPrice() != null) {
             predicates.add(criteriaBuilder.equal(root.get("price"), request.getPrice()));
@@ -117,29 +117,4 @@ public class ProductSpecification {
 }
 }
 
-////this whole predicate creates this query example
-//SELECT *
-//        FROM product
-//        JOIN category ON product.category_id = category.id
-//        JOIN brand ON product.brand_id = brand.id
-//        JOIN gender ON product.gender_id = gender.id
-//        JOIN product_attribute ON product.id = product_attribute.product_id
-//        JOIN attribute ON product_attribute.attribute_id = attribute.id
-//        WHERE
-//        LOWER(type.name) LIKE '%<type_name>%'
-//        AND (
-        //        (LOWER(attribute.name) LIKE '%<attribute_name_1>%' AND product_attribute.value IN ('red', 'green', 'blue'))
-        //        OR
-        //        (LOWER(attribute.name) LIKE '%<attribute_name_2>%' AND product_attribute.value IN ('X', 'L', 'M'))
-        //        -- Add more conditions for additional attribute names and values
-    //        )
-//        AND brand.name IN ('<brand_1>', '<brand_2>', '<brand_3>')
-//        AND gender.name IN ('<gender_1>', '<gender_2>', '<gender_3>')
-//        AND LOWER(product.name) LIKE '%<product_name>%'
-//        AND LOWER(category.name) LIKE '%<category_name>%'
-//        AND (
-//        product.price = <exact_price>
-//        OR product.price >= <min_price>
-//        AND product.price <= <max_price>
-//    )
-//            ORDER BY product.price DESC
+

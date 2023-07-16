@@ -14,5 +14,6 @@ export  type ProductType = {
     description: string;
     isFavorite: boolean;
     attributes: ProductAttribute[];
-    stock:number
+    stock:number;
+    size:string
   };

@@ -106,6 +106,9 @@ hr{
 
 .filter-accordion{
   background-color: #000000;
+  font-size: 14px; /* Decrease the font size */
+  padding: 5px; /* Reduce the padding */
+
 }
 .sselected{
 
@@ -113,13 +116,22 @@ hr{
   color: black;
   font-weight: bolder;
 }
+.notselected:hover,
+.sselected:hover{
+  background-color: gray;
+}
 .notselected{
   background-color: #000000;
   border-style: solid;
   border-color: white;
   margin: 0;
 }
-.accordion-header {
-  background-color: #333; /* Replace with your desired color */
-  color: #fff; /* Replace with your desired color */
+
+
+.custom-header {
+  background-color: purple;
+  color: white; /* Optionally, modify the text color */
+}
+.accordion-item{
+  color: white;
 }
