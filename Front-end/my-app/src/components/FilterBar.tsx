@@ -6,7 +6,7 @@ import { Accordion, AccordionButton, Button, Dropdown, DropdownButton, Form, For
 import { Gender } from "../Types/Gender.type";
 import { Brand } from "../Types/Brand.types";
 import { Attribute } from "../Types/Attribute.types";
-import { fetchBrands, fetchGenders, fetchTypes } from "../api/api";
+import { fetchBrands, fetchGenders, fetchTypes, getSizes } from "../api/api";
 import { ToggleButton } from 'primereact/togglebutton';
 import { Size } from "../Types/Size.types";
 import AccordionHeader from "react-bootstrap/esm/AccordionHeader";
@@ -37,7 +37,7 @@ const FilterBar = ({ onSearch }: any) => {
   const [selectedValues,setSelectedValues]= useState(new Map());
   const[possibleValues, setPossibleValues] = useState<AttributeValues | null>(null);
 
-  const [sizes,setSizes] = useState<Size[]>([]);
+  const [sizes,setSizes] = useState<string[]>([]);
   const [selectedSizes,setSelectedSizes]=useState<string[]>([])
   let tp = localStorage.getItem("f");
   const handleSearch = () => {
@@ -81,6 +81,10 @@ const FilterBar = ({ onSearch }: any) => {
   useEffect(()=>{
       setSelectedCategory('');
       setSelectedValues(new Map());
+      if(selectedType !== null )
+      getSizes(selectedType.id).then(data=>{
+        
+        setSizes(data);console.log('äicea'); console.log(data)}) 
   },[selectedType]);
 
   useEffect(() => {
@@ -91,10 +95,12 @@ const FilterBar = ({ onSearch }: any) => {
       setCategories(matchedType.categoryDtoList);
       setSelectedType(matchedType);
       setPossibleValues(matchedType.attributeValues);
-      setSizes(matchedType.sizeDtoList);
+       
       localStorage.removeItem("f")
     }
   }, [types]);
+
+
 
   const handleBrandChange = (event: React.ChangeEvent<HTMLInputElement>) =>{
       const {value, checked} = event.target;
@@ -127,7 +133,7 @@ const FilterBar = ({ onSearch }: any) => {
           if(existingValues.includes(value)){
             // Filter out the value from the array
             const filteredValues = existingValues.filter((v:string) => v !== value);
-            // Update the Map with the filtered values
+            // Update the Map with the filteredn values
               updatedValues.set(attributeName, filteredValues);
           }else{
             // Add the value to the array
@@ -176,7 +182,7 @@ const FilterBar = ({ onSearch }: any) => {
                 setCategories(type.categoryDtoList);
                 setSelectedType(type);
                 setPossibleValues(type.attributeValues);
-                setSizes(type.sizeDtoList);
+                
               }}
             >
               {type.name}
@@ -227,12 +233,12 @@ const FilterBar = ({ onSearch }: any) => {
           </AccordionButton>
           <AccordionBody>
           {sizes.length?(<>
-        {sizes.map((size)=>(
+        {sizes.sort((a, b) => a.localeCompare(b)).map((size)=>(
           <Button
-                   key={size.id}
-                  className={selectedSizes.includes(size.value) ? "sselected" : "notselected" }
+                   key={size}
+                  className={selectedSizes.includes(size) ? "sselected" : "notselected" }
               
-                  onClick={()=>handleSizesChange(size.value)}>{size.value}</Button>
+                  onClick={()=>handleSizesChange(size)}>{size}</Button>
         ))}
       </>) : (
         <p>Pick a type first.</p>

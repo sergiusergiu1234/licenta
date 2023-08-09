@@ -47,7 +47,14 @@ export const fetchTypes = async () => {
     return response;
   }
   
+export const getSizes = async (type_id:number) =>{
+  const url = `http://localhost:8080/products/sizes/${type_id}`;
+  const response = await fetch(url,{
+    method: 'GET'
+  });
 
+  return response.json();
+}
  
 
 export const fetchOrders =async () => {

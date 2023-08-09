@@ -19,7 +19,8 @@ public class OrderService {
 
     @Autowired
     OrderRepository orderRepository;
-
+    @Autowired
+    ProductService productService;
     @Autowired
     UserInfoRepository userInfoRepository;
     @Autowired
@@ -59,7 +60,11 @@ public class OrderService {
         List<OrderDetail> orderDetails = (List<OrderDetail>) orderDetailRepository.findByOrderId(newOrder.getId());
         //get user's shopping carts
         List<ShoppingCart> shoppingCarts = (List<ShoppingCart>) shoppingCartRepository.findByUserId(userId);
+
         for(ShoppingCart shoppingCart : shoppingCarts){
+
+
+
             //generate empty orderDetail and populate it based on shopping cart info
             OrderDetail newOrderDetail = new OrderDetail();
             OrderItem newOrderItem = new OrderItem();
@@ -70,6 +75,7 @@ public class OrderService {
             newOrderDetail.setSize(shoppingCart.getProduct().getSize());
             newOrder.setTotal(newOrder.getTotal()+ newOrderDetail.getPrice());
 
+            productService.decreaseStock(shoppingCart.getQuantity(),shoppingCart.getProduct().getId());
             //set Order
             newOrderDetail.setOrder(newOrder);
             orderDetailRepository.save(newOrderDetail);

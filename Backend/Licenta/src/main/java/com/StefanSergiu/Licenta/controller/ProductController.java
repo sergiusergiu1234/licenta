@@ -251,5 +251,9 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body("Image edited succesfully");
     }
 
+    @GetMapping("/sizes/{typeId}")
+    public List<String> getSizesByTypeId(@PathVariable("typeId") Long typeId) {
+        return productService.getSizesByTypeId(typeId);
+    }
 
 }

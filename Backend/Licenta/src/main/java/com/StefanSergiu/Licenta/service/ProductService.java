@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -178,5 +177,20 @@ public class ProductService {
 
         List<Product> products = productRepository.findAllByName(productName);
             return products;
+    }
+
+    public List<String> getSizesByTypeId(Long typeId) {
+        return productRepository.findSizesByTypeId(typeId);
+    }
+
+    @Transactional
+    public Long decreaseStock(Long quantity, Long productId){
+        Product product = productRepository.findById(productId)
+                .orElseThrow(()-> new EntityNotFoundException("Product with id " + productId + " does not exist"));
+        if(product.getStock()>= quantity)
+        product.setStock(product.getStock()-quantity);
+
+        return quantity;
+
     }
 }

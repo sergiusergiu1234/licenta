@@ -320,6 +320,7 @@ const ManageProducts = () => {
       );
       if (response.ok) {
         console.log("Image updated succesfully!");
+        setErrorMessage("Image modified succesfully!");
         setShowSuccess(true);
       } else {
         console.log(response);

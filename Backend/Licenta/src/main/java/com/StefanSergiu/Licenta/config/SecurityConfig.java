@@ -62,7 +62,7 @@ public class SecurityConfig {
                 .requestMatchers(
                         "/users/signup","/users/signin","/users/signout",
                         "/brands/all","/types/all",
-                        "/categories/all","/brands/**","/products/**","/genders/**","/types/**","/attributes/**","/productAttributes/**")
+                        "/categories/all","/brands/**","/products/**","/genders/**","/types/**","/attributes/**","/productAttributes/**","/size/get/**","products/sizes/**")
                 .permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/users/**","/users/me/**","/favorites/**",
