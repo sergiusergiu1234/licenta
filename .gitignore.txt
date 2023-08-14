@@ -1,1 +1,1 @@
-/licenta/diagrams/final/activity/Activity diagram 2
+/licenta/diagrams/final/activity
