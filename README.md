@@ -1,4 +1,4 @@
-# Diploma Project
+# Licence univeristy Project
 E-commerce web Spring Boot backend + React frontend + MySQL database application. 
 
 This project represents a web shopping application. At the time of development, it was meant to be used for marketing of skiing and snowboarding equipment, but it can be used for any business that folds on the database schema.
